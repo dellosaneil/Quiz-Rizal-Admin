@@ -1,7 +1,6 @@
 package com.thelazybattley.joserizalquizadmin.presentation.ui.theme
 
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
@@ -67,6 +66,10 @@ fun getAppTypography(): AppTypography {
             fontWeight = FontWeight.Bold,
             fontSize = 14.sp
         ),
+        bold23 = textStyle.copy(
+            fontWeight = FontWeight.Bold,
+            fontSize = 23.sp
+        ),
         medium10 = textStyle.copy(
             fontWeight = FontWeight.Medium,
             fontSize = 10.sp
@@ -108,6 +111,7 @@ data class AppTypography(
     val semiBold30: TextStyle,
     val semiBold38: TextStyle,
     val bold14: TextStyle,
+    val bold23: TextStyle,
     val medium10: TextStyle,
     val medium12: TextStyle,
     val medium14: TextStyle,

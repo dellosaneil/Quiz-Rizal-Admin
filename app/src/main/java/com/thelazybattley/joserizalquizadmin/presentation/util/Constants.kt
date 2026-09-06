@@ -8,9 +8,7 @@ import com.thelazybattley.joserizalquizadmin.presentation.ui.theme.AppTheme.colo
 
 val APP_PADDING = 16.dp
 val APP_SHADOW_ELEVATION = 4.dp
-const val APP_BACKGROUND_LIGHT_LONG = 0xFFE7E1D4
-const val APP_BACKGROUND_DARK_LONG = 0xFF221C16
 
 val APP_BACKGROUND: Color
     @Composable
-    get() = colors.warmIvory
+    get() = colors.warmLinen

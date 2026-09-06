@@ -13,36 +13,36 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.thelazybattley.joserizalquizadmin.presentation.feature.home.HomeTabScreen
 import com.thelazybattley.joserizalquizadmin.presentation.ui.theme.AppTheme
 import com.thelazybattley.joserizalquizadmin.presentation.util.APP_BACKGROUND
+import com.thelazybattley.joserizalquizadmin.presentation.util.APP_PADDING
 
 @Composable
 fun AppNavigation() {
     val navController = rememberNavController()
     AppTheme {
         Scaffold(
-            modifier = Modifier
-                .background(color = APP_BACKGROUND)
-                .fillMaxSize()
-                .statusBarsPadding()
-                .navigationBarsPadding(),
+            modifier = Modifier,
             bottomBar = {
                 BottomNavBar(
                     navController = navController,
                     modifier = Modifier
                 )
             }
-        ) { innerPadding ->
+        ) {
             NavHost(
                 modifier = Modifier
-                    .padding(paddingValues = innerPadding),
+                    .background(color = APP_BACKGROUND)
+                    .padding(all = APP_PADDING)
+                    .statusBarsPadding()
+                    .navigationBarsPadding()
+                    .fillMaxSize(),
                 navController = navController,
                 startDestination = AppDestinations.BottomNavDestinations.Home.route
             ) {
                 composable(route = AppDestinations.BottomNavDestinations.Home.route) {
-                    Box(modifier = Modifier.fillMaxSize()) {
-                        Text(text = "Home")
-                    }
+                    HomeTabScreen(modifier = Modifier.fillMaxSize())
                 }
                 composable(route = AppDestinations.BottomNavDestinations.Moderate.route) {
                     Box(modifier = Modifier.fillMaxSize()) {
