@@ -12,3 +12,9 @@ val APP_SHADOW_ELEVATION = 4.dp
 val APP_BACKGROUND: Color
     @Composable
     get() = colors.warmLinen
+
+val APP_BORDER_COLOR: Color
+    @Composable
+    get() = colors.espresso.copy(
+        alpha = 0.14f
+    )

@@ -3,9 +3,7 @@ package com.thelazybattley.joserizalquizadmin.presentation.navigation
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -30,13 +28,12 @@ fun AppNavigation() {
                     modifier = Modifier
                 )
             }
-        ) {
+        ) { innerPadding ->
             NavHost(
                 modifier = Modifier
                     .background(color = APP_BACKGROUND)
+                    .padding(paddingValues = innerPadding)
                     .padding(all = APP_PADDING)
-                    .statusBarsPadding()
-                    .navigationBarsPadding()
                     .fillMaxSize(),
                 navController = navController,
                 startDestination = AppDestinations.BottomNavDestinations.Home.route

@@ -1,5 +1,6 @@
 package com.thelazybattley.joserizalquizadmin.presentation.feature.home
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -21,6 +22,7 @@ import com.thelazybattley.joserizalquizadmin.presentation.ui.theme.AppTheme
 import com.thelazybattley.joserizalquizadmin.presentation.ui.theme.AppTheme.colors
 import com.thelazybattley.joserizalquizadmin.presentation.ui.theme.AppTheme.typography
 import com.thelazybattley.joserizalquizadmin.presentation.util.APP_BACKGROUND
+import com.thelazybattley.joserizalquizadmin.presentation.util.APP_BORDER_COLOR
 import com.thelazybattley.joserizalquizadmin.presentation.util.APP_PADDING
 
 @Composable
@@ -68,7 +70,11 @@ private fun StatisticsCard(
         colors = CardDefaults.cardColors(
             containerColor = colors.ivoryMist
         ),
-        shape = RoundedCornerShape(size = 8.dp)
+        shape = RoundedCornerShape(size = 8.dp),
+        border = BorderStroke(
+            width = 1.dp,
+            color = APP_BORDER_COLOR
+        )
     ) {
         Column(
             verticalArrangement = Arrangement.spacedBy(space = 4.dp),

@@ -10,6 +10,10 @@
     <string name="questions">%1$d questions</string>
     <string name="needs_review">needs review</string>
 
+    <string name="most_suggested">MOST SUGGESTED</string>
+    <string name="most_reported">MOST REPORTED</string>
+    <string name="value_x">%1$dx</string>
+
     <plurals name="suggestions">
         <item quantity="one">SUGGESTION</item>
         <item quantity="other">SUGGESTIONS</item>
@@ -18,5 +22,15 @@
     <plurals name="open_reports">
         <item quantity="one">OPEN REPORT</item>
         <item quantity="other">OPEN REPORTS</item>
+    </plurals>
+
+    <plurals name="reports">
+        <item quantity="one">REPORT</item>
+        <item quantity="other">REPORTS</item>
+    </plurals>
+
+    <plurals name="students">
+        <item quantity="one">STUDENT</item>
+        <item quantity="other">STUDENTS</item>
     </plurals>
 </resources>
