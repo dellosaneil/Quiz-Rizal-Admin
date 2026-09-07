@@ -3,12 +3,13 @@ plugins {
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.dev.tools.ksp)
     alias(libs.plugins.dagger.hilt)
+    alias(libs.plugins.google.services)
 }
 
 android {
     namespace = "com.thelazybattley.joserizalquizadmin"
     compileSdk = 37
-
+    buildFeatures { buildConfig = true }
     defaultConfig {
         applicationId = "com.thelazybattley.joserizalquizadmin"
         minSdk = 26

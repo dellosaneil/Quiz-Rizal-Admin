@@ -11,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.thelazybattley.joserizalquizadmin.presentation.feature.addbook.ui.AddBookScreen
 import com.thelazybattley.joserizalquizadmin.presentation.feature.home.HomeTabScreen
 import com.thelazybattley.joserizalquizadmin.presentation.ui.theme.AppTheme
 import com.thelazybattley.joserizalquizadmin.presentation.util.APP_BACKGROUND
@@ -36,7 +37,7 @@ fun AppNavigation() {
                     .padding(all = APP_PADDING)
                     .fillMaxSize(),
                 navController = navController,
-                startDestination = AppDestinations.BottomNavDestinations.Home.route
+                startDestination = AppDestinations.BottomNavDestinations.Content.route
             ) {
                 composable(route = AppDestinations.BottomNavDestinations.Home.route) {
                     HomeTabScreen(modifier = Modifier.fillMaxSize())
@@ -47,9 +48,7 @@ fun AppNavigation() {
                     }
                 }
                 composable(route = AppDestinations.BottomNavDestinations.Content.route) {
-                    Box(modifier = Modifier.fillMaxSize()) {
-                        Text(text = "Content")
-                    }
+                    AddBookScreen()
                 }
                 composable(route = AppDestinations.BottomNavDestinations.More.route) {
                     Box(modifier = Modifier.fillMaxSize()) {
