@@ -21,7 +21,6 @@ import androidx.compose.ui.unit.dp
 import com.thelazybattley.joserizalquizadmin.R
 import com.thelazybattley.joserizalquizadmin.presentation.ui.theme.AppTheme
 import com.thelazybattley.joserizalquizadmin.presentation.ui.theme.AppTheme.colors
-import com.thelazybattley.joserizalquizadmin.presentation.util.APP_PADDING
 
 @Composable
 fun CommonTopBar(
@@ -35,7 +34,6 @@ fun CommonTopBar(
             .fillMaxWidth()
             .padding(
                 vertical = 12.dp,
-                horizontal = APP_PADDING
             ),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(space = 12.dp)

@@ -16,6 +16,10 @@
     <string name="category">CATEGORY</string>
     <string name="novel">Novel</string>
     <string name="life_of_rizal">Life of Rizal</string>
+    <string name="add_a_book">Add a Book</string>
+    <string name="title">TITLE</string>
+    <string name="author">AUTHOR</string>
+    <string name="publish_book">Publish Book</string>
 
     <plurals name="suggestions">
         <item quantity="one">SUGGESTION</item>
