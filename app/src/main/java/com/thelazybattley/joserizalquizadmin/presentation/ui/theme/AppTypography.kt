@@ -66,6 +66,10 @@ fun getAppTypography(): AppTypography {
             fontWeight = FontWeight.SemiBold,
             fontSize = 38.sp
         ),
+        bold12 = textStyle.copy(
+            fontWeight = FontWeight.Bold,
+            fontSize = 14.sp
+        ),
         bold14 = textStyle.copy(
             fontWeight = FontWeight.Bold,
             fontSize = 14.sp
@@ -115,6 +119,7 @@ data class AppTypography(
     val semiBold18: TextStyle,
     val semiBold30: TextStyle,
     val semiBold38: TextStyle,
+    val bold12: TextStyle,
     val bold14: TextStyle,
     val bold23: TextStyle,
     val medium10: TextStyle,

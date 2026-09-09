@@ -13,6 +13,9 @@
     <string name="most_suggested">MOST SUGGESTED</string>
     <string name="most_reported">MOST REPORTED</string>
     <string name="value_x">%1$dx</string>
+    <string name="category">CATEGORY</string>
+    <string name="novel">Novel</string>
+    <string name="life_of_rizal">Life of Rizal</string>
 
     <plurals name="suggestions">
         <item quantity="one">SUGGESTION</item>
