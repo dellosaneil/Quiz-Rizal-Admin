@@ -1,6 +1,7 @@
 package com.thelazybattley.joserizalquizadmin.presentation.feature.addbook.ui
 
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -42,8 +43,13 @@ private fun AddBookScreen(
             ) { }
         },
         containerColor = APP_BACKGROUND,
-    ) {
+    ) { innerPadding ->
+        LazyColumn(
+            contentPadding = innerPadding,
+            modifier = Modifier,
+        ) {
 
+        }
     }
 }
 
