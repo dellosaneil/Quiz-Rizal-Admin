@@ -4,32 +4,32 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import com.thelazybattley.joserizalquizadmin.R
 
-sealed class AppDestinations {
+sealed class AppDestinations(val route: String, val routeWithArgs: String? = null) {
 
     sealed class BottomNavDestinations(
-        val route: String, @DrawableRes val drawable: Int,
+        val bottomNavRoute: String, @DrawableRes val drawable: Int,
         @StringRes val textRes: Int
-    ) : AppDestinations() {
+    ) : AppDestinations(route = "") {
         object Home : BottomNavDestinations(
-            route = "home",
+            bottomNavRoute = "home",
             drawable = R.drawable.ic_home,
             textRes = R.string.home
         )
 
         object Moderate : BottomNavDestinations(
-            route = "moderate",
+            bottomNavRoute = "moderate",
             drawable = R.drawable.ic_flag,
             textRes = R.string.moderate
         )
 
         object Content : BottomNavDestinations(
-            route = "content",
+            bottomNavRoute = "content",
             drawable = R.drawable.ic_content,
             textRes = R.string.content
         )
 
         object More : BottomNavDestinations(
-            route = "more",
+            bottomNavRoute = "more",
             drawable = R.drawable.ic_more,
             textRes = R.string.more
         )
@@ -40,4 +40,6 @@ sealed class AppDestinations {
             )
         }
     }
+
+    object AddBook : AppDestinations(route = "add_book")
 }

@@ -7,6 +7,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -20,6 +22,11 @@ import com.thelazybattley.joserizalquizadmin.presentation.util.APP_PADDING
 @Composable
 fun AppNavigation() {
     val navController = rememberNavController()
+    val showBottomBar = remember { mutableStateOf(value = true) }
+    navController.addOnDestinationChangedListener { _, destination, _ ->
+        showBottomBar.value =
+            destination.route in AppDestinations.BottomNavDestinations.routes().map { it.route }
+    }
     AppTheme {
         Scaffold(
             modifier = Modifier,
@@ -37,23 +44,26 @@ fun AppNavigation() {
                     .padding(all = APP_PADDING)
                     .fillMaxSize(),
                 navController = navController,
-                startDestination = AppDestinations.BottomNavDestinations.Content.route
+                startDestination = AppDestinations.AddBook.route
             ) {
-                composable(route = AppDestinations.BottomNavDestinations.Home.route) {
+                composable(route = AppDestinations.BottomNavDestinations.Home.bottomNavRoute) {
                     HomeTabScreen(modifier = Modifier.fillMaxSize())
                 }
-                composable(route = AppDestinations.BottomNavDestinations.Moderate.route) {
+                composable(route = AppDestinations.BottomNavDestinations.Moderate.bottomNavRoute) {
                     Box(modifier = Modifier.fillMaxSize()) {
                         Text(text = "Moderate")
                     }
                 }
-                composable(route = AppDestinations.BottomNavDestinations.Content.route) {
-                    AddBookScreen()
+                composable(route = AppDestinations.BottomNavDestinations.Content.bottomNavRoute) {
+                    Text(text = "Content")
                 }
-                composable(route = AppDestinations.BottomNavDestinations.More.route) {
+                composable(route = AppDestinations.BottomNavDestinations.More.bottomNavRoute) {
                     Box(modifier = Modifier.fillMaxSize()) {
                         Text(text = "More")
                     }
+                }
+                composable(route = AppDestinations.AddBook.route) {
+                    AddBookScreen()
                 }
             }
         }

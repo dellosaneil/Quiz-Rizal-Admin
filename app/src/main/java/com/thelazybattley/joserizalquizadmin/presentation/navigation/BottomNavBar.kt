@@ -30,22 +30,21 @@ fun BottomNavBar(
 ) {
     var selectedRoute by rememberSaveable {
         mutableStateOf(
-            value = AppDestinations.BottomNavDestinations.Home.route
+            value = AppDestinations.BottomNavDestinations.Home.bottomNavRoute
         )
     }
-
     NavigationBar(
         windowInsets = NavigationBarDefaults.windowInsets,
         modifier = modifier,
         containerColor = colors.ivoryMist
     ) {
         AppDestinations.BottomNavDestinations.routes().forEach { route ->
-            val isSelected = selectedRoute == route.route
+            val isSelected = selectedRoute == route.bottomNavRoute
             NavigationBarItem(
                 selected = isSelected,
                 onClick = {
-                    selectedRoute = route.route
-                    navController.navigate(route = route.route)
+                    selectedRoute = route.bottomNavRoute
+                    navController.navigate(route = route.bottomNavRoute)
                 },
                 icon = {
                     Icon(
