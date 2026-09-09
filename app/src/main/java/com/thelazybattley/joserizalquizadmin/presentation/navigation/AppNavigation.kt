@@ -24,17 +24,18 @@ fun AppNavigation() {
     val navController = rememberNavController()
     val showBottomBar = remember { mutableStateOf(value = true) }
     navController.addOnDestinationChangedListener { _, destination, _ ->
-        showBottomBar.value =
-            destination.route in AppDestinations.BottomNavDestinations.routes().map { it.route }
+        showBottomBar.value = destination.route in AppDestinations.BottomNavDestinations.routes().map { it.bottomNavRoute }
     }
     AppTheme {
         Scaffold(
             modifier = Modifier,
             bottomBar = {
-                BottomNavBar(
-                    navController = navController,
-                    modifier = Modifier
-                )
+                if(showBottomBar.value) {
+                    BottomNavBar(
+                        navController = navController,
+                        modifier = Modifier
+                    )
+                }
             }
         ) { innerPadding ->
             NavHost(
