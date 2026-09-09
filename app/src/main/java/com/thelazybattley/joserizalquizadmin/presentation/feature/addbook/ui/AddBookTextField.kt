@@ -13,6 +13,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
+import com.thelazybattley.joserizalquizadmin.presentation.feature.addbook.AddBookActions
 import com.thelazybattley.joserizalquizadmin.presentation.feature.addbook.AddBookCallback
 import com.thelazybattley.joserizalquizadmin.presentation.feature.addbook.AddBookTextFieldTypes
 import com.thelazybattley.joserizalquizadmin.presentation.ui.common.CommonTextField
@@ -31,11 +32,16 @@ fun AddBookTextField(
     callback: AddBookCallback
 ) {
     val state = rememberTextFieldState(initialText = "")
-    LaunchedEffect(Unit) {
+    LaunchedEffect(key1 = Unit) {
         snapshotFlow { state.text }
-            .debounce(300.milliseconds)
+            .debounce(timeout = 150.milliseconds)
             .collect { searchQuery ->
-
+                callback.handleAction(
+                    action = AddBookActions.TextFieldUpdated(
+                        text = searchQuery.toString(),
+                        type = type
+                    )
+                )
             }
     }
     Column {
@@ -47,7 +53,8 @@ fun AddBookTextField(
         CommonTextField(
             state = state,
             modifier = modifier.height(height = 65.dp),
-            textAlign = TextAlign.Left
+            textAlign = TextAlign.Left,
+            textStyle = typography.regular13
         )
     }
 

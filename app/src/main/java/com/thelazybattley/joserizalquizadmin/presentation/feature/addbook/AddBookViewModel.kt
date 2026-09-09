@@ -12,12 +12,30 @@ class AddBookViewModel @Inject constructor(
 
     override fun handleAction(action: AddBookActions) {
         when (action) {
-            is AddBookActions.AddBook -> {
-                setBookUseCase(
-                    author = action.author,
-                    bookName = action.bookName,
-                    category = action.category
-                )
+            is AddBookActions.CategoryUpdated -> {
+                updateState(newState = state.value.copy(category = action.category))
+            }
+
+            AddBookActions.PublishBook -> setBookUseCase(
+                author = state.value.author,
+                bookName = state.value.title,
+                category = state.value.category.name
+            )
+            is AddBookActions.TextFieldUpdated -> {
+                when (action.type) {
+                    AddBookTextFieldTypes.TITLE -> updateState(
+                        newState = state.value.copy(
+                            title = action.text,
+                            isButtonEnabled = action.text.isNotEmpty() && state.value.author.isNotEmpty()
+                        )
+                    )
+                    AddBookTextFieldTypes.AUTHOR -> updateState(
+                        newState = state.value.copy(
+                            author = action.text,
+                            isButtonEnabled = action.text.isNotEmpty() && state.value.title.isNotEmpty()
+                        )
+                    )
+                }
             }
         }
     }

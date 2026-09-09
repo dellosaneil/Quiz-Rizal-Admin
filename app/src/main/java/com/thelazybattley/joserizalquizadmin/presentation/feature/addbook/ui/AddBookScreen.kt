@@ -2,6 +2,7 @@ package com.thelazybattley.joserizalquizadmin.presentation.feature.addbook.ui
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -17,6 +18,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.thelazybattley.joserizalquizadmin.R
+import com.thelazybattley.joserizalquizadmin.presentation.feature.addbook.AddBookActions
 import com.thelazybattley.joserizalquizadmin.presentation.feature.addbook.AddBookCallback
 import com.thelazybattley.joserizalquizadmin.presentation.feature.addbook.AddBookState
 import com.thelazybattley.joserizalquizadmin.presentation.feature.addbook.AddBookTextFieldTypes
@@ -47,7 +49,8 @@ private fun AddBookScreen(
     state: AddBookState
 ) {
     Scaffold(
-        modifier = modifier,
+        modifier = modifier
+            .fillMaxSize(),
         topBar = {
             CommonTopBar(
                 modifier = Modifier.fillMaxWidth(),
@@ -61,12 +64,11 @@ private fun AddBookScreen(
             }
         },
         containerColor = APP_BACKGROUND,
+        contentWindowInsets = WindowInsets()
     ) { innerPadding ->
         Column(
             modifier = Modifier
-                .fillMaxSize()
                 .padding(paddingValues = innerPadding)
-                .padding(all = 16.dp)
         ) {
             LazyColumn(
                 modifier = Modifier.weight(weight = 1f),
@@ -90,8 +92,11 @@ private fun AddBookScreen(
             }
             CommonButton(
                 text = stringResource(id = R.string.publish_book),
-                modifier = Modifier.fillMaxWidth()
-            ) { }
+                modifier = Modifier.fillMaxWidth(),
+                enabled = state.isButtonEnabled
+            ) {
+                callback.handleAction(action = AddBookActions.PublishBook)
+            }
         }
     }
 }

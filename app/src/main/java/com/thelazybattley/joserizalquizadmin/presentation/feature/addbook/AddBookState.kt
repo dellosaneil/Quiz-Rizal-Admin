@@ -7,6 +7,6 @@ data class AddBookState(
     val isLoading: Boolean = true,
     val category: Category = Category.LIFE_OF_RIZAL,
     val author: String = "",
-    val bookName: String = "",
-    val chapters: List<String> = emptyList(),
+    val title: String = "",
+    val isButtonEnabled: Boolean = false,
     ) : BaseState
