@@ -5,14 +5,11 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -27,33 +24,25 @@ import com.thelazybattley.joserizalquizadmin.presentation.ui.theme.AppTheme.colo
 import com.thelazybattley.joserizalquizadmin.presentation.ui.theme.AppTheme.typography
 import com.thelazybattley.joserizalquizadmin.presentation.util.APP_BORDER_COLOR
 import kotlinx.coroutines.FlowPreview
-import kotlinx.coroutines.flow.debounce
-import kotlin.time.Duration.Companion.milliseconds
 
 @OptIn(FlowPreview::class)
 @Composable
 fun AddBookChapterTextField(
     modifier: Modifier = Modifier,
     index: Int,
-    callback: AddBookCallback
+    callback: AddBookCallback,
+    text: String,
 ) {
-    val state = rememberTextFieldState()
-
-    LaunchedEffect(key1 = Unit) {
-        snapshotFlow { state.text }
-            .debounce(timeout = 150.milliseconds)
-            .collect { text ->
-                callback.handleAction(
-                    action = AddBookActions.Chapter.Update(
-                        index = index,
-                        text = text.toString()
-                    )
-                )
-            }
-    }
-
     TextField(
-        state = state,
+        value = text,
+        onValueChange = { newValue ->
+            callback.handleAction(
+                action = AddBookActions.Chapter.Update(
+                    index = index,
+                    text = newValue
+                )
+            )
+        },
         prefix = {
             Text(
                 text = "${index.inc()}.",
@@ -110,7 +99,8 @@ private fun Preview() {
                 .fillMaxWidth()
                 .height(height = 56.dp),
             index = 1,
-            callback = AddBookCallback.default()
+            callback = AddBookCallback.default(),
+            text = "Chapter 2"
         )
     }
 }

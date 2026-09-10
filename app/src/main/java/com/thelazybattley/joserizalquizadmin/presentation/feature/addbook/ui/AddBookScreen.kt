@@ -100,11 +100,14 @@ private fun AddBookScreen(
                     )
                 }
 
-                itemsIndexed(items = state.chapters) { index, _ ->
+                itemsIndexed(items = state.chapters) { index, chapter ->
                     AddBookChapterTextField(
                         index = index,
-                        modifier = Modifier.fillMaxWidth().height(height = 56.dp),
-                        callback = callback
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(height = 56.dp),
+                        callback = callback,
+                        text = chapter
                     )
                 }
 
