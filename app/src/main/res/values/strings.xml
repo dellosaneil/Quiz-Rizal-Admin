@@ -19,7 +19,9 @@
     <string name="add_a_book">Add a Book</string>
     <string name="title">TITLE</string>
     <string name="author">AUTHOR</string>
+    <string name="chapters">CHAPTERS</string>
     <string name="publish_book">Publish Book</string>
+    <string name="add_chapter">+ Add Chapter</string>
 
     <plurals name="suggestions">
         <item quantity="one">SUGGESTION</item>

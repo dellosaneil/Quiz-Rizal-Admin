@@ -9,4 +9,5 @@ data class AddBookState(
     val author: String = "",
     val title: String = "",
     val isButtonEnabled: Boolean = false,
-    ) : BaseState
+    val chapters: List<String> = emptyList()
+) : BaseState

@@ -21,6 +21,7 @@ class AddBookViewModel @Inject constructor(
                 bookName = state.value.title,
                 category = state.value.category.name
             )
+
             is AddBookActions.TextFieldUpdated -> {
                 when (action.type) {
                     AddBookTextFieldTypes.TITLE -> updateState(
@@ -29,12 +30,33 @@ class AddBookViewModel @Inject constructor(
                             isButtonEnabled = action.text.isNotEmpty() && state.value.author.isNotEmpty()
                         )
                     )
+
                     AddBookTextFieldTypes.AUTHOR -> updateState(
                         newState = state.value.copy(
                             author = action.text,
                             isButtonEnabled = action.text.isNotEmpty() && state.value.title.isNotEmpty()
                         )
                     )
+                }
+            }
+
+            is AddBookActions.Chapter -> {
+                when (action) {
+                    is AddBookActions.Chapter.Add -> updateState(
+                        newState = state.value.copy(
+                            chapters = state.value.chapters + ""
+                        )
+                    )
+                    is AddBookActions.Chapter.Delete -> {
+                        val updatedChapters = state.value.chapters.toMutableList()
+                        updatedChapters.removeAt(index = action.index)
+                        updateState(newState = state.value.copy(chapters = updatedChapters))
+                    }
+                    is AddBookActions.Chapter.Update -> {
+                        val updatedChapters = state.value.chapters.toMutableList()
+                        updatedChapters[action.index] = action.text
+                        updateState(newState = state.value.copy(chapters = updatedChapters))
+                    }
                 }
             }
         }

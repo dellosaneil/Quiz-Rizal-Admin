@@ -1,12 +1,15 @@
 package com.thelazybattley.joserizalquizadmin.presentation.feature.addbook.ui
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -88,6 +91,32 @@ private fun AddBookScreen(
                             callback = callback
                         )
                     }
+                }
+                item {
+                    Text(
+                        text = stringResource(id = R.string.chapters),
+                        style = typography.semiBold10,
+                        color = colors.taupe
+                    )
+                }
+
+                itemsIndexed(items = state.chapters) { index, _ ->
+                    AddBookChapterTextField(
+                        index = index,
+                        modifier = Modifier.fillMaxWidth().height(height = 56.dp),
+                        callback = callback
+                    )
+                }
+
+                item {
+                    Text(
+                        text = stringResource(id = R.string.add_chapter),
+                        style = typography.semiBold11,
+                        color = colors.antiqueGold,
+                        modifier = Modifier.clickable {
+                            callback.handleAction(action = AddBookActions.Chapter.Add)
+                        }
+                    )
                 }
             }
             CommonButton(

@@ -16,4 +16,9 @@ sealed class AddBookActions : BaseActions {
         val category: Category
     ) : AddBookActions()
 
+    sealed class Chapter: AddBookActions() {
+        object Add: Chapter()
+        data class Delete(val index: Int) : Chapter()
+        data class Update(val index: Int, val text: String) : Chapter()
+    }
 }
