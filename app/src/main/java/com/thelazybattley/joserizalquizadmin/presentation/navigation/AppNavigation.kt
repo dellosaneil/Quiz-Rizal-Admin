@@ -15,6 +15,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.thelazybattley.joserizalquizadmin.presentation.feature.addbook.AddBookDestinations
 import com.thelazybattley.joserizalquizadmin.presentation.feature.addbook.ui.AddBookScreen
+import com.thelazybattley.joserizalquizadmin.presentation.feature.content.ui.ContentTabScreen
 import com.thelazybattley.joserizalquizadmin.presentation.feature.home.HomeTabScreen
 import com.thelazybattley.joserizalquizadmin.presentation.ui.theme.AppTheme
 import com.thelazybattley.joserizalquizadmin.presentation.util.APP_BACKGROUND
@@ -25,13 +26,14 @@ fun AppNavigation() {
     val navController = rememberNavController()
     val showBottomBar = remember { mutableStateOf(value = true) }
     navController.addOnDestinationChangedListener { _, destination, _ ->
-        showBottomBar.value = destination.route in AppDestinations.BottomNavDestinations.routes().map { it.bottomNavRoute }
+        showBottomBar.value = destination.route in AppDestinations.BottomNavDestinations.routes()
+            .map { it.bottomNavRoute }
     }
     AppTheme {
         Scaffold(
             modifier = Modifier,
             bottomBar = {
-                if(showBottomBar.value) {
+                if (showBottomBar.value) {
                     BottomNavBar(
                         navController = navController,
                         modifier = Modifier
@@ -57,7 +59,11 @@ fun AppNavigation() {
                     }
                 }
                 composable(route = AppDestinations.BottomNavDestinations.Content.bottomNavRoute) {
-                    Text(text = "Content")
+                    ContentTabScreen(
+                        modifier = Modifier.fillMaxSize(),
+                        navigate = { destination ->
+                        }
+                    )
                 }
                 composable(route = AppDestinations.BottomNavDestinations.More.bottomNavRoute) {
                     Box(modifier = Modifier.fillMaxSize()) {
@@ -67,8 +73,8 @@ fun AppNavigation() {
                 composable(route = AppDestinations.AddBook.route) {
                     AddBookScreen(
                         modifier = Modifier.fillMaxSize(),
-                        navigate = {destination ->
-                            when(destination) {
+                        navigate = { destination ->
+                            when (destination) {
                                 AddBookDestinations.BACK -> {
                                     navController.popBackStack()
                                 }
