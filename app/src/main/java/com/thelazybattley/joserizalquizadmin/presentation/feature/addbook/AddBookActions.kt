@@ -21,4 +21,6 @@ sealed class AddBookActions : BaseActions {
         data class Delete(val index: Int) : Chapter()
         data class Update(val index: Int, val text: String) : Chapter()
     }
+
+    data class NavigateDestination(val destination: AddBookDestinations?) : AddBookActions()
 }

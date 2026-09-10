@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.thelazybattley.joserizalquizadmin.presentation.feature.addbook.AddBookDestinations
 import com.thelazybattley.joserizalquizadmin.presentation.feature.addbook.ui.AddBookScreen
 import com.thelazybattley.joserizalquizadmin.presentation.feature.home.HomeTabScreen
 import com.thelazybattley.joserizalquizadmin.presentation.ui.theme.AppTheme
@@ -64,7 +65,16 @@ fun AppNavigation() {
                     }
                 }
                 composable(route = AppDestinations.AddBook.route) {
-                    AddBookScreen()
+                    AddBookScreen(
+                        modifier = Modifier.fillMaxSize(),
+                        navigate = {destination ->
+                            when(destination) {
+                                AddBookDestinations.BACK -> {
+                                    navController.popBackStack()
+                                }
+                            }
+                        }
+                    )
                 }
             }
         }

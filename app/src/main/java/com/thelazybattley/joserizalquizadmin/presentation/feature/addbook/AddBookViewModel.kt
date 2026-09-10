@@ -70,6 +70,12 @@ class AddBookViewModel @Inject constructor(
                     }
                 }
             }
+
+            is AddBookActions.NavigateDestination -> updateState(
+                newState = state.value.copy(
+                    destination = action.destination
+                )
+            )
         }
     }
 

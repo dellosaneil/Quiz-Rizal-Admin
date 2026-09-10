@@ -3,8 +3,6 @@ package com.thelazybattley.joserizalquizadmin.util
 class Constants {
 
     companion object {
-        const val DEBUG_PATH = "debug"
-        const val RELEASE_PATH = "release"
         const val QUIZ = "quiz"
         const val BOOKS = "books"
         const val AUTHOR = "author"

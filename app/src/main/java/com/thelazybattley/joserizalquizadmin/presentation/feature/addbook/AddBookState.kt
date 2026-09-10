@@ -9,5 +9,6 @@ data class AddBookState(
     val author: String = "",
     val title: String = "",
     val isButtonEnabled: Boolean = false,
-    val chapters: List<String> = listOf(element = "")
+    val chapters: List<String> = listOf(element = ""),
+    val destination: AddBookDestinations? = null
 ) : BaseState

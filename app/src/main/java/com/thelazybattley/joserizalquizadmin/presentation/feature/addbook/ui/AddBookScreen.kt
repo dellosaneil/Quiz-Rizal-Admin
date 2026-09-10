@@ -25,6 +25,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.thelazybattley.joserizalquizadmin.R
 import com.thelazybattley.joserizalquizadmin.presentation.feature.addbook.AddBookActions
 import com.thelazybattley.joserizalquizadmin.presentation.feature.addbook.AddBookCallback
+import com.thelazybattley.joserizalquizadmin.presentation.feature.addbook.AddBookDestinations
 import com.thelazybattley.joserizalquizadmin.presentation.feature.addbook.AddBookState
 import com.thelazybattley.joserizalquizadmin.presentation.feature.addbook.AddBookTextFieldTypes
 import com.thelazybattley.joserizalquizadmin.presentation.feature.addbook.AddBookViewModel
@@ -36,9 +37,19 @@ import com.thelazybattley.joserizalquizadmin.presentation.ui.theme.AppTheme.typo
 import com.thelazybattley.joserizalquizadmin.presentation.util.APP_BACKGROUND
 
 @Composable
-fun AddBookScreen(modifier: Modifier = Modifier) {
+fun AddBookScreen(
+    modifier: Modifier = Modifier,
+    navigate: (AddBookDestinations) -> Unit
+) {
     val viewModel = hiltViewModel<AddBookViewModel>()
     val state by viewModel.state.collectAsStateWithLifecycle()
+
+    LaunchedEffect(key1 = state.destination) {
+        state.destination?.let { destination ->
+            navigate(destination)
+            viewModel.handleAction(action = AddBookActions.NavigateDestination(destination = null))
+        }
+    }
 
     AddBookScreen(
         modifier = modifier,
@@ -65,7 +76,9 @@ private fun AddBookScreen(
         topBar = {
             CommonTopBar(
                 modifier = Modifier.fillMaxWidth(),
-                onIconClicked = {}
+                onIconClicked = {
+                    callback.handleAction(action = AddBookActions.NavigateDestination(destination = AddBookDestinations.BACK))
+                }
             ) {
                 Text(
                     text = stringResource(id = R.string.add_a_book),

@@ -22,6 +22,10 @@
     <string name="chapters">CHAPTERS</string>
     <string name="publish_book">Publish Book</string>
     <string name="add_chapter">+ Add Chapter</string>
+    <string name="library">Library</string>
+    <string name="value_chapters">%1$d chapters</string>
+    <string name="value_questions">%1$d questions</string>
+    <string name="manage">Manage</string>
 
     <plurals name="suggestions">
         <item quantity="one">SUGGESTION</item>
