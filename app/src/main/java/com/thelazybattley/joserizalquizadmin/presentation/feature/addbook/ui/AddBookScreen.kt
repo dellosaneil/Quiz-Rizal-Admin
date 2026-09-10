@@ -10,9 +10,11 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -51,6 +53,12 @@ private fun AddBookScreen(
     callback: AddBookCallback,
     state: AddBookState
 ) {
+    val lazyColumnState = rememberLazyListState()
+    LaunchedEffect(key1 = state.chapters.size) {
+        if (state.chapters.isNotEmpty()) {
+            lazyColumnState.animateScrollToItem(index = state.chapters.size.dec())
+        }
+    }
     Scaffold(
         modifier = modifier
             .fillMaxSize(),
@@ -75,7 +83,8 @@ private fun AddBookScreen(
         ) {
             LazyColumn(
                 modifier = Modifier.weight(weight = 1f),
-                verticalArrangement = Arrangement.spacedBy(space = 8.dp)
+                verticalArrangement = Arrangement.spacedBy(space = 8.dp),
+                state = lazyColumnState
             ) {
                 item {
                     AddBookCategory(

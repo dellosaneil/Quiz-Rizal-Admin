@@ -24,19 +24,25 @@ class AddBookViewModel @Inject constructor(
 
             is AddBookActions.TextFieldUpdated -> {
                 when (action.type) {
-                    AddBookTextFieldTypes.TITLE -> updateState(
-                        newState = state.value.copy(
-                            title = action.text,
-                            isButtonEnabled = action.text.isNotEmpty() && state.value.author.isNotEmpty()
+                    AddBookTextFieldTypes.TITLE -> {
+                        updateState(
+                            newState = state.value.copy(
+                                title = action.text,
+                                isButtonEnabled = action.text.isNotEmpty() && state.value.author.isNotEmpty()
+                            )
                         )
-                    )
+                        setButtonEnabled()
+                    }
 
-                    AddBookTextFieldTypes.AUTHOR -> updateState(
-                        newState = state.value.copy(
-                            author = action.text,
-                            isButtonEnabled = action.text.isNotEmpty() && state.value.title.isNotEmpty()
+                    AddBookTextFieldTypes.AUTHOR -> {
+                        updateState(
+                            newState = state.value.copy(
+                                author = action.text,
+                                isButtonEnabled = action.text.isNotEmpty() && state.value.title.isNotEmpty()
+                            )
                         )
-                    )
+                        setButtonEnabled()
+                    }
                 }
             }
 
@@ -44,21 +50,34 @@ class AddBookViewModel @Inject constructor(
                 when (action) {
                     is AddBookActions.Chapter.Add -> updateState(
                         newState = state.value.copy(
-                            chapters = state.value.chapters + ""
+                            chapters = state.value.chapters + "",
+                            isButtonEnabled = false,
                         )
                     )
+
                     is AddBookActions.Chapter.Delete -> {
                         val updatedChapters = state.value.chapters.toMutableList()
                         updatedChapters.removeAt(index = action.index)
                         updateState(newState = state.value.copy(chapters = updatedChapters))
                     }
+
                     is AddBookActions.Chapter.Update -> {
                         val updatedChapters = state.value.chapters.toMutableList()
                         updatedChapters[action.index] = action.text
                         updateState(newState = state.value.copy(chapters = updatedChapters))
+                        setButtonEnabled()
                     }
                 }
             }
         }
+    }
+
+    private fun setButtonEnabled() {
+        updateState(
+            newState = state.value.copy(
+                isButtonEnabled = state.value.author.isNotEmpty() && state.value.title.isNotEmpty() &&
+                        state.value.chapters.isNotEmpty() && !state.value.chapters.any { it.isBlank() }
+            )
+        )
     }
 }
