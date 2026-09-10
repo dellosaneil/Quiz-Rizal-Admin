@@ -19,7 +19,8 @@ class AddBookViewModel @Inject constructor(
             AddBookActions.PublishBook -> setBookUseCase(
                 author = state.value.author,
                 bookName = state.value.title,
-                category = state.value.category.name
+                category = state.value.category.name,
+                chapters = state.value.chapters
             )
 
             is AddBookActions.TextFieldUpdated -> {
