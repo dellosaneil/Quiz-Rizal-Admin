@@ -29,7 +29,7 @@ fun ContentStickyHeader(modifier: Modifier = Modifier, callback: ContentCallback
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
-            text = pluralStringResource(id = R.plurals.your_books, count = 1),
+            text = pluralStringResource(id = R.plurals.your_books, count = count),
             style = typography.semiBold11,
             color = colors.taupe
         )

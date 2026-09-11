@@ -3,7 +3,9 @@ package com.thelazybattley.joserizalquizadmin.presentation.feature.content.ui
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -12,6 +14,7 @@ import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.thelazybattley.joserizalquizadmin.domain.model.quiz.Quiz
 import com.thelazybattley.joserizalquizadmin.presentation.feature.content.ContentCallback
 import com.thelazybattley.joserizalquizadmin.presentation.feature.content.ContentDestinations
 import com.thelazybattley.joserizalquizadmin.presentation.feature.content.ContentState
@@ -54,6 +57,12 @@ private fun ContentTabScreen(
                     count = state.quiz.size
                 )
             }
+            items(items = state.quiz, key = { it.id }) { quiz ->
+                ContentItemCard(
+                    quiz = quiz,
+                    modifier = Modifier.fillMaxWidth()
+                )
+            }
         }
     }
 }
@@ -65,7 +74,12 @@ private fun Preview() {
     AppTheme {
         ContentTabScreen(
             modifier = Modifier.fillMaxSize(),
-            state = ContentState(),
+            state = ContentState(
+                quiz = listOf(
+                    Quiz.dummy(),
+                    Quiz.dummy(id = "1"),
+                )
+            ),
             callback = ContentCallback.default()
         )
     }

@@ -14,9 +14,15 @@ data class Chapter(
                         question = "Test Question",
                         choices = listOf("Choice 1", "Choice 2", "Choice 3"),
                         answer = "Choice 1"
-                    )
+                    ),
+                    Question(
+                        question = "Test Question 1",
+                        choices = listOf("Choice 1", "Choice 2", "Choice 3"),
+                        answer = "Choice 1"
+                    ),
                 )
             )
     }
 }
 
+fun List<Chapter>.getTotalQuestions() = sumOf { it.questions.size }

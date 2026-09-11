@@ -48,7 +48,7 @@ fun AppNavigation() {
                     .padding(all = APP_PADDING)
                     .fillMaxSize(),
                 navController = navController,
-                startDestination = AppDestinations.AddBook.route
+                startDestination = AppDestinations.BottomNavDestinations.Content.bottomNavRoute
             ) {
                 composable(route = AppDestinations.BottomNavDestinations.Home.bottomNavRoute) {
                     HomeTabScreen(modifier = Modifier.fillMaxSize())
