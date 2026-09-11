@@ -24,6 +24,8 @@ import androidx.compose.ui.unit.dp
 import com.thelazybattley.joserizalquizadmin.R
 import com.thelazybattley.joserizalquizadmin.domain.model.quiz.Quiz
 import com.thelazybattley.joserizalquizadmin.domain.model.quiz.getTotalQuestions
+import com.thelazybattley.joserizalquizadmin.presentation.feature.content.ContentActions
+import com.thelazybattley.joserizalquizadmin.presentation.feature.content.ContentCallback
 import com.thelazybattley.joserizalquizadmin.presentation.ui.theme.AppTheme
 import com.thelazybattley.joserizalquizadmin.presentation.ui.theme.AppTheme.colors
 import com.thelazybattley.joserizalquizadmin.presentation.ui.theme.AppTheme.typography
@@ -33,14 +35,22 @@ import com.thelazybattley.joserizalquizadmin.presentation.util.APP_PADDING
 fun ContentItemCard(
     modifier: Modifier = Modifier,
     quiz: Quiz,
-    isExpanded: Boolean
+    isExpanded: Boolean,
+    callback: ContentCallback
 ) {
     Card(
         modifier = modifier,
         colors = CardDefaults.cardColors(
             containerColor = colors.ivoryMist
         ),
-        elevation = CardDefaults.elevatedCardElevation()
+        elevation = CardDefaults.elevatedCardElevation(),
+        onClick = {
+            if (isExpanded) {
+                callback.handleAction(action = ContentActions.ExpandBook(id = null))
+                return@Card
+            }
+            callback.handleAction(action = ContentActions.ExpandBook(id = quiz.id))
+        }
     ) {
         Row(
             modifier = Modifier.padding(all = APP_PADDING)
@@ -140,7 +150,8 @@ private fun Preview() {
         ContentItemCard(
             modifier = Modifier.fillMaxWidth(),
             quiz = Quiz.dummy(),
-            isExpanded = false
+            isExpanded = false,
+            callback = ContentCallback.default()
         )
     }
 }

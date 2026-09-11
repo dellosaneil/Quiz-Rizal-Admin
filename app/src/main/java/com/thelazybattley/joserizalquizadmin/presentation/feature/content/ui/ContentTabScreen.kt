@@ -8,6 +8,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.PreviewLightDark
@@ -15,6 +16,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.thelazybattley.joserizalquizadmin.domain.model.quiz.Quiz
+import com.thelazybattley.joserizalquizadmin.presentation.feature.content.ContentActions
 import com.thelazybattley.joserizalquizadmin.presentation.feature.content.ContentCallback
 import com.thelazybattley.joserizalquizadmin.presentation.feature.content.ContentDestinations
 import com.thelazybattley.joserizalquizadmin.presentation.feature.content.ContentState
@@ -29,6 +31,12 @@ fun ContentTabScreen(
 ) {
     val viewModel = hiltViewModel<ContentViewModel>()
     val state by viewModel.state.collectAsStateWithLifecycle()
+    LaunchedEffect(key1 = state.destination) {
+        state.destination?.let { destination ->
+            navigate(destination)
+            viewModel.handleAction(action = ContentActions.Navigate(destination = null))
+        }
+    }
     ContentTabScreen(
         modifier = modifier,
         state = state,
@@ -60,7 +68,9 @@ private fun ContentTabScreen(
             items(items = state.quiz, key = { it.id }) { quiz ->
                 ContentItemCard(
                     quiz = quiz,
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier.fillMaxWidth(),
+                    isExpanded = quiz.id == state.expandedBook,
+                    callback = callback
                 )
             }
         }

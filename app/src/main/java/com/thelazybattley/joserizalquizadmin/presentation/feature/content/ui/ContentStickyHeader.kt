@@ -13,7 +13,9 @@ import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import com.thelazybattley.joserizalquizadmin.R
+import com.thelazybattley.joserizalquizadmin.presentation.feature.content.ContentActions
 import com.thelazybattley.joserizalquizadmin.presentation.feature.content.ContentCallback
+import com.thelazybattley.joserizalquizadmin.presentation.feature.content.ContentDestinations
 import com.thelazybattley.joserizalquizadmin.presentation.ui.theme.AppTheme
 import com.thelazybattley.joserizalquizadmin.presentation.ui.theme.AppTheme.colors
 import com.thelazybattley.joserizalquizadmin.presentation.ui.theme.AppTheme.typography
@@ -38,7 +40,7 @@ fun ContentStickyHeader(modifier: Modifier = Modifier, callback: ContentCallback
             color = colors.antiqueGold,
             style = typography.semiBold11,
             modifier = Modifier.clickable {
-
+                callback.handleAction(action = ContentActions.Navigate(destination = ContentDestinations.AddBook))
             }
         )
     }

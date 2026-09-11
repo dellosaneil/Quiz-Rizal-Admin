@@ -26,6 +26,9 @@ class ContentViewModel @Inject constructor(
     }
 
     override fun handleAction(action: ContentActions) {
-        TODO("Not yet implemented")
+        when (action) {
+            is ContentActions.ExpandBook -> updateState(newState = state.value.copy(expandedBook = action.id))
+            is ContentActions.Navigate -> updateState(newState = state.value.copy(destination = action.destination))
+        }
     }
 }
