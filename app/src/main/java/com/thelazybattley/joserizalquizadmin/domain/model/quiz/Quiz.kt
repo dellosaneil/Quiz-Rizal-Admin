@@ -1,14 +1,13 @@
-package com.thelazybattley.quizrizal.domain.model.quiz
+package com.thelazybattley.joserizalquizadmin.domain.model.quiz
 
-import com.thelazybattley.quizrizal.data.local.entity.quiz.QuizEntity
-import com.thelazybattley.quizrizal.domain.model.ContentCategory
+import com.thelazybattley.joserizalquizadmin.presentation.util.Category
 
 data class Quiz(
     val id: String,
     val title: String,
     val subtitle: String,
     val chapters: List<Chapter>,
-    val category: ContentCategory,
+    val category: Category,
 ) {
     companion object {
         fun dummy(id: String = "quiz_content_id"): Quiz {
@@ -16,7 +15,7 @@ data class Quiz(
                 id = id,
                 title = "Quiz Title",
                 subtitle = "Quiz Subtitle",
-                category = ContentCategory.LIFE_OF_RIZAL,
+                category = Category.LIFE_OF_RIZAL,
                 chapters = listOf(
                     Chapter.dummy(chapterNumber = 1),
                     Chapter.dummy(chapterNumber = 2),
@@ -26,13 +25,3 @@ data class Quiz(
         }
     }
 }
-
-
-fun Quiz.toEntity() =
-    QuizEntity(
-        id = id,
-        title = title,
-        author = subtitle,
-        category = category.name,
-        chapters = chapters.map { it.toEntity() }
-    )

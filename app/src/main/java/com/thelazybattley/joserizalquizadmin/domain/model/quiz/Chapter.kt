@@ -1,6 +1,4 @@
-package com.thelazybattley.quizrizal.domain.model.quiz
-
-import com.thelazybattley.quizrizal.data.local.entity.quiz.ChapterEntity
+package com.thelazybattley.joserizalquizadmin.domain.model.quiz
 
 data class Chapter(
     val chapterName: String,
@@ -22,8 +20,3 @@ data class Chapter(
     }
 }
 
-fun Chapter.toEntity() = ChapterEntity(
-    chapterName = chapterName,
-    chapterNumber = chapterNumber,
-    questions = questions.map { it.toEntity() }
-)

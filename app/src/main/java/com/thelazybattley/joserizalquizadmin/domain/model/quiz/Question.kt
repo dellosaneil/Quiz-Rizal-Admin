@@ -1,6 +1,4 @@
-package com.thelazybattley.quizrizal.domain.model.quiz
-
-import com.thelazybattley.quizrizal.data.local.entity.quiz.QuestionEntity
+package com.thelazybattley.joserizalquizadmin.domain.model.quiz
 
 data class Question(
     val question: String,
@@ -16,9 +14,3 @@ data class Question(
     }
 }
 
-
-fun Question.toEntity() = QuestionEntity(
-    question = question,
-    choices = choices,
-    answer = answer
-)

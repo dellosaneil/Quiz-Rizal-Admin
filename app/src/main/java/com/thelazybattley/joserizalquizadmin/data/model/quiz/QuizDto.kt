@@ -1,11 +1,11 @@
 package com.thelazybattley.joserizalquizadmin.data.model.quiz
 
+import com.thelazybattley.joserizalquizadmin.domain.model.quiz.Quiz
 import com.thelazybattley.joserizalquizadmin.presentation.util.Category
-import com.thelazybattley.quizrizal.domain.model.quiz.Quiz
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class BookQuizDto(
+data class QuizDto(
     val author: String,
     val bookName: String,
     val category: String,
@@ -14,7 +14,7 @@ data class BookQuizDto(
 )
 
 
-fun BookQuizDto.toDomain(): Quiz {
+fun QuizDto.toDomain(): Quiz {
     return Quiz(
         subtitle = author,
         title = bookName,
