@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.dev.tools.ksp)
     alias(libs.plugins.dagger.hilt)
     alias(libs.plugins.google.services)
+    alias(libs.plugins.kotlin.serialization)
 }
 
 android {
@@ -57,4 +58,5 @@ dependencies {
     implementation(libs.androidx.appcompat)
     ksp(libs.hilt.android.compiler)
     implementation(libs.androidx.compose.material.icons.extended)
+    implementation(libs.kotlinx.serialization.json)
 }

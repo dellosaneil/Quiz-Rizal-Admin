@@ -14,6 +14,7 @@ materialIconsExtended = "1.7.8"
 navigationCompose = "2.10.0"
 hiltNavigationCompose = "1.4.0"
 kotlinxCoroutinesPlayServices = "1.11.0"
+kotlinxSerializationJson = "1.11.0"
 daggerHilt = "2.60.1"
 devToolsKsp = "2.3.11"
 
@@ -37,6 +38,7 @@ androidx-compose-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-
 androidx-compose-material3 = { group = "androidx.compose.material3", name = "material3" }
 hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hiltAndroid" }
 hilt-android-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "hiltAndroidCompiler" }
+kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinxSerializationJson" }
 
 
 [plugins]
@@ -45,4 +47,5 @@ kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "ko
 google-services = { id = "com.google.gms.google-services", version.ref = "googleServices" }
 dagger-hilt = {id = "com.google.dagger.hilt.android", version.ref = "daggerHilt"}
 dev-tools-ksp = {id = "com.google.devtools.ksp", version.ref = "devToolsKsp"}
+kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 
