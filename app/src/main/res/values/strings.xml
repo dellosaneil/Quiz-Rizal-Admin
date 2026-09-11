@@ -26,6 +26,8 @@
     <string name="value_chapters">%1$d chapters</string>
     <string name="value_questions">%1$d questions</string>
     <string name="manage">Manage</string>
+    <string name="add_question">+ Add Question</string>
+    <string name="plus_add_a_book">+ Add a Book</string>
 
     <plurals name="suggestions">
         <item quantity="one">SUGGESTION</item>
@@ -45,5 +47,10 @@
     <plurals name="students">
         <item quantity="one">STUDENT</item>
         <item quantity="other">STUDENTS</item>
+    </plurals>
+
+    <plurals name="your_books">
+        <item quantity="one">YOUR BOOK</item>
+        <item quantity="other">YOUR BOOKS</item>
     </plurals>
 </resources>
