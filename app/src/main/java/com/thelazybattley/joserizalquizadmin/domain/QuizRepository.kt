@@ -7,12 +7,14 @@ interface QuizRepository {
 
     suspend fun fetchQuizContent(): List<Quiz>
 
-    fun setBook(
+    fun setQuiz(
         author: String,
         bookName: String,
         category: String,
         chapters: List<String>
     )
+
+    fun setUpdatedQuiz(quiz: Quiz)
 
     fun getAllQuiz(): Flow<List<Quiz>>
 

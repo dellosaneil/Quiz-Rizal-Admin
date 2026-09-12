@@ -1,13 +1,13 @@
 package com.thelazybattley.joserizalquizadmin.presentation.feature.addbook
 
 import com.thelazybattley.joserizalquizadmin.base.BaseViewModel
-import com.thelazybattley.joserizalquizadmin.domain.usecase.SetBookUseCase
+import com.thelazybattley.joserizalquizadmin.domain.usecase.SetQuizUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
 class AddBookViewModel @Inject constructor(
-    private val setBookUseCase: SetBookUseCase
+    private val setQuizUseCase: SetQuizUseCase
 ) : BaseViewModel<AddBookState, AddBookActions>(initialState = AddBookState()), AddBookCallback {
 
     override fun handleAction(action: AddBookActions) {
@@ -16,7 +16,7 @@ class AddBookViewModel @Inject constructor(
                 updateState(newState = state.value.copy(category = action.category))
             }
 
-            AddBookActions.PublishBook -> setBookUseCase(
+            AddBookActions.PublishBook -> setQuizUseCase(
                 author = state.value.author,
                 bookName = state.value.title,
                 category = state.value.category.name,

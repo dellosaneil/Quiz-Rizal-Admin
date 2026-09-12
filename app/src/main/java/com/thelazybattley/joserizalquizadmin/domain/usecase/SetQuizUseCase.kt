@@ -3,7 +3,7 @@ package com.thelazybattley.joserizalquizadmin.domain.usecase
 import com.thelazybattley.joserizalquizadmin.domain.QuizRepository
 import javax.inject.Inject
 
-class SetBookUseCase @Inject constructor(
+class SetQuizUseCase @Inject constructor(
     private val repository: QuizRepository
 ) {
     operator fun invoke(
@@ -11,7 +11,7 @@ class SetBookUseCase @Inject constructor(
         bookName: String,
         category: String,
         chapters: List<String>
-    ) = repository.setBook(
+    ) = repository.setQuiz(
         author = author,
         bookName = bookName,
         category = category,
