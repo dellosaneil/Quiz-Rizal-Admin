@@ -2,12 +2,11 @@ package com.thelazybattley.joserizalquizadmin.presentation.feature.addquestion.u
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -24,6 +23,7 @@ import com.thelazybattley.joserizalquizadmin.presentation.feature.addquestion.Ad
 import com.thelazybattley.joserizalquizadmin.presentation.feature.addquestion.AddQuestionDestinations
 import com.thelazybattley.joserizalquizadmin.presentation.feature.addquestion.AddQuestionState
 import com.thelazybattley.joserizalquizadmin.presentation.feature.addquestion.AddQuestionViewModel
+import com.thelazybattley.joserizalquizadmin.presentation.ui.common.CommonButton
 import com.thelazybattley.joserizalquizadmin.presentation.ui.common.CommonTopBar
 import com.thelazybattley.joserizalquizadmin.presentation.ui.theme.AppTheme
 import com.thelazybattley.joserizalquizadmin.presentation.ui.theme.AppTheme.colors
@@ -72,8 +72,8 @@ private fun Screen(
     ) { innerPadding ->
         Column(
             modifier = Modifier
-                .verticalScroll(state = rememberScrollState())
-                .padding(paddingValues = innerPadding),
+                .padding(paddingValues = innerPadding)
+                .fillMaxSize(),
             verticalArrangement = Arrangement.spacedBy(space = 16.dp)
         ) {
             AddQuestionContextCard(
@@ -89,6 +89,13 @@ private fun Screen(
                 correctAnswerIndex = state.correctAnswerIndex,
                 callback = callback
             )
+            Spacer(modifier = Modifier.weight(weight = 1f))
+            CommonButton(
+                text = stringResource(id = R.string.save_question),
+                modifier = Modifier.fillMaxWidth()
+            ) {
+
+            }
         }
     }
 }

@@ -31,10 +31,13 @@ class AddQuestionViewModel @Inject constructor(
                     )
                 }
             }
+            is AddQuestionAction.Navigate -> updateState(
+                newState = state.value.copy(
+                    destination = action.destination
+                )
+            )
 
-            is AddQuestionAction.Navigate -> TODO()
             is AddQuestionAction.UpdateQuestion -> TODO()
         }
     }
-
 }
