@@ -3,7 +3,9 @@ package com.thelazybattley.joserizalquizadmin.presentation.feature.addquestion
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.thelazybattley.joserizalquizadmin.base.BaseViewModel
+import com.thelazybattley.joserizalquizadmin.domain.model.quiz.Question
 import com.thelazybattley.joserizalquizadmin.domain.usecase.GetQuizByIdUseCase
+import com.thelazybattley.joserizalquizadmin.domain.usecase.SetUpdatedQuizUseCase
 import com.thelazybattley.joserizalquizadmin.presentation.navigation.AppDestinations.Companion.CHAPTER_NUMBER
 import com.thelazybattley.joserizalquizadmin.presentation.navigation.AppDestinations.Companion.QUIZ_ID
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -14,7 +16,8 @@ import javax.inject.Inject
 @HiltViewModel
 class AddQuestionViewModel @Inject constructor(
     private val getQuizByIdUseCase: GetQuizByIdUseCase,
-    savedStateHandle: SavedStateHandle
+    savedStateHandle: SavedStateHandle,
+    private val setUpdatedQuizUseCase: SetUpdatedQuizUseCase
 ) : BaseViewModel<AddQuestionState, AddQuestionAction>(initialState = AddQuestionState()),
     AddQuestionCallback {
 
@@ -72,7 +75,25 @@ class AddQuestionViewModel @Inject constructor(
             }
 
             AddQuestionAction.SaveQuestion -> {
+                val currentState = state.value
+                val quiz = currentState.quiz ?: return
 
+                val newQuestion = Question(
+                    question = currentState.question,
+                    choices = currentState.choices,
+                    answer = currentState.choices.getOrNull(currentState.correctAnswerIndex).orEmpty()
+                )
+
+                val updatedQuiz = quiz.copy(
+                    chapters = quiz.chapters.map { chapter ->
+                        if (chapter.chapterNumber == currentState.chapterNumber) {
+                            chapter.copy(questions = chapter.questions + newQuestion)
+                        } else {
+                            chapter
+                        }
+                    }
+                )
+                setUpdatedQuizUseCase(quiz = updatedQuiz)
             }
         }
     }
