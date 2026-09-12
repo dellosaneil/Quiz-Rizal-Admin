@@ -19,7 +19,9 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.thelazybattley.joserizalquizadmin.R
+import com.thelazybattley.joserizalquizadmin.presentation.feature.addquestion.AddQuestionAction
 import com.thelazybattley.joserizalquizadmin.presentation.feature.addquestion.AddQuestionCallback
+import com.thelazybattley.joserizalquizadmin.presentation.feature.addquestion.AddQuestionDestinations
 import com.thelazybattley.joserizalquizadmin.presentation.feature.addquestion.AddQuestionState
 import com.thelazybattley.joserizalquizadmin.presentation.feature.addquestion.AddQuestionViewModel
 import com.thelazybattley.joserizalquizadmin.presentation.ui.common.CommonTopBar
@@ -53,7 +55,11 @@ private fun Screen(
             CommonTopBar(
                 modifier = Modifier.fillMaxWidth(),
                 onIconClicked = {
-
+                    callback.handleAction(
+                        action = AddQuestionAction.Navigate(
+                            destination = AddQuestionDestinations.Back
+                        )
+                    )
                 }
             ) {
                 Text(
@@ -78,7 +84,11 @@ private fun Screen(
             AddQuestionTextField(
                 modifier = Modifier.fillMaxWidth()
             )
-
+            AddQuestionChoices(
+                modifier = Modifier.fillMaxWidth(),
+                correctAnswerIndex = state.correctAnswerIndex,
+                callback = callback
+            )
         }
     }
 }

@@ -14,7 +14,27 @@ class AddQuestionViewModel @Inject constructor(
     ), AddQuestionCallback {
 
     override fun handleAction(action: AddQuestionAction) {
-        TODO("Not yet implemented")
+        when (action) {
+            is AddQuestionAction.Choice -> {
+                when (action) {
+                    is AddQuestionAction.Choice.Selected -> updateState(
+                        newState = state.value.copy(
+                            correctAnswerIndex = action.index
+                        )
+                    )
+                    is AddQuestionAction.Choice.UpdateValue -> updateState(
+                        newState = state.value.copy(
+                            choices = state.value.choices.toMutableList().apply {
+                                this[action.index] = action.choice
+                            }
+                        )
+                    )
+                }
+            }
+
+            is AddQuestionAction.Navigate -> TODO()
+            is AddQuestionAction.UpdateQuestion -> TODO()
+        }
     }
 
 }

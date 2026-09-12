@@ -7,5 +7,7 @@ data class AddQuestionState(
     val isLoading: Boolean = false,
     val quizId: String = "",
     val chapterNumber: Int = -1,
-    val quiz: Quiz? = null
+    val quiz: Quiz? = null,
+    val correctAnswerIndex: Int = -1,
+    val choices: List<String> = emptyList()
 ) : BaseState
