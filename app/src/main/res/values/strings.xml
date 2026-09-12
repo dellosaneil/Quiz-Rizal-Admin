@@ -29,6 +29,9 @@
     <string name="manage">Manage</string>
     <string name="adding_to">ADDING TO</string>
     <string name="arrow">→</string>
+    <string name="question">QUESTION</string>
+    <string name="choices_tap_to_mark_correct_answer">CHOICES - TAP TO MARK CORRECT ANSWER</string>
+    <string name="save_question">Save Question</string>
     <string name="add_question">+ Add Question</string>
     <string name="add_a_question">Add a Question</string>
     <string name="plus_add_a_book">+ Add a Book</string>

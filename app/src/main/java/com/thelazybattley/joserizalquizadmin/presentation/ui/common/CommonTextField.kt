@@ -38,7 +38,9 @@ fun CommonTextField(
     ),
     placeholderText: String? = null,
     textStyle: TextStyle = typography.semiBold18,
-    textAlign: TextAlign = TextAlign.Center
+    textAlign: TextAlign = TextAlign.Center,
+    lineLimits: TextFieldLineLimits = TextFieldLineLimits.SingleLine,
+    contentAlignment: Alignment? = null
 ) {
     BasicTextField(
         modifier = modifier
@@ -55,14 +57,14 @@ fun CommonTextField(
             textAlign = textAlign,
             color = colors.espresso
         ),
-        lineLimits = TextFieldLineLimits.SingleLine,
+        lineLimits = lineLimits,
         cursorBrush = SolidColor(value = colors.maroon),
         decorator = TextFieldDecorator { innerTextField ->
             Box(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(horizontal = 16.dp),
-                contentAlignment = when (textAlign) {
+                    .padding(horizontal = 16.dp, vertical = 12.dp),
+                contentAlignment = contentAlignment ?: when (textAlign) {
                     TextAlign.Center -> Alignment.Center
                     TextAlign.Right, TextAlign.End -> Alignment.CenterEnd
                     else -> Alignment.CenterStart

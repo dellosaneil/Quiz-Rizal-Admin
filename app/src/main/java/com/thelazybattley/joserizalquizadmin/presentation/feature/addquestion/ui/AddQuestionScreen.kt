@@ -68,13 +68,17 @@ private fun Screen(
             modifier = Modifier
                 .verticalScroll(state = rememberScrollState())
                 .padding(paddingValues = innerPadding),
-            verticalArrangement = Arrangement.spacedBy(space = 8.dp)
+            verticalArrangement = Arrangement.spacedBy(space = 16.dp)
         ) {
             AddQuestionContextCard(
                 modifier = Modifier.fillMaxWidth(),
                 quizName = "Jose Rizal Quiz",
                 chapterNumber = 1
             )
+            AddQuestionTextField(
+                modifier = Modifier.fillMaxWidth()
+            )
+
         }
     }
 }
