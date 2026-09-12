@@ -15,6 +15,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.thelazybattley.joserizalquizadmin.presentation.feature.addbook.AddBookDestinations
 import com.thelazybattley.joserizalquizadmin.presentation.feature.addbook.ui.AddBookScreen
+import com.thelazybattley.joserizalquizadmin.presentation.feature.addquestion.ui.AddQuestionScreen
 import com.thelazybattley.joserizalquizadmin.presentation.feature.content.ContentDestinations
 import com.thelazybattley.joserizalquizadmin.presentation.feature.content.ui.ContentTabScreen
 import com.thelazybattley.joserizalquizadmin.presentation.feature.home.HomeTabScreen
@@ -49,7 +50,7 @@ fun AppNavigation() {
                     .padding(all = APP_PADDING)
                     .fillMaxSize(),
                 navController = navController,
-                startDestination = AppDestinations.BottomNavDestinations.Content.bottomNavRoute
+                startDestination = AppDestinations.AddQuestion.route
             ) {
                 composable(route = AppDestinations.BottomNavDestinations.Home.bottomNavRoute) {
                     HomeTabScreen(modifier = Modifier.fillMaxSize())
@@ -63,8 +64,10 @@ fun AppNavigation() {
                     ContentTabScreen(
                         modifier = Modifier.fillMaxSize(),
                         navigate = { destination ->
-                            when(destination) {
-                                ContentDestinations.AddBook -> navController.navigate(AppDestinations.AddBook.route)
+                            when (destination) {
+                                ContentDestinations.AddBook -> navController.navigate(
+                                    AppDestinations.AddBook.route
+                                )
                             }
                         }
                     )
@@ -85,6 +88,19 @@ fun AppNavigation() {
                             }
                         }
                     )
+                }
+                composable(
+                    route = AppDestinations.AddQuestion.route!!,
+                    arguments = listOf(
+//                        navArgument(name = QUIZ_ID) {
+//                            type = NavType.StringType
+//                        },
+//                        navArgument(name = CHAPTER_NUMBER) {
+//                            type = NavType.IntType
+//                        }
+                    )
+                ) {
+                    AddQuestionScreen()
                 }
             }
         }

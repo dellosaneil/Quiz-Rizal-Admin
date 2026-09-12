@@ -24,10 +24,15 @@
     <string name="add_chapter">+ Add Chapter</string>
     <string name="library">Library</string>
     <string name="value_chapters">%1$d chapters</string>
+    <string name="chapter_value">Chapter: %1$d</string>
     <string name="value_questions">%1$d questions</string>
     <string name="manage">Manage</string>
+    <string name="adding_to">ADDING TO</string>
+    <string name="arrow">→</string>
     <string name="add_question">+ Add Question</string>
+    <string name="add_a_question">Add a Question</string>
     <string name="plus_add_a_book">+ Add a Book</string>
+    <string name="you_are_adding_a_question_to_this_chapter">You are adding a question to this chapter. To add a question to a different book, open that book\'s chapter directly.</string>
 
     <plurals name="suggestions">
         <item quantity="one">SUGGESTION</item>

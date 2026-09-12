@@ -42,4 +42,17 @@ sealed class AppDestinations(val route: String, val routeWithArgs: String? = nul
     }
 
     object AddBook : AppDestinations(route = "add_book")
+
+    object AddQuestion :
+        AppDestinations(
+            route = "add_question",
+            routeWithArgs = "add_question/{$QUIZ_ID}/{$CHAPTER_NUMBER}"
+        ) {
+        fun createRoute(quizId: String, chapterNumber: Int) = "add_question/$quizId/$chapterNumber"
+    }
+
+    companion object {
+        const val QUIZ_ID = "quizId"
+        const val CHAPTER_NUMBER = "chapterNumber"
+    }
 }
