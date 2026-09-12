@@ -18,7 +18,6 @@ class AddQuestionViewModel @Inject constructor(
 ) : BaseViewModel<AddQuestionState, AddQuestionAction>(initialState = AddQuestionState()),
     AddQuestionCallback {
 
-
     init {
         viewModelScope.launch(context = Dispatchers.IO) {
             val quizId =
@@ -54,6 +53,7 @@ class AddQuestionViewModel @Inject constructor(
                         )
                     )
                 }
+                setButtonEnabled()
             }
 
             is AddQuestionAction.Navigate -> updateState(
@@ -62,15 +62,29 @@ class AddQuestionViewModel @Inject constructor(
                 )
             )
 
-            is AddQuestionAction.UpdateQuestion -> updateState(
-                newState = state.value.copy(
-                    question = action.question
+            is AddQuestionAction.UpdateQuestion -> {
+                updateState(
+                    newState = state.value.copy(
+                        question = action.question
+                    )
                 )
-            )
+                setButtonEnabled()
+            }
 
             AddQuestionAction.SaveQuestion -> {
-                println("Test: ${state.value}")
+
             }
         }
+    }
+
+    private fun setButtonEnabled() {
+        val buttonEnabled = with(receiver = state.value) {
+            question.isNotBlank() && choices.all { it.isNotBlank() } && correctAnswerIndex != -1
+        }
+        updateState(
+            newState = state.value.copy(
+                isButtonEnabled = buttonEnabled
+            )
+        )
     }
 }

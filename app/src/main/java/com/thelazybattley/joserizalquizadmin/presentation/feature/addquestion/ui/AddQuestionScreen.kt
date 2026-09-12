@@ -105,7 +105,8 @@ private fun Screen(
             Spacer(modifier = Modifier.weight(weight = 1f))
             CommonButton(
                 text = stringResource(id = R.string.save_question),
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
+                enabled = state.isButtonEnabled
             ) {
                 callback.handleAction(action = AddQuestionAction.SaveQuestion)
             }
