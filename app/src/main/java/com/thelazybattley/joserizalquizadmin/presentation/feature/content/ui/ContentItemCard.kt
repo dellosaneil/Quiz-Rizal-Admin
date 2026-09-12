@@ -35,6 +35,7 @@ import com.thelazybattley.joserizalquizadmin.domain.model.quiz.Quiz
 import com.thelazybattley.joserizalquizadmin.domain.model.quiz.getTotalQuestions
 import com.thelazybattley.joserizalquizadmin.presentation.feature.content.ContentActions
 import com.thelazybattley.joserizalquizadmin.presentation.feature.content.ContentCallback
+import com.thelazybattley.joserizalquizadmin.presentation.feature.content.ContentDestinations
 import com.thelazybattley.joserizalquizadmin.presentation.ui.common.CommonButton
 import com.thelazybattley.joserizalquizadmin.presentation.ui.theme.AppTheme
 import com.thelazybattley.joserizalquizadmin.presentation.ui.theme.AppTheme.colors
@@ -156,7 +157,7 @@ fun ContentItemCard(
         ) {
             Column {
                 quiz.chapters.forEach { chapter ->
-                    ChapterItem(chapter = chapter)
+                    ChapterItem(chapter = chapter, callback = callback, quizId = quiz.id)
                 }
             }
         }
@@ -167,6 +168,8 @@ fun ContentItemCard(
 private fun ChapterItem(
     modifier: Modifier = Modifier,
     chapter: Chapter,
+    callback: ContentCallback,
+    quizId: String,
 ) {
     Column(
         modifier = modifier
@@ -212,7 +215,14 @@ private fun ChapterItem(
                 text = stringResource(id = R.string.add_question),
                 modifier = Modifier.weight(weight = 1f)
             ) {
-
+                callback.handleAction(
+                    action = ContentActions.Navigate(
+                        destination = ContentDestinations.AddQuestion(
+                            chapterNumber = chapter.chapterNumber,
+                            quizId = quizId
+                        )
+                    )
+                )
             }
             CommonButton(
                 text = stringResource(id = R.string.manage),

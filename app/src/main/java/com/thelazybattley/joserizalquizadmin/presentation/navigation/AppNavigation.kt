@@ -10,15 +10,20 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.thelazybattley.joserizalquizadmin.presentation.feature.addbook.AddBookDestinations
 import com.thelazybattley.joserizalquizadmin.presentation.feature.addbook.ui.AddBookScreen
+import com.thelazybattley.joserizalquizadmin.presentation.feature.addquestion.AddQuestionDestinations
 import com.thelazybattley.joserizalquizadmin.presentation.feature.addquestion.ui.AddQuestionScreen
 import com.thelazybattley.joserizalquizadmin.presentation.feature.content.ContentDestinations
 import com.thelazybattley.joserizalquizadmin.presentation.feature.content.ui.ContentTabScreen
 import com.thelazybattley.joserizalquizadmin.presentation.feature.home.HomeTabScreen
+import com.thelazybattley.joserizalquizadmin.presentation.navigation.AppDestinations.Companion.CHAPTER_NUMBER
+import com.thelazybattley.joserizalquizadmin.presentation.navigation.AppDestinations.Companion.QUIZ_ID
 import com.thelazybattley.joserizalquizadmin.presentation.ui.theme.AppTheme
 import com.thelazybattley.joserizalquizadmin.presentation.util.APP_BACKGROUND
 import com.thelazybattley.joserizalquizadmin.presentation.util.APP_PADDING
@@ -50,7 +55,7 @@ fun AppNavigation() {
                     .padding(all = APP_PADDING)
                     .fillMaxSize(),
                 navController = navController,
-                startDestination = AppDestinations.AddQuestion.route
+                startDestination = AppDestinations.BottomNavDestinations.Content.bottomNavRoute
             ) {
                 composable(route = AppDestinations.BottomNavDestinations.Home.bottomNavRoute) {
                     HomeTabScreen(modifier = Modifier.fillMaxSize())
@@ -67,6 +72,12 @@ fun AppNavigation() {
                             when (destination) {
                                 ContentDestinations.AddBook -> navController.navigate(
                                     AppDestinations.AddBook.route
+                                )
+                                is ContentDestinations.AddQuestion -> navController.navigate(
+                                    route = AppDestinations.AddQuestion.createRoute(
+                                        quizId = destination.quizId,
+                                        chapterNumber = destination.chapterNumber
+                                    )
                                 )
                             }
                         }
@@ -90,17 +101,21 @@ fun AppNavigation() {
                     )
                 }
                 composable(
-                    route = AppDestinations.AddQuestion.route!!,
+                    route = AppDestinations.AddQuestion.routeWithArgs!!,
                     arguments = listOf(
-//                        navArgument(name = QUIZ_ID) {
-//                            type = NavType.StringType
-//                        },
-//                        navArgument(name = CHAPTER_NUMBER) {
-//                            type = NavType.IntType
-//                        }
+                        navArgument(name = QUIZ_ID) {
+                            type = NavType.StringType
+                        },
+                        navArgument(name = CHAPTER_NUMBER) {
+                            type = NavType.IntType
+                        }
                     )
                 ) {
-                    AddQuestionScreen()
+                    AddQuestionScreen(modifier = Modifier.fillMaxSize()) { destination ->
+                        when (destination) {
+                            AddQuestionDestinations.Back -> navController.popBackStack()
+                        }
+                    }
                 }
             }
         }

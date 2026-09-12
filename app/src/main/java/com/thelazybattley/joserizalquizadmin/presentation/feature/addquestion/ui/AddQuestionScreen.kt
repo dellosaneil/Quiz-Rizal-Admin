@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -31,9 +32,18 @@ import com.thelazybattley.joserizalquizadmin.presentation.ui.theme.AppTheme.typo
 import com.thelazybattley.joserizalquizadmin.presentation.util.APP_BACKGROUND
 
 @Composable
-fun AddQuestionScreen(modifier: Modifier = Modifier) {
+fun AddQuestionScreen(
+    modifier: Modifier = Modifier,
+    navigate: (AddQuestionDestinations) -> Unit
+) {
     val viewModel = hiltViewModel<AddQuestionViewModel>()
     val state by viewModel.state.collectAsStateWithLifecycle()
+    LaunchedEffect(key1 = state.destination) {
+        state.destination?.let { destination ->
+            navigate(destination)
+            viewModel.handleAction(action = AddQuestionAction.Navigate(destination = null))
+        }
+    }
     Screen(
         state = state,
         modifier = modifier,
