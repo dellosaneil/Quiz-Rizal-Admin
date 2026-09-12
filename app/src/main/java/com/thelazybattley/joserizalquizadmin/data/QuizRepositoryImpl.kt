@@ -2,11 +2,14 @@ package com.thelazybattley.joserizalquizadmin.data
 
 import com.google.firebase.firestore.FirebaseFirestore
 import com.thelazybattley.joserizalquizadmin.BuildConfig
-import com.thelazybattley.joserizalquizadmin.data.model.quiz.ChapterDto
-import com.thelazybattley.joserizalquizadmin.data.model.quiz.QuizDto
-import com.thelazybattley.joserizalquizadmin.data.model.quiz.toDomain
+import com.thelazybattley.joserizalquizadmin.data.local.dao.QuizDao
+import com.thelazybattley.joserizalquizadmin.data.local.entity.toDomain
+import com.thelazybattley.joserizalquizadmin.data.network.model.quiz.ChapterDto
+import com.thelazybattley.joserizalquizadmin.data.network.model.quiz.QuizDto
+import com.thelazybattley.joserizalquizadmin.data.network.model.quiz.toDomain
 import com.thelazybattley.joserizalquizadmin.domain.QuizRepository
 import com.thelazybattley.joserizalquizadmin.domain.model.quiz.Quiz
+import com.thelazybattley.joserizalquizadmin.domain.model.quiz.toEntity
 import com.thelazybattley.joserizalquizadmin.util.Constants
 import com.thelazybattley.joserizalquizadmin.util.Constants.Companion.AUTHOR
 import com.thelazybattley.joserizalquizadmin.util.Constants.Companion.BOOKS
@@ -22,7 +25,8 @@ import org.json.JSONObject
 import javax.inject.Inject
 
 class QuizRepositoryImpl @Inject constructor(
-    private val firestore: FirebaseFirestore
+    private val firestore: FirebaseFirestore,
+    private val dao: QuizDao
 ) : QuizRepository {
     override suspend fun fetchQuizContent(): List<Quiz> {
         val books = firestore
@@ -83,5 +87,12 @@ class QuizRepositoryImpl @Inject constructor(
         bookDetail[CHAPTERS] = chaptersJson
         docRef.set(bookDetail)
     }
+
+    override suspend fun getQuizBooks() = dao.getAllQuiz().map { it.toDomain() }
+
+    override suspend fun insertQuizBooks(quiz: List<Quiz>) =
+        dao.insertAllQuiz(quiz = quiz.toEntity())
+
+    override suspend fun getQuizById(id: String) = dao.getQuizById(id = id).toDomain()
 
 }

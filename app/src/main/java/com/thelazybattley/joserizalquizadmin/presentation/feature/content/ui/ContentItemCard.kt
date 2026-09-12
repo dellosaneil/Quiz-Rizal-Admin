@@ -77,7 +77,7 @@ fun ContentItemCard(
                     color = colors.espresso,
                 )
                 Text(
-                    text = quiz.subtitle,
+                    text = quiz.author,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                     style = typography.regular12,

@@ -1,8 +1,8 @@
 package com.thelazybattley.joserizalquizadmin.data.local.db
 
 import androidx.room.TypeConverter
+import com.thelazybattley.joserizalquizadmin.data.local.entity.ChapterEntity
 import com.thelazybattley.joserizalquizadmin.presentation.util.Category
-import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
 class Converters {
@@ -26,5 +26,15 @@ class Converters {
     @TypeConverter
     fun toCategory(value: String): Category {
         return Category.valueOf(value)
+    }
+
+    @TypeConverter
+    fun fromChapterEntity(value: List<ChapterEntity>): String {
+        return json.encodeToString(value)
+    }
+
+    @TypeConverter
+    fun toChapterEntity(value: String): List<ChapterEntity> {
+        return json.decodeFromString(value)
     }
 }

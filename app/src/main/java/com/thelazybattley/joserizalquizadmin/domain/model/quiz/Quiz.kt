@@ -1,11 +1,12 @@
 package com.thelazybattley.joserizalquizadmin.domain.model.quiz
 
+import com.thelazybattley.joserizalquizadmin.data.local.entity.QuizEntity
 import com.thelazybattley.joserizalquizadmin.presentation.util.Category
 
 data class Quiz(
     val id: String,
     val title: String,
-    val subtitle: String,
+    val author: String,
     val chapters: List<Chapter>,
     val category: Category,
 ) {
@@ -14,7 +15,7 @@ data class Quiz(
             return Quiz(
                 id = id,
                 title = "Quiz Title",
-                subtitle = "Quiz Subtitle",
+                author = "Quiz Subtitle",
                 category = Category.LIFE_OF_RIZAL,
                 chapters = listOf(
                     Chapter.dummy(chapterNumber = 1),
@@ -24,4 +25,13 @@ data class Quiz(
             )
         }
     }
+}
+fun List<Quiz>.toEntity() = map {quiz ->
+    QuizEntity(
+        id = quiz.id,
+        title = quiz.title,
+        author = quiz.author,
+        category = quiz.category.name,
+        chapters = quiz.chapters.toEntity()
+    )
 }

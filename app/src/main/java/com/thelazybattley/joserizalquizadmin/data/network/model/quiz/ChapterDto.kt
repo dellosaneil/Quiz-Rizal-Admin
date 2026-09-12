@@ -1,4 +1,4 @@
-package com.thelazybattley.joserizalquizadmin.data.model.quiz
+package com.thelazybattley.joserizalquizadmin.data.network.model.quiz
 
 import com.thelazybattley.joserizalquizadmin.domain.model.quiz.Chapter
 import kotlinx.serialization.SerialName

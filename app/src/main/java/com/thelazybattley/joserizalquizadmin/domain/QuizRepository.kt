@@ -12,4 +12,10 @@ interface QuizRepository {
         category: String,
         chapters: List<String>
     )
+
+    suspend fun getQuizBooks(): List<Quiz>
+
+    suspend fun insertQuizBooks(quiz: List<Quiz>)
+
+    suspend fun getQuizById(id: String): Quiz
 }

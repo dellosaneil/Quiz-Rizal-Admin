@@ -1,5 +1,7 @@
 package com.thelazybattley.joserizalquizadmin.domain.model.quiz
 
+import com.thelazybattley.joserizalquizadmin.data.local.entity.ChapterEntity
+
 data class Chapter(
     val chapterName: String,
     val chapterNumber: Int,
@@ -26,3 +28,9 @@ data class Chapter(
 }
 
 fun List<Chapter>.getTotalQuestions() = sumOf { it.questions.size }
+
+fun List<Chapter>.toEntity() = map { ChapterEntity(
+    name = it.chapterName,
+    questions = it.questions.toEntity(),
+    number = it.chapterNumber
+) }

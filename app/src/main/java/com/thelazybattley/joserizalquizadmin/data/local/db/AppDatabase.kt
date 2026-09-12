@@ -4,9 +4,10 @@ import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.thelazybattley.joserizalquizadmin.data.local.dao.QuizDao
+import com.thelazybattley.joserizalquizadmin.data.local.entity.QuizEntity
 
 @Database(
-    entities = [],
+    entities = [QuizEntity::class],
     version = 1,
     exportSchema = false
 )
