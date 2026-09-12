@@ -1,5 +1,11 @@
 package com.thelazybattley.joserizalquizadmin.presentation.feature.content.ui
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -14,6 +20,7 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
@@ -126,11 +133,10 @@ fun ContentItemCard(
                     )
                 }
             }
-            val degrees = if (isExpanded) {
-                270f
-            } else {
-                90f
-            }
+            val degrees by animateFloatAsState(
+                targetValue = if (isExpanded) 270f else 90f,
+                label = "chevron_rotation"
+            )
 
 
             Icon(
@@ -143,10 +149,16 @@ fun ContentItemCard(
                 tint = colors.taupe
             )
         }
-    }
-    if (isExpanded) {
-        quiz.chapters.forEach { chapter ->
-            ChapterItem(chapter = chapter)
+        AnimatedVisibility(
+            visible = isExpanded,
+            enter = expandVertically() + fadeIn(),
+            exit = shrinkVertically() + fadeOut()
+        ) {
+            Column {
+                quiz.chapters.forEach { chapter ->
+                    ChapterItem(chapter = chapter)
+                }
+            }
         }
     }
 }
