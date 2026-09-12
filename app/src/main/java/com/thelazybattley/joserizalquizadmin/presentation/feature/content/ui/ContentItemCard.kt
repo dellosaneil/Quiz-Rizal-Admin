@@ -48,106 +48,105 @@ fun ContentItemCard(
         ),
         elevation = CardDefaults.elevatedCardElevation()
     ) {
-        Column(
-            modifier = Modifier.padding(all = APP_PADDING)
-        ) {
-            Row(modifier = Modifier.clickable {
-                if (isExpanded) {
-                    callback.handleAction(action = ContentActions.ExpandBook(id = null))
-                    return@clickable
+        Row(
+            modifier = Modifier
+                .clickable {
+                    if (isExpanded) {
+                        callback.handleAction(action = ContentActions.ExpandBook(id = null))
+                        return@clickable
+                    }
+                    callback.handleAction(action = ContentActions.ExpandBook(id = quiz.id))
                 }
-                callback.handleAction(action = ContentActions.ExpandBook(id = quiz.id))
-            }) {
-                Column(
-                    verticalArrangement = Arrangement.spacedBy(space = 8.dp),
-                    modifier = Modifier.weight(weight = 1f)
+                .padding(all = APP_PADDING)) {
+            Column(
+                verticalArrangement = Arrangement.spacedBy(space = 8.dp),
+                modifier = Modifier.weight(weight = 1f)
+            ) {
+                Text(
+                    text = quiz.title,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                    style = typography.bold16,
+                    color = colors.espresso,
+                )
+                Text(
+                    text = quiz.subtitle,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                    style = typography.regular12,
+                    color = colors.woodsmokeBrown,
+                )
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(space = 8.dp),
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
-                        text = quiz.title,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis,
-                        style = typography.bold16,
-                        color = colors.espresso,
-                    )
-                    Text(
-                        text = quiz.subtitle,
+                        text = stringResource(id = quiz.category.id),
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,
                         style = typography.regular12,
                         color = colors.woodsmokeBrown,
+                        modifier = Modifier
+                            .background(
+                                color = colors.parchment,
+                                shape = RoundedCornerShape(size = 8.dp)
+                            )
+                            .padding(all = 8.dp)
                     )
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.spacedBy(space = 8.dp),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Text(
-                            text = stringResource(id = quiz.category.id),
-                            maxLines = 1,
-                            overflow = TextOverflow.Ellipsis,
-                            style = typography.regular12,
-                            color = colors.woodsmokeBrown,
-                            modifier = Modifier
-                                .background(
-                                    color = colors.parchment,
-                                    shape = RoundedCornerShape(size = 8.dp)
-                                )
-                                .padding(all = 8.dp)
-                        )
-                        Text(
-                            text = stringResource(id = R.string.value_chapters, quiz.chapters.size),
-                            maxLines = 1,
-                            overflow = TextOverflow.Ellipsis,
-                            style = typography.regular12,
-                            color = colors.woodsmokeBrown,
-                            modifier = Modifier
-                                .background(
-                                    color = colors.parchment,
-                                    shape = RoundedCornerShape(size = 8.dp)
-                                )
-                                .padding(all = 8.dp)
-                        )
+                    Text(
+                        text = stringResource(id = R.string.value_chapters, quiz.chapters.size),
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                        style = typography.regular12,
+                        color = colors.woodsmokeBrown,
+                        modifier = Modifier
+                            .background(
+                                color = colors.parchment,
+                                shape = RoundedCornerShape(size = 8.dp)
+                            )
+                            .padding(all = 8.dp)
+                    )
 
-                        Text(
-                            text = stringResource(
-                                id = R.string.value_questions,
-                                quiz.chapters.getTotalQuestions()
-                            ),
-                            maxLines = 1,
-                            overflow = TextOverflow.Ellipsis,
-                            style = typography.regular12,
-                            color = colors.woodsmokeBrown,
-                            modifier = Modifier
-                                .background(
-                                    color = colors.parchment,
-                                    shape = RoundedCornerShape(size = 8.dp)
-                                )
-                                .padding(all = 8.dp)
-                        )
-                    }
+                    Text(
+                        text = stringResource(
+                            id = R.string.value_questions,
+                            quiz.chapters.getTotalQuestions()
+                        ),
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                        style = typography.regular12,
+                        color = colors.woodsmokeBrown,
+                        modifier = Modifier
+                            .background(
+                                color = colors.parchment,
+                                shape = RoundedCornerShape(size = 8.dp)
+                            )
+                            .padding(all = 8.dp)
+                    )
                 }
-                val degrees = if (isExpanded) {
-                    270f
-                } else {
-                    90f
-                }
-
-
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_chevron),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .rotate(degrees = degrees)
-                        .size(size = 16.dp)
-                        .align(alignment = Alignment.CenterVertically),
-                    tint = colors.taupe
-                )
             }
+            val degrees = if (isExpanded) {
+                270f
+            } else {
+                90f
+            }
+
+
+            Icon(
+                painter = painterResource(id = R.drawable.ic_chevron),
+                contentDescription = null,
+                modifier = Modifier
+                    .rotate(degrees = degrees)
+                    .size(size = 16.dp)
+                    .align(alignment = Alignment.CenterVertically),
+                tint = colors.taupe
+            )
         }
-        if (isExpanded) {
-            quiz.chapters.forEach { chapter ->
-                ChapterItem(chapter = chapter)
-            }
+    }
+    if (isExpanded) {
+        quiz.chapters.forEach { chapter ->
+            ChapterItem(chapter = chapter)
         }
     }
 }
