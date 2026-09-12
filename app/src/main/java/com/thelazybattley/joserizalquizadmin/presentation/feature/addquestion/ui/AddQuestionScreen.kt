@@ -19,6 +19,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.thelazybattley.joserizalquizadmin.R
+import com.thelazybattley.joserizalquizadmin.domain.model.quiz.Quiz
 import com.thelazybattley.joserizalquizadmin.presentation.feature.addquestion.AddQuestionAction
 import com.thelazybattley.joserizalquizadmin.presentation.feature.addquestion.AddQuestionCallback
 import com.thelazybattley.joserizalquizadmin.presentation.feature.addquestion.AddQuestionDestinations
@@ -80,6 +81,7 @@ private fun Screen(
             }
         }
     ) { innerPadding ->
+        state.quiz ?: return@Scaffold
         Column(
             modifier = Modifier
                 .padding(paddingValues = innerPadding)
@@ -88,8 +90,8 @@ private fun Screen(
         ) {
             AddQuestionContextCard(
                 modifier = Modifier.fillMaxWidth(),
-                quizName = "Jose Rizal Quiz",
-                chapterNumber = 1
+                quizName = state.quiz.title,
+                chapterNumber = state.chapterNumber
             )
             AddQuestionTextField(
                 modifier = Modifier.fillMaxWidth()
@@ -116,7 +118,9 @@ private fun Preview() {
     AppTheme {
         Screen(
             callback = AddQuestionCallback.default(),
-            state = AddQuestionState(),
+            state = AddQuestionState(
+                quiz = Quiz.dummy()
+            ),
             modifier = Modifier.fillMaxSize()
         )
     }
