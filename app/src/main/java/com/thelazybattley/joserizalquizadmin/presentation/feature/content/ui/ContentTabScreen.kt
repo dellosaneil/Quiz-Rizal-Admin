@@ -65,7 +65,9 @@ private fun ContentTabScreen(
                     count = state.quiz.size
                 )
             }
-            items(items = state.quiz, key = { it.id }) { quiz ->
+            items(
+                items = state.quiz, key = { it.id }
+            ) { quiz ->
                 ContentItemCard(
                     quiz = quiz,
                     modifier = Modifier.fillMaxWidth(),
