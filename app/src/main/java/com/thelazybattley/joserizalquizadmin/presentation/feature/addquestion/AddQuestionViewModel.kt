@@ -26,7 +26,12 @@ class AddQuestionViewModel @Inject constructor(
             val chapterNumber = savedStateHandle.get<Int>(CHAPTER_NUMBER)
                 ?: throw Exception("Chapter Number not found")
             getQuizByIdUseCase(id = quizId).also { quiz ->
-                updateState(newState = state.value.copy(quiz = quiz, chapterNumber = chapterNumber))
+                updateState(
+                    newState = state.value.copy(
+                        quiz = quiz, chapterNumber = chapterNumber,
+                        quizId = quizId
+                    )
+                )
             }
         }
     }
@@ -57,7 +62,15 @@ class AddQuestionViewModel @Inject constructor(
                 )
             )
 
-            is AddQuestionAction.UpdateQuestion -> TODO()
+            is AddQuestionAction.UpdateQuestion -> updateState(
+                newState = state.value.copy(
+                    question = action.question
+                )
+            )
+
+            AddQuestionAction.SaveQuestion -> {
+                println("Test: ${state.value}")
+            }
         }
     }
 }

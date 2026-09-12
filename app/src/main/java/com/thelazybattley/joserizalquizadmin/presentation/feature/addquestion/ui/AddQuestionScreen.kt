@@ -94,7 +94,8 @@ private fun Screen(
                 chapterNumber = state.chapterNumber
             )
             AddQuestionTextField(
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
+                callback = callback
             )
             AddQuestionChoices(
                 modifier = Modifier.fillMaxWidth(),
@@ -106,7 +107,7 @@ private fun Screen(
                 text = stringResource(id = R.string.save_question),
                 modifier = Modifier.fillMaxWidth()
             ) {
-
+                callback.handleAction(action = AddQuestionAction.SaveQuestion)
             }
         }
     }

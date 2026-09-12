@@ -5,9 +5,11 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -37,9 +39,19 @@ fun AddQuestionChoices(
             color = colors.taupe
         )
         for (i in 0 until 4) {
+            val state = rememberTextFieldState()
+            LaunchedEffect(key1 = state.text) {
+                callback.handleAction(
+                    action = AddQuestionAction.Choice.UpdateValue(
+                        index = i,
+                        choice = state.text.toString()
+                    )
+                )
+            }
             Choice(
                 modifier = Modifier.fillMaxWidth(),
-                isSelected = correctAnswerIndex == i
+                isSelected = correctAnswerIndex == i,
+                state = state
             ) {
                 callback.handleAction(action = AddQuestionAction.Choice.Selected(index = i))
             }
@@ -51,9 +63,9 @@ fun AddQuestionChoices(
 private fun Choice(
     modifier: Modifier = Modifier,
     isSelected: Boolean,
+    state: TextFieldState,
     onClick: () -> Unit
 ) {
-    val state = rememberTextFieldState()
     Row(
         modifier = modifier,
         verticalAlignment = Alignment.CenterVertically

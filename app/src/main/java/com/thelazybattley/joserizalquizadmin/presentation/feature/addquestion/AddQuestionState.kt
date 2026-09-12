@@ -9,6 +9,7 @@ data class AddQuestionState(
     val chapterNumber: Int = -1,
     val quiz: Quiz? = null,
     val correctAnswerIndex: Int = -1,
-    val choices: List<String> = emptyList(),
-    val destination: AddQuestionDestinations? = null
+    val choices: List<String> = listOf("", "", "", ""),
+    val destination: AddQuestionDestinations? = null,
+    val question: String = ""
 ) : BaseState

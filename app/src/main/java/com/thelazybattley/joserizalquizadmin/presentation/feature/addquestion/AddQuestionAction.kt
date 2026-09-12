@@ -12,4 +12,6 @@ sealed class AddQuestionAction : BaseActions {
     data class UpdateQuestion(val question: String) : AddQuestionAction()
 
     data class Navigate(val destination: AddQuestionDestinations?) : AddQuestionAction()
+
+    object SaveQuestion : AddQuestionAction()
 }
