@@ -5,12 +5,13 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.thelazybattley.joserizalquizadmin.data.local.entity.QuizEntity
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface QuizDao {
 
     @Query("SELECT * FROM quizentity")
-    suspend fun getAllQuiz(): List<QuizEntity>
+    fun getAllQuiz(): Flow<List<QuizEntity>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAllQuiz(quiz: List<QuizEntity>)

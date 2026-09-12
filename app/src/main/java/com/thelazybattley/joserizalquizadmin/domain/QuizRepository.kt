@@ -1,6 +1,7 @@
 package com.thelazybattley.joserizalquizadmin.domain
 
 import com.thelazybattley.joserizalquizadmin.domain.model.quiz.Quiz
+import kotlinx.coroutines.flow.Flow
 
 interface QuizRepository {
 
@@ -13,9 +14,9 @@ interface QuizRepository {
         chapters: List<String>
     )
 
-    suspend fun getQuizBooks(): List<Quiz>
+    fun getAllQuiz(): Flow<List<Quiz>>
 
-    suspend fun insertQuizBooks(quiz: List<Quiz>)
+    suspend fun insertQuiz(quiz: List<Quiz>)
 
     suspend fun getQuizById(id: String): Quiz
 }

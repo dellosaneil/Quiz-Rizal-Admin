@@ -18,6 +18,7 @@ import com.thelazybattley.joserizalquizadmin.util.Constants.Companion.CATEGORY
 import com.thelazybattley.joserizalquizadmin.util.Constants.Companion.CHAPTERS
 import com.thelazybattley.joserizalquizadmin.util.Constants.Companion.ID
 import com.thelazybattley.joserizalquizadmin.util.Constants.Companion.QUIZ
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.tasks.await
 import kotlinx.serialization.json.Json
 import org.json.JSONArray
@@ -88,9 +89,11 @@ class QuizRepositoryImpl @Inject constructor(
         docRef.set(bookDetail)
     }
 
-    override suspend fun getQuizBooks() = dao.getAllQuiz().map { it.toDomain() }
+    override fun getAllQuiz() = dao.getAllQuiz().map { entity ->
+        entity.map { it.toDomain() }
+    }
 
-    override suspend fun insertQuizBooks(quiz: List<Quiz>) =
+    override suspend fun insertQuiz(quiz: List<Quiz>) =
         dao.insertAllQuiz(quiz = quiz.toEntity())
 
     override suspend fun getQuizById(id: String) = dao.getQuizById(id = id).toDomain()
