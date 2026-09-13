@@ -81,7 +81,8 @@ class AddQuestionViewModel @Inject constructor(
                 val newQuestion = Question(
                     question = currentState.question,
                     choices = currentState.choices,
-                    answer = currentState.choices.getOrNull(currentState.correctAnswerIndex).orEmpty()
+                    answer = currentState.choices.getOrNull(currentState.correctAnswerIndex)
+                        .orEmpty()
                 )
 
                 val updatedQuiz = quiz.copy(
@@ -94,10 +95,25 @@ class AddQuestionViewModel @Inject constructor(
                     }
                 )
                 setUpdatedQuizUseCase(quiz = updatedQuiz)
-                updateState(newState = state.value.copy(showSuccessBanner = true))
+                updateState(
+                    newState = state.value.copy(
+                        showSuccessBanner = true,
+                        choices = listOf("", "", "", ""),
+                        correctAnswerIndex = -1,
+                        question = "",
+                        isButtonEnabled = false,
+
+
+                    )
+                )
+
             }
 
-            AddQuestionAction.ResetBanner -> updateState(newState = state.value.copy(showSuccessBanner = false))
+            AddQuestionAction.ResetBanner -> updateState(
+                newState = state.value.copy(
+                    showSuccessBanner = false
+                )
+            )
         }
     }
 

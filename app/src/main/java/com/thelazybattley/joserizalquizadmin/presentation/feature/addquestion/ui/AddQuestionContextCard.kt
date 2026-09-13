@@ -26,7 +26,7 @@ import com.thelazybattley.joserizalquizadmin.presentation.util.APP_PADDING
 fun AddQuestionContextCard(
     modifier: Modifier = Modifier,
     quizName: String,
-    chapterNumber: Int
+    chapterNumber: Int,
 ) {
     Card(
         modifier = modifier,
@@ -79,7 +79,7 @@ private fun Preview() {
         AddQuestionContextCard(
             modifier = Modifier.fillMaxWidth(),
             quizName = "Jose Rizal",
-            chapterNumber = 1
+            chapterNumber = 1,
         )
     }
 }

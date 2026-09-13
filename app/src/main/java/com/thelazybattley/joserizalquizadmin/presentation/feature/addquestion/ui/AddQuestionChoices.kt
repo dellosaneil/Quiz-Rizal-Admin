@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.text.input.TextFieldState
+import androidx.compose.foundation.text.input.clearText
 import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -33,7 +34,8 @@ import com.thelazybattley.joserizalquizadmin.presentation.util.APP_BACKGROUND
 fun AddQuestionChoices(
     modifier: Modifier = Modifier,
     correctAnswerIndex: Int,
-    callback: AddQuestionCallback
+    callback: AddQuestionCallback,
+    showSuccessBanner: Boolean
 ) {
     Column(modifier = modifier) {
         Text(
@@ -43,6 +45,11 @@ fun AddQuestionChoices(
         )
         for (i in 0 until 4) {
             val state = rememberTextFieldState()
+            LaunchedEffect(key1 = showSuccessBanner) {
+                if (showSuccessBanner) {
+                    state.clearText()
+                }
+            }
             LaunchedEffect(key1 = state.text) {
                 callback.handleAction(
                     action = AddQuestionAction.Choice.UpdateValue(
@@ -101,7 +108,8 @@ private fun Preview() {
                 .background(color = APP_BACKGROUND)
                 .fillMaxWidth(),
             correctAnswerIndex = -1,
-            callback = AddQuestionCallback.default()
+            callback = AddQuestionCallback.default(),
+            showSuccessBanner = false
         )
     }
 }

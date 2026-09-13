@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.text.input.TextFieldLineLimits
+import androidx.compose.foundation.text.input.clearText
 import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -23,10 +24,19 @@ import com.thelazybattley.joserizalquizadmin.presentation.ui.theme.AppTheme.colo
 import com.thelazybattley.joserizalquizadmin.presentation.ui.theme.AppTheme.typography
 
 @Composable
-fun AddQuestionTextField(modifier: Modifier = Modifier, callback: AddQuestionCallback) {
+fun AddQuestionTextField(
+    modifier: Modifier = Modifier,
+    callback: AddQuestionCallback,
+    showSuccessBanner: Boolean
+) {
     val state = rememberTextFieldState(initialText = "")
     LaunchedEffect(key1 = state.text) {
         callback.handleAction(action = AddQuestionAction.UpdateQuestion(question = state.text.toString()))
+    }
+    LaunchedEffect(key1 = showSuccessBanner) {
+        if (showSuccessBanner) {
+            state.clearText()
+        }
     }
     Column(
         modifier = modifier,
@@ -53,7 +63,8 @@ private fun Preview() {
     AppTheme {
         AddQuestionTextField(
             modifier = Modifier.fillMaxWidth(),
-            callback = AddQuestionCallback.default()
+            callback = AddQuestionCallback.default(),
+            showSuccessBanner = false
         )
     }
 }

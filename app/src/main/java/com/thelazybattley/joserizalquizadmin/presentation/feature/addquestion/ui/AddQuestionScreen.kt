@@ -108,16 +108,18 @@ private fun Screen(
                 AddQuestionContextCard(
                     modifier = Modifier.fillMaxWidth(),
                     quizName = state.quiz.title,
-                    chapterNumber = state.chapterNumber
+                    chapterNumber = state.chapterNumber,
                 )
                 AddQuestionTextField(
                     modifier = Modifier.fillMaxWidth(),
-                    callback = callback
+                    callback = callback,
+                    showSuccessBanner = state.showSuccessBanner
                 )
                 AddQuestionChoices(
                     modifier = Modifier.fillMaxWidth(),
                     correctAnswerIndex = state.correctAnswerIndex,
-                    callback = callback
+                    callback = callback,
+                    showSuccessBanner = state.showSuccessBanner
                 )
                 Spacer(modifier = Modifier.weight(weight = 1f))
                 CommonButton(
