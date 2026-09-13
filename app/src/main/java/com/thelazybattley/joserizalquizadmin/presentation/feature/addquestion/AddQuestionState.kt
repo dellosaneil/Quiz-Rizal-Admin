@@ -12,5 +12,6 @@ data class AddQuestionState(
     val choices: List<String> = listOf("", "", "", ""),
     val destination: AddQuestionDestinations? = null,
     val question: String = "",
-    val isButtonEnabled: Boolean = false
+    val isButtonEnabled: Boolean = false,
+    val showSuccessBanner: Boolean = false
 ) : BaseState

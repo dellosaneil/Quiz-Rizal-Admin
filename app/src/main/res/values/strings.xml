@@ -36,6 +36,8 @@
     <string name="add_a_question">Add a Question</string>
     <string name="plus_add_a_book">+ Add a Book</string>
     <string name="you_are_adding_a_question_to_this_chapter">You are adding a question to this chapter. To add a question to a different book, open that book\'s chapter directly.</string>
+    <string name="add_another_question_below">Add another question below, or head back to the chapter when you\'re done.</string>
+    <string name="question_saved_to">Question saved to Chapter %1$d</string>
 
     <plurals name="suggestions">
         <item quantity="one">SUGGESTION</item>

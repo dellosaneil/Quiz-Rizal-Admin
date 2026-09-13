@@ -94,7 +94,10 @@ class AddQuestionViewModel @Inject constructor(
                     }
                 )
                 setUpdatedQuizUseCase(quiz = updatedQuiz)
+                updateState(newState = state.value.copy(showSuccessBanner = true))
             }
+
+            AddQuestionAction.ResetBanner -> updateState(newState = state.value.copy(showSuccessBanner = false))
         }
     }
 
