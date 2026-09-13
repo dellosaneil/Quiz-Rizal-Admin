@@ -14,6 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import com.thelazybattley.joserizalquizadmin.R
@@ -47,9 +48,15 @@ fun AddQuestionContextCard(
             val chapterLabel = stringResource(id = R.string.chapter_value, chapterNumber)
             Row(
                 verticalAlignment = androidx.compose.ui.Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(space = 8.dp)
+                horizontalArrangement = Arrangement.spacedBy(space = 8.dp),
+                modifier = Modifier.fillMaxWidth()
             ) {
-                Text(text = quizName, style = typography.bold14, color = colors.espresso)
+                Text(
+                    text = quizName, style = typography.bold14, color = colors.espresso,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                    modifier = Modifier.weight(weight = 1f, fill = false)
+                )
                 Icon(
                     painter = painterResource(id = R.drawable.ic_arrow),
                     contentDescription = null,
@@ -59,7 +66,8 @@ fun AddQuestionContextCard(
                 Text(
                     text = chapterLabel,
                     style = typography.bold14,
-                    color = colors.espresso
+                    color = colors.espresso,
+                    maxLines = 1
                 )
             }
 
@@ -78,7 +86,7 @@ private fun Preview() {
     AppTheme {
         AddQuestionContextCard(
             modifier = Modifier.fillMaxWidth(),
-            quizName = "Jose Rizal",
+            quizName = "José Rizal: Life, Works, and Writings of a Genius, Writer, Scientist, and National Hero",
             chapterNumber = 1,
         )
     }
