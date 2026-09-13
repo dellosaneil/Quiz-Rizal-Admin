@@ -101,12 +101,9 @@ class AddQuestionViewModel @Inject constructor(
                         choices = listOf("", "", "", ""),
                         correctAnswerIndex = -1,
                         question = "",
-                        isButtonEnabled = false,
-
-
+                        isButtonEnabled = false
                     )
                 )
-
             }
 
             AddQuestionAction.ResetBanner -> updateState(

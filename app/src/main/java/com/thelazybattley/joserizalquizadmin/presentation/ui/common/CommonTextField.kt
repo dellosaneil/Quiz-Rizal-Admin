@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.text.input.KeyboardActionHandler
 import androidx.compose.foundation.text.input.TextFieldDecorator
 import androidx.compose.foundation.text.input.TextFieldLineLimits
 import androidx.compose.foundation.text.input.TextFieldState
@@ -36,6 +37,7 @@ fun CommonTextField(
     keyboardOptions: KeyboardOptions = KeyboardOptions(
         keyboardType = KeyboardType.Text
     ),
+    onKeyboardAction: KeyboardActionHandler? = null,
     placeholderText: String? = null,
     textStyle: TextStyle = typography.semiBold18,
     textAlign: TextAlign = TextAlign.Center,
@@ -83,6 +85,7 @@ fun CommonTextField(
             }
         },
         keyboardOptions = keyboardOptions,
+        onKeyboardAction = onKeyboardAction
     )
 }
 

@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.text.input.KeyboardActionHandler
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.foundation.text.input.clearText
 import androidx.compose.foundation.text.input.rememberTextFieldState
@@ -14,7 +15,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.focus.focusProperties
+import androidx.compose.ui.input.key.Key
+import androidx.compose.ui.input.key.KeyEventType
+import androidx.compose.ui.input.key.key
+import androidx.compose.ui.input.key.onPreviewKeyEvent
+import androidx.compose.ui.input.key.type
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
@@ -37,6 +45,7 @@ fun AddQuestionChoices(
     callback: AddQuestionCallback,
     showSuccessBanner: Boolean
 ) {
+    val focusManager = LocalFocusManager.current
     Column(modifier = modifier) {
         Text(
             text = stringResource(id = R.string.choices_tap_to_mark_correct_answer),
@@ -64,7 +73,21 @@ fun AddQuestionChoices(
                 state = state,
                 keyboardOptions = KeyboardOptions(
                     imeAction = if (i == 3) ImeAction.Done else ImeAction.Next
-                )
+                ),
+                onKeyboardAction = {
+                    if (i == 3) {
+                        focusManager.clearFocus()
+                    } else {
+                        focusManager.moveFocus(focusDirection = FocusDirection.Next)
+                    }
+                },
+                onTabPressed = {
+                    if (i == 3) {
+                        focusManager.clearFocus()
+                    } else {
+                        focusManager.moveFocus(focusDirection = FocusDirection.Next)
+                    }
+                }
             ) {
                 callback.handleAction(action = AddQuestionAction.Choice.Selected(index = i))
             }
@@ -78,6 +101,8 @@ private fun Choice(
     isSelected: Boolean,
     state: TextFieldState,
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
+    onKeyboardAction: KeyboardActionHandler? = null,
+    onTabPressed: () -> Unit,
     onClick: () -> Unit
 ) {
     Row(
@@ -91,10 +116,20 @@ private fun Choice(
         )
         CommonTextField(
             state = state,
-            modifier = Modifier.height(height = 62.dp),
+            modifier = Modifier
+                .height(height = 62.dp)
+                .onPreviewKeyEvent {
+                    if (it.key == Key.Tab && it.type == KeyEventType.KeyDown) {
+                        onTabPressed()
+                        true
+                    } else {
+                        false
+                    }
+                },
             textAlign = TextAlign.Left,
             textStyle = typography.regular12,
-            keyboardOptions = keyboardOptions
+            keyboardOptions = keyboardOptions,
+            onKeyboardAction = onKeyboardAction
         )
     }
 }
