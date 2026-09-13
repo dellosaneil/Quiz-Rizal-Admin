@@ -101,7 +101,8 @@ class AddQuestionViewModel @Inject constructor(
                         choices = listOf("", "", "", ""),
                         correctAnswerIndex = -1,
                         question = "",
-                        isButtonEnabled = false
+                        isButtonEnabled = false,
+                        quiz = updatedQuiz
                     )
                 )
             }
