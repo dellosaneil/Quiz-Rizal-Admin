@@ -11,7 +11,7 @@ class SetQuizUseCase @Inject constructor(
         bookName: String,
         category: String,
         chapters: List<String>
-    ) = repository.setQuiz(
+    ): String = repository.setQuiz(
         author = author,
         bookName = bookName,
         category = category,

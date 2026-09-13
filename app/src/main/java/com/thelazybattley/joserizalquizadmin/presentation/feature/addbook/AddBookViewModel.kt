@@ -1,13 +1,20 @@
 package com.thelazybattley.joserizalquizadmin.presentation.feature.addbook
 
+import androidx.lifecycle.viewModelScope
 import com.thelazybattley.joserizalquizadmin.base.BaseViewModel
+import com.thelazybattley.joserizalquizadmin.domain.model.quiz.Chapter
+import com.thelazybattley.joserizalquizadmin.domain.model.quiz.Quiz
+import com.thelazybattley.joserizalquizadmin.domain.usecase.InsertQuizUseCase
 import com.thelazybattley.joserizalquizadmin.domain.usecase.SetQuizUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class AddBookViewModel @Inject constructor(
-    private val setQuizUseCase: SetQuizUseCase
+    private val setQuizUseCase: SetQuizUseCase,
+    private val insertQuizUseCase: InsertQuizUseCase
 ) : BaseViewModel<AddBookState, AddBookActions>(initialState = AddBookState()), AddBookCallback {
 
     override fun handleAction(action: AddBookActions) {
@@ -16,12 +23,30 @@ class AddBookViewModel @Inject constructor(
                 updateState(newState = state.value.copy(category = action.category))
             }
 
-            AddBookActions.PublishBook -> setQuizUseCase(
-                author = state.value.author,
-                bookName = state.value.title,
-                category = state.value.category.name,
-                chapters = state.value.chapters
-            )
+            AddBookActions.PublishBook -> {
+                val quizId = setQuizUseCase(
+                    author = state.value.author,
+                    bookName = state.value.title,
+                    category = state.value.category.name,
+                    chapters = state.value.chapters
+                )
+                val quiz = Quiz(
+                    id = quizId,
+                    title = state.value.title,
+                    author = state.value.author,
+                    category = state.value.category,
+                    chapters = state.value.chapters.mapIndexed { index, chapter ->
+                        Chapter(
+                            chapterName = chapter,
+                            questions = emptyList(),
+                            chapterNumber = index.inc()
+                        )
+                    }
+                )
+                viewModelScope.launch(context = Dispatchers.IO) {
+                    insertQuizUseCase(quiz = listOf(quiz))
+                }
+            }
 
             is AddBookActions.TextFieldUpdated -> {
                 when (action.type) {

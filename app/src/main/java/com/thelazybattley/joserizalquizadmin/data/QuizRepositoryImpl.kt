@@ -61,7 +61,7 @@ class QuizRepositoryImpl @Inject constructor(
         bookName: String,
         category: String,
         chapters: List<String>
-    ) {
+    ): String {
         val variant = BuildConfig.BUILD_TYPE
         val bookDetail = mutableMapOf<String, Any>()
 
@@ -87,6 +87,7 @@ class QuizRepositoryImpl @Inject constructor(
         }.toString()
         bookDetail[CHAPTERS] = chaptersJson
         docRef.set(bookDetail)
+        return docRef.id
     }
 
     override fun setUpdatedQuiz(quiz: Quiz) {

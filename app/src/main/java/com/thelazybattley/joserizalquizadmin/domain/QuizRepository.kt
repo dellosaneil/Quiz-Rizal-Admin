@@ -12,7 +12,7 @@ interface QuizRepository {
         bookName: String,
         category: String,
         chapters: List<String>
-    )
+    ): String
 
     fun setUpdatedQuiz(quiz: Quiz)
 
