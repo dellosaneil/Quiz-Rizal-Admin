@@ -17,6 +17,6 @@ interface QuizDao {
     suspend fun insertAllQuiz(quiz: List<QuizEntity>)
 
     @Query("SELECT * FROM quizentity WHERE id = :id")
-    suspend fun getQuizById(id: String): QuizEntity
+    fun getQuizById(id: String): Flow<QuizEntity>
 
 }

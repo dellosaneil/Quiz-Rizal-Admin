@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.thelazybattley.joserizalquizadmin.base.BaseViewModel
 import com.thelazybattley.joserizalquizadmin.domain.model.quiz.Question
 import com.thelazybattley.joserizalquizadmin.domain.usecase.GetQuizByIdUseCase
+import com.thelazybattley.joserizalquizadmin.domain.usecase.InsertQuizUseCase
 import com.thelazybattley.joserizalquizadmin.domain.usecase.SetUpdatedQuizUseCase
 import com.thelazybattley.joserizalquizadmin.presentation.navigation.AppDestinations.Companion.CHAPTER_NUMBER
 import com.thelazybattley.joserizalquizadmin.presentation.navigation.AppDestinations.Companion.QUIZ_ID
@@ -16,6 +17,7 @@ import javax.inject.Inject
 @HiltViewModel
 class AddQuestionViewModel @Inject constructor(
     private val getQuizByIdUseCase: GetQuizByIdUseCase,
+    private val insertQuizUseCase: InsertQuizUseCase,
     savedStateHandle: SavedStateHandle,
     private val setUpdatedQuizUseCase: SetUpdatedQuizUseCase
 ) : BaseViewModel<AddQuestionState, AddQuestionAction>(initialState = AddQuestionState()),
@@ -27,13 +29,14 @@ class AddQuestionViewModel @Inject constructor(
                 savedStateHandle.get<String>(QUIZ_ID) ?: throw Exception("Quiz Id not found")
             val chapterNumber = savedStateHandle.get<Int>(CHAPTER_NUMBER)
                 ?: throw Exception("Chapter Number not found")
-            getQuizByIdUseCase(id = quizId).also { quiz ->
+            getQuizByIdUseCase(id = quizId).collect { quiz ->
                 updateState(
                     newState = state.value.copy(
                         quiz = quiz, chapterNumber = chapterNumber,
                         quizId = quizId
                     )
                 )
+                setUpdatedQuizUseCase(quiz = quiz)
             }
         }
     }
@@ -94,7 +97,9 @@ class AddQuestionViewModel @Inject constructor(
                         }
                     }
                 )
-                setUpdatedQuizUseCase(quiz = updatedQuiz)
+                viewModelScope.launch(context = Dispatchers.IO) {
+                    insertQuizUseCase(quiz = listOf(updatedQuiz))
+                }
                 updateState(
                     newState = state.value.copy(
                         showSuccessBanner = true,

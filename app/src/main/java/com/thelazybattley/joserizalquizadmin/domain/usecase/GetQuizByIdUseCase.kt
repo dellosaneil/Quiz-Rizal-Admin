@@ -5,6 +5,6 @@ import javax.inject.Inject
 
 class GetQuizByIdUseCase @Inject constructor(private val repository: QuizRepository) {
 
-    suspend operator fun invoke(id: String) = repository.getQuizById(id = id)
+    operator fun invoke(id: String) = repository.getQuizById(id = id)
 
 }

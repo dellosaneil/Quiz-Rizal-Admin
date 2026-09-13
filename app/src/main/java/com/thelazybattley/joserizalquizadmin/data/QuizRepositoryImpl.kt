@@ -133,6 +133,6 @@ class QuizRepositoryImpl @Inject constructor(
     override suspend fun insertQuiz(quiz: List<Quiz>) =
         dao.insertAllQuiz(quiz = quiz.toEntity())
 
-    override suspend fun getQuizById(id: String) = dao.getQuizById(id = id).toDomain()
+    override fun getQuizById(id: String) = dao.getQuizById(id = id).map { it.toDomain() }
 
 }

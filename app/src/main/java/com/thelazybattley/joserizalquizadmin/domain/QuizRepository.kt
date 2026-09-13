@@ -20,5 +20,5 @@ interface QuizRepository {
 
     suspend fun insertQuiz(quiz: List<Quiz>)
 
-    suspend fun getQuizById(id: String): Quiz
+    fun getQuizById(id: String): Flow<Quiz>
 }
