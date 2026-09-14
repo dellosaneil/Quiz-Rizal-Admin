@@ -6,17 +6,23 @@ import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkVertically
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -24,6 +30,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
@@ -40,6 +47,7 @@ import com.thelazybattley.joserizalquizadmin.presentation.ui.common.CommonButton
 import com.thelazybattley.joserizalquizadmin.presentation.ui.theme.AppTheme
 import com.thelazybattley.joserizalquizadmin.presentation.ui.theme.AppTheme.colors
 import com.thelazybattley.joserizalquizadmin.presentation.ui.theme.AppTheme.typography
+import com.thelazybattley.joserizalquizadmin.presentation.util.APP_BORDER_COLOR
 import com.thelazybattley.joserizalquizadmin.presentation.util.APP_PADDING
 
 @Composable
@@ -155,9 +163,20 @@ fun ContentItemCard(
             enter = expandVertically() + fadeIn(),
             exit = shrinkVertically() + fadeOut()
         ) {
-            Column {
+            Column(
+                modifier = Modifier
+                    .background(color = colors.parchment)
+                    .heightIn(max = 400.dp)
+                    .verticalScroll(state = rememberScrollState())
+            ) {
                 quiz.chapters.forEach { chapter ->
                     ChapterItem(chapter = chapter, callback = callback, quizId = quiz.id)
+                    if (quiz.chapters.last() != chapter) {
+                        HorizontalDivider(
+                            thickness = 1.dp, color = APP_BORDER_COLOR,
+                            modifier = Modifier.padding(horizontal = APP_PADDING)
+                        )
+                    }
                 }
             }
         }
@@ -226,7 +245,15 @@ private fun ChapterItem(
             }
             CommonButton(
                 text = stringResource(id = R.string.manage),
-                modifier = Modifier.weight(weight = 1f)
+                modifier = Modifier.weight(weight = 1f),
+                buttonColors = ButtonDefaults.buttonColors(
+                    containerColor = Color.Transparent,
+                    contentColor = colors.woodsmokeBrown,
+                ),
+                border = BorderStroke(
+                    width = 1.dp,
+                    color = APP_BORDER_COLOR
+                )
             ) {
 
             }
@@ -240,7 +267,16 @@ private fun Preview() {
     AppTheme {
         ContentItemCard(
             modifier = Modifier.fillMaxWidth(),
-            quiz = Quiz.dummy(),
+            quiz = Quiz.dummy().copy(
+                chapters = listOf(
+                    Chapter.dummy(chapterNumber = 1),
+                    Chapter.dummy(chapterNumber = 2),
+                    Chapter.dummy(chapterNumber = 3),
+                    Chapter.dummy(chapterNumber = 4),
+                    Chapter.dummy(chapterNumber = 5),
+                    Chapter.dummy(chapterNumber = 6),
+                )
+            ),
             isExpanded = false,
             callback = ContentCallback.default()
         )
