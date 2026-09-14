@@ -35,6 +35,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.PreviewLightDark
+import androidx.compose.ui.tooling.preview.PreviewParameter
+import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import com.thelazybattley.joserizalquizadmin.R
 import com.thelazybattley.joserizalquizadmin.domain.model.quiz.Chapter
@@ -261,9 +263,19 @@ private fun ChapterItem(
     }
 }
 
+class ContentExpandedStateProvider : PreviewParameterProvider<Boolean> {
+    override val values = sequenceOf(false, true)
+
+    override fun getDisplayName(index: Int): String {
+        return if (index == 0) "Collapsed" else "Expanded"
+    }
+}
+
 @PreviewLightDark
 @Composable
-private fun Preview() {
+private fun ContentItemCardPreview(
+    @PreviewParameter(ContentExpandedStateProvider::class) isExpanded: Boolean
+) {
     AppTheme {
         ContentItemCard(
             modifier = Modifier.fillMaxWidth(),
@@ -277,7 +289,7 @@ private fun Preview() {
                     Chapter.dummy(chapterNumber = 6),
                 )
             ),
-            isExpanded = false,
+            isExpanded = isExpanded,
             callback = ContentCallback.default()
         )
     }
