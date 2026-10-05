@@ -10,12 +10,6 @@ sealed class AppDestinations(val route: String, val routeWithArgs: String? = nul
         val bottomNavRoute: String, @DrawableRes val drawable: Int,
         @StringRes val textRes: Int
     ) : AppDestinations(route = "") {
-        object Home : BottomNavDestinations(
-            bottomNavRoute = "home",
-            drawable = R.drawable.ic_home,
-            textRes = R.string.home
-        )
-
         object Moderate : BottomNavDestinations(
             bottomNavRoute = "moderate",
             drawable = R.drawable.ic_flag,
@@ -24,19 +18,19 @@ sealed class AppDestinations(val route: String, val routeWithArgs: String? = nul
 
         object Content : BottomNavDestinations(
             bottomNavRoute = "content",
-            drawable = R.drawable.ic_content,
+            drawable = R.drawable.ic_add,
             textRes = R.string.content
         )
 
-        object More : BottomNavDestinations(
-            bottomNavRoute = "more",
-            drawable = R.drawable.ic_more,
+        object Release : BottomNavDestinations(
+            bottomNavRoute = "release",
+            drawable = R.drawable.ic_arrow,
             textRes = R.string.more
         )
 
         companion object {
             fun routes() = listOf(
-                Home, Moderate, Content, More
+                Moderate, Content, Release
             )
         }
     }

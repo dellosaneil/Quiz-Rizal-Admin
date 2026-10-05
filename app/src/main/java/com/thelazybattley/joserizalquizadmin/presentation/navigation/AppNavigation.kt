@@ -21,7 +21,6 @@ import com.thelazybattley.joserizalquizadmin.presentation.feature.addquestion.Ad
 import com.thelazybattley.joserizalquizadmin.presentation.feature.addquestion.ui.AddQuestionScreen
 import com.thelazybattley.joserizalquizadmin.presentation.feature.content.ContentDestinations
 import com.thelazybattley.joserizalquizadmin.presentation.feature.content.ui.ContentTabScreen
-import com.thelazybattley.joserizalquizadmin.presentation.feature.home.HomeTabScreen
 import com.thelazybattley.joserizalquizadmin.presentation.navigation.AppDestinations.Companion.CHAPTER_NUMBER
 import com.thelazybattley.joserizalquizadmin.presentation.navigation.AppDestinations.Companion.QUIZ_ID
 import com.thelazybattley.joserizalquizadmin.presentation.ui.theme.AppTheme
@@ -55,11 +54,8 @@ fun AppNavigation() {
                     .padding(all = APP_PADDING)
                     .fillMaxSize(),
                 navController = navController,
-                startDestination = AppDestinations.BottomNavDestinations.Content.bottomNavRoute
+                startDestination = AppDestinations.BottomNavDestinations.Moderate.bottomNavRoute
             ) {
-                composable(route = AppDestinations.BottomNavDestinations.Home.bottomNavRoute) {
-                    HomeTabScreen(modifier = Modifier.fillMaxSize())
-                }
                 composable(route = AppDestinations.BottomNavDestinations.Moderate.bottomNavRoute) {
                     Box(modifier = Modifier.fillMaxSize()) {
                         Text(text = "Moderate")
@@ -83,9 +79,9 @@ fun AppNavigation() {
                         }
                     )
                 }
-                composable(route = AppDestinations.BottomNavDestinations.More.bottomNavRoute) {
+                composable(route = AppDestinations.BottomNavDestinations.Release.bottomNavRoute) {
                     Box(modifier = Modifier.fillMaxSize()) {
-                        Text(text = "More")
+                        Text(text = "Release")
                     }
                 }
                 composable(route = AppDestinations.AddBook.route) {

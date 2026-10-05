@@ -13,6 +13,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -30,7 +31,7 @@ fun BottomNavBar(
 ) {
     var selectedRoute by rememberSaveable {
         mutableStateOf(
-            value = AppDestinations.BottomNavDestinations.Home.bottomNavRoute
+            value = AppDestinations.BottomNavDestinations.Moderate.bottomNavRoute
         )
     }
     NavigationBar(
@@ -47,9 +48,15 @@ fun BottomNavBar(
                     navController.navigate(route = route.bottomNavRoute)
                 },
                 icon = {
+                    val degrees = if(route == AppDestinations.BottomNavDestinations.Release) {
+                        -90f
+                    } else {
+                         0f
+                    }
                     Icon(
                         painter = painterResource(id = route.drawable),
                         contentDescription = null,
+                        modifier = Modifier.rotate(degrees = degrees)
                     )
                 },
                 label = {
