@@ -10,6 +10,7 @@ import com.thelazybattley.joserizalquizadmin.data.network.model.quiz.toDomain
 import com.thelazybattley.joserizalquizadmin.domain.QuizRepository
 import com.thelazybattley.joserizalquizadmin.domain.model.quiz.Quiz
 import com.thelazybattley.joserizalquizadmin.domain.model.quiz.toEntity
+import com.thelazybattley.joserizalquizadmin.domain.model.suggestedbooks.SuggestedBook
 import com.thelazybattley.joserizalquizadmin.util.Constants
 import com.thelazybattley.joserizalquizadmin.util.Constants.Companion.AUTHOR
 import com.thelazybattley.joserizalquizadmin.util.Constants.Companion.BOOKS
@@ -134,5 +135,9 @@ class QuizRepositoryImpl @Inject constructor(
         dao.insertAllQuiz(quiz = quiz.toEntity())
 
     override fun getQuizById(id: String) = dao.getQuizById(id = id).map { it.toDomain() }
+
+    override suspend fun fetchSuggestedBooks(): List<SuggestedBook> {
+        TODO("Provide the return value")
+    }
 
 }
