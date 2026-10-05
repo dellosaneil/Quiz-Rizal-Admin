@@ -7,9 +7,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -21,6 +24,8 @@ import com.thelazybattley.joserizalquizadmin.presentation.feature.addquestion.Ad
 import com.thelazybattley.joserizalquizadmin.presentation.feature.addquestion.ui.AddQuestionScreen
 import com.thelazybattley.joserizalquizadmin.presentation.feature.content.ContentDestinations
 import com.thelazybattley.joserizalquizadmin.presentation.feature.content.ui.ContentTabScreen
+import com.thelazybattley.joserizalquizadmin.presentation.feature.moderate.ModerateViewModel
+import com.thelazybattley.joserizalquizadmin.presentation.feature.moderate.ui.ModerateScreen
 import com.thelazybattley.joserizalquizadmin.presentation.navigation.AppDestinations.Companion.CHAPTER_NUMBER
 import com.thelazybattley.joserizalquizadmin.presentation.navigation.AppDestinations.Companion.QUIZ_ID
 import com.thelazybattley.joserizalquizadmin.presentation.ui.theme.AppTheme
@@ -57,9 +62,13 @@ fun AppNavigation() {
                 startDestination = AppDestinations.BottomNavDestinations.Moderate.bottomNavRoute
             ) {
                 composable(route = AppDestinations.BottomNavDestinations.Moderate.bottomNavRoute) {
-                    Box(modifier = Modifier.fillMaxSize()) {
-                        Text(text = "Moderate")
-                    }
+                    val viewModel = hiltViewModel<ModerateViewModel>()
+                    val state by viewModel.state.collectAsStateWithLifecycle()
+                    ModerateScreen(
+                        state = state,
+                        callbacks = viewModel,
+                        modifier = Modifier.fillMaxSize()
+                    )
                 }
                 composable(route = AppDestinations.BottomNavDestinations.Content.bottomNavRoute) {
                     ContentTabScreen(
@@ -69,6 +78,7 @@ fun AppNavigation() {
                                 ContentDestinations.AddBook -> navController.navigate(
                                     AppDestinations.AddBook.route
                                 )
+
                                 is ContentDestinations.AddQuestion -> navController.navigate(
                                     route = AppDestinations.AddQuestion.createRoute(
                                         quizId = destination.quizId,

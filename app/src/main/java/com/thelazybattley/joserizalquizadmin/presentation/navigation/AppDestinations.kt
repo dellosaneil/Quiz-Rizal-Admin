@@ -25,7 +25,7 @@ sealed class AppDestinations(val route: String, val routeWithArgs: String? = nul
         object Release : BottomNavDestinations(
             bottomNavRoute = "release",
             drawable = R.drawable.ic_arrow,
-            textRes = R.string.more
+            textRes = R.string.release
         )
 
         companion object {
