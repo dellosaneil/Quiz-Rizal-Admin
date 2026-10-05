@@ -9,6 +9,8 @@ class ModerateViewModel @Inject constructor() : BaseViewModel<ModerateState, Mod
     initialState = ModerateState()
 ), ModerateCallback {
     override fun handleAction(action: ModerateActions) {
-        TODO("Not yet implemented")
+        when(action) {
+            is ModerateActions.SelectFeedbackType -> updateState(newState = state.value.copy(selectedFeedback = action.feedbackType))
+        }
     }
 }

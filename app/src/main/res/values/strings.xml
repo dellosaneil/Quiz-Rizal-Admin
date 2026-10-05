@@ -40,6 +40,9 @@
     <string name="question_saved_to">Question saved to Chapter %1$d</string>
     <string name="reported_questions">Reported Questions</string>
     <string name="suggested_books">Suggested Books</string>
+    <string name="sorted_by_how_many_students_requested">Sorted by how many students requested each title — use this to decide what to add next.</string>
+    <string name="sorted_by_number_of_reports">Sorted by number of reports. Flagged from the quiz review
+screen.</string>
 
     <plurals name="suggestions">
         <item quantity="one">SUGGESTION</item>

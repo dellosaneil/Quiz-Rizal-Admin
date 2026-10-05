@@ -3,6 +3,7 @@ package com.thelazybattley.joserizalquizadmin.presentation.feature.moderate.ui
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.PreviewLightDark
+import com.thelazybattley.joserizalquizadmin.presentation.feature.moderate.ModerateActions
 import com.thelazybattley.joserizalquizadmin.presentation.feature.moderate.ModerateCallback
 import com.thelazybattley.joserizalquizadmin.presentation.ui.common.CommonSegmentedControl
 import com.thelazybattley.joserizalquizadmin.presentation.ui.theme.AppTheme
@@ -16,8 +17,8 @@ fun ModerateSegmentedControl(
     CommonSegmentedControl(
         modifier = modifier,
         selectedOption = selectedFeedback,
-        callback = {
-
+        callback = { feedbackType ->
+            callbacks.handleAction(action = ModerateActions.SelectFeedbackType(feedbackType = feedbackType))
         },
         choices = ModerateContentFeedback.entries,
         stringResources = ModerateContentFeedback.entries.map { it.id }
