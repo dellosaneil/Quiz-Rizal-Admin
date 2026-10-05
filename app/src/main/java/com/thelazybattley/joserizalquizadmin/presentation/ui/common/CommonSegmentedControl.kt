@@ -19,6 +19,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
+import com.thelazybattley.joserizalquizadmin.presentation.ui.theme.AppTheme
 import com.thelazybattley.joserizalquizadmin.presentation.ui.theme.AppTheme.colors
 import com.thelazybattley.joserizalquizadmin.presentation.ui.theme.AppTheme.typography
 import com.thelazybattley.joserizalquizadmin.presentation.util.Category
@@ -93,13 +94,15 @@ private data class CommonSegmentedControlConfig(
 @PreviewLightDark
 @Composable
 private fun Preview() {
-    CommonSegmentedControl(
-        modifier = Modifier.fillMaxWidth(),
-        selectedOption = Category.LIFE_OF_RIZAL,
-        callback = {
+    AppTheme {
+        CommonSegmentedControl(
+            modifier = Modifier.fillMaxWidth(),
+            selectedOption = Category.LIFE_OF_RIZAL,
+            callback = {
 
-        },
-        choices = Category.entries,
-        stringResources = Category.entries.map { it.id }
-    )
+            },
+            choices = Category.entries,
+            stringResources = Category.entries.map { it.id }
+        )
+    }
 }
