@@ -24,4 +24,6 @@ interface QuizRepository {
     fun getQuizById(id: String): Flow<Quiz>
 
     suspend fun fetchSuggestedBooks() : List<SuggestedBook>
+
+    suspend fun setQuizContentToRelease()
 }

@@ -17,8 +17,11 @@ import com.thelazybattley.joserizalquizadmin.util.Constants.Companion.BOOKS
 import com.thelazybattley.joserizalquizadmin.util.Constants.Companion.BOOK_NAME
 import com.thelazybattley.joserizalquizadmin.util.Constants.Companion.CATEGORY
 import com.thelazybattley.joserizalquizadmin.util.Constants.Companion.CHAPTERS
+import com.thelazybattley.joserizalquizadmin.util.Constants.Companion.DEBUG
+import com.thelazybattley.joserizalquizadmin.util.Constants.Companion.FIRESTORE_BATCH_LIMIT
 import com.thelazybattley.joserizalquizadmin.util.Constants.Companion.ID
 import com.thelazybattley.joserizalquizadmin.util.Constants.Companion.QUIZ
+import com.thelazybattley.joserizalquizadmin.util.Constants.Companion.RELEASE
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.tasks.await
 import kotlinx.serialization.json.Json
@@ -140,4 +143,26 @@ class QuizRepositoryImpl @Inject constructor(
         TODO("Provide the return value")
     }
 
+    override suspend fun setQuizContentToRelease() {
+        val debugBooks = firestore
+            .collection(QUIZ)
+            .document(DEBUG)
+            .collection(BOOKS)
+            .get()
+            .await()
+
+        val releaseBooks = firestore
+            .collection(QUIZ)
+            .document(RELEASE)
+            .collection(BOOKS)
+
+        debugBooks.documents.chunked(FIRESTORE_BATCH_LIMIT).forEach { documents ->
+            val batch = firestore.batch()
+            documents.forEach { document ->
+                val data = document.data ?: return@forEach
+                batch.set(releaseBooks.document(document.id), data)
+            }
+            batch.commit().await()
+        }
+    }
 }
