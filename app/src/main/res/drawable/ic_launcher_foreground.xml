@@ -1,30 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Ilustrado's quill and inkwell, with a maroon inkwell and a gold check seal for the admin app.
+     Keep shapes inside the 66dp safe zone. -->
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:aapt="http://schemas.android.com/aapt"
     android:width="108dp"
     android:height="108dp"
     android:viewportWidth="108"
     android:viewportHeight="108">
-    <path android:pathData="M31,63.928c0,0 6.4,-11 12.1,-13.1c7.2,-2.6 26,-1.4 26,-1.4l38.1,38.1L107,108.928l-32,-1L31,63.928z">
-        <aapt:attr name="android:fillColor">
-            <gradient
-                android:endX="85.84757"
-                android:endY="92.4963"
-                android:startX="42.9492"
-                android:startY="49.59793"
-                android:type="linear">
-                <item
-                    android:color="#44000000"
-                    android:offset="0.0" />
-                <item
-                    android:color="#00000000"
-                    android:offset="1.0" />
-            </gradient>
-        </aapt:attr>
-    </path>
+
+    <!-- Inkwell -->
     <path
-        android:fillColor="#FFFFFF"
-        android:fillType="nonZero"
-        android:pathData="M65.3,45.828l3.8,-6.6c0.2,-0.4 0.1,-0.9 -0.3,-1.1c-0.4,-0.2 -0.9,-0.1 -1.1,0.3l-3.9,6.7c-6.3,-2.8 -13.4,-2.8 -19.7,0l-3.9,-6.7c-0.2,-0.4 -0.7,-0.5 -1.1,-0.3C38.8,38.328 38.7,38.828 38.9,39.228l3.8,6.6C36.2,49.428 31.7,56.028 31,63.928h46C76.3,56.028 71.8,49.428 65.3,45.828zM43.4,57.328c-0.8,0 -1.5,-0.5 -1.8,-1.2c-0.3,-0.7 -0.1,-1.5 0.4,-2.1c0.5,-0.5 1.4,-0.7 2.1,-0.4c0.7,0.3 1.2,1 1.2,1.8C45.3,56.528 44.5,57.328 43.4,57.328L43.4,57.328zM64.6,57.328c-0.8,0 -1.5,-0.5 -1.8,-1.2s-0.1,-1.5 0.4,-2.1c0.5,-0.5 1.4,-0.7 2.1,-0.4c0.7,0.3 1.2,1 1.2,1.8C66.5,56.528 65.6,57.328 64.6,57.328L64.6,57.328z"
-        android:strokeWidth="1"
-        android:strokeColor="#00000000" />
+        android:fillColor="#7A2331"
+        android:pathData="M49.2,56 H68.8 A3.2,3.2 0 0 1 72,59.2 V74.8 A3.2,3.2 0 0 1 68.8,78 H49.2 A3.2,3.2 0 0 1 46,74.8 V59.2 A3.2,3.2 0 0 1 49.2,56 Z" />
+    <path
+        android:fillColor="#5C1A25"
+        android:pathData="M46,59 C46,57.3 47.3,56 49,56 H69 C70.7,56 72,57.3 72,59 V58.6 H46 Z" />
+    <path
+        android:fillColor="#B88A3E"
+        android:pathData="M46,74.4 H72 V74.8 C72,76.6 70.6,78 68.8,78 H49.2 C47.4,78 46,76.6 46,74.8 Z" />
+    <path
+        android:pathData="M48.6,60.5 V71"
+        android:strokeWidth="0.9"
+        android:strokeColor="#F6F1E6"
+        android:strokeAlpha="0.7"
+        android:strokeLineCap="round" />
+    <path
+        android:pathData="M69.6,61 V64"
+        android:strokeWidth="0.7"
+        android:strokeColor="#F6F1E6"
+        android:strokeAlpha="0.4"
+        android:strokeLineCap="round" />
+    <path
+        android:fillColor="#C9A45C"
+        android:pathData="M52.3,51 H65.7 A0.8,0.8 0 0 1 66.5,51.8 V55.2 A0.8,0.8 0 0 1 65.7,56 H52.3 A0.8,0.8 0 0 1 51.5,55.2 V51.8 A0.8,0.8 0 0 1 52.3,51 Z" />
+    <path
+        android:pathData="M51.5,52.8 H66.5 M51.5,54.4 H66.5"
+        android:strokeWidth="0.5"
+        android:strokeColor="#8E6A30" />
+    <path
+        android:fillColor="#3A1018"
+        android:pathData="M51.5,51 A7.5,1.6 0 1 0 66.5,51 A7.5,1.6 0 1 0 51.5,51 Z"
+        android:strokeWidth="0.5"
+        android:strokeColor="#E6CC94" />
+
+    <!-- Quill pen -->
+    <group
+        android:translateX="33"
+        android:translateY="78"
+        android:rotation="42.5">
+        <path
+            android:fillColor="#EADBB8"
+            android:pathData="M-0.3,-16.5 C-2.6,-17.4 -5.4,-19.6 -5.8,-22.6 C-4.7,-22.1 -4.2,-23.2 -5,-25.2 C-3.7,-24.5 -3.1,-25.4 -3.4,-27.4 C-2.6,-27.2 -1.4,-26 -0.3,-24 Z" />
+        <path
+            android:fillColor="#EADBB8"
+            android:pathData="M0.3,-17 C2.6,-18 3.6,-20 3.8,-22.4 C2.8,-21.8 2,-22.6 2.2,-24 C1.4,-23 0.8,-23 0.3,-22 Z" />
+        <path
+            android:fillColor="#D4AF6A"
+            android:pathData="M-0.3,-22 C-4,-28 -8,-38 -8.6,-44.6 L-7.3,-43.8 C-7.7,-45.4 -8.6,-47 -8.8,-48.4 C-8.8,-53 -6.5,-58 -2,-62.5 L0.4,-63.6 C2.2,-60 3.6,-54 3.8,-49 L3,-48.2 C3.5,-46.2 3.8,-42 3.6,-38 C3.4,-32 2.2,-27 0.3,-22 Z" />
+        <path
+            android:fillColor="#E2C485"
+            android:pathData="M-0.4,-26 C-2.6,-31 -3.6,-40 -3.2,-52 C-2.6,-56 -1.4,-59 0,-61 L0,-26 Z" />
+        <path
+            android:fillColor="#A67C3D"
+            android:pathData="M-6.5,-58 C-4.5,-56.5 -1,-56 2.4,-58.6 C2,-61 1.4,-62.6 0.4,-63.6 C-2,-62.5 -4.8,-60.4 -6.5,-58 Z" />
+        <path
+            android:fillColor="#8E6A30"
+            android:pathData="M-0.65,-14 L0.65,-14 Q0.9,-40 0.4,-63.4 L0.2,-63.4 Q-0.2,-40 -0.65,-14 Z" />
+        <path
+            android:fillColor="#C9A45C"
+            android:pathData="M-0.8,-14 H0.8 A0.5,0.5 0 0 1 1.3,-13.5 V-6.5 A0.5,0.5 0 0 1 0.8,-6 H-0.8 A0.5,0.5 0 0 1 -1.3,-6.5 V-13.5 A0.5,0.5 0 0 1 -0.8,-14 Z" />
+        <path
+            android:pathData="M-1.3,-12.6 H1.3 M-1.3,-7.4 H1.3"
+            android:strokeWidth="0.45"
+            android:strokeColor="#8E6A30" />
+        <path
+            android:fillColor="#CFCAC2"
+            android:pathData="M-1.2,-6 L1.2,-6 L0,0 Z" />
+        <path
+            android:pathData="M0,-4.4 L0,-1.2"
+            android:strokeWidth="0.3"
+            android:strokeColor="#6B6660" />
+    </group>
+
+    <!-- Check seal: marks this as the admin app. -->
+    <path
+        android:fillColor="#241C17"
+        android:pathData="M28.4,40 a9.6,9.6 0 1,0 19.2,0 a9.6,9.6 0 1,0 -19.2,0 Z" />
+    <path
+        android:fillColor="#D4AF6A"
+        android:pathData="M29.6,40 a8.4,8.4 0 1,0 16.8,0 a8.4,8.4 0 1,0 -16.8,0 Z" />
+    <path
+        android:pathData="M31.1,40 a6.9,6.9 0 1,0 13.8,0 a6.9,6.9 0 1,0 -13.8,0 Z"
+        android:strokeWidth="0.5"
+        android:strokeColor="#8E6A30" />
+    <path
+        android:pathData="M34.2,40.3 L37,43.1 L42,37.3"
+        android:strokeWidth="2.3"
+        android:strokeColor="#241C17"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round" />
 </vector>
