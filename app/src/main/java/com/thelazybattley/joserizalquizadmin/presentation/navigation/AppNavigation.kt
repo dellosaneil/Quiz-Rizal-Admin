@@ -1,15 +1,16 @@
 package com.thelazybattley.joserizalquizadmin.presentation.navigation
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -19,9 +20,19 @@ import com.thelazybattley.joserizalquizadmin.presentation.feature.addbook.AddBoo
 import com.thelazybattley.joserizalquizadmin.presentation.feature.addbook.ui.AddBookScreen
 import com.thelazybattley.joserizalquizadmin.presentation.feature.addquestion.AddQuestionDestinations
 import com.thelazybattley.joserizalquizadmin.presentation.feature.addquestion.ui.AddQuestionScreen
+import com.thelazybattley.joserizalquizadmin.presentation.feature.chapterquestions.ChapterQuestionsDestinations
+import com.thelazybattley.joserizalquizadmin.presentation.feature.chapterquestions.ui.ChapterQuestionsScreen
 import com.thelazybattley.joserizalquizadmin.presentation.feature.content.ContentDestinations
+import com.thelazybattley.joserizalquizadmin.presentation.feature.editquestion.EditQuestionDestinations
+import com.thelazybattley.joserizalquizadmin.presentation.feature.editquestion.ui.EditQuestionScreen
 import com.thelazybattley.joserizalquizadmin.presentation.feature.content.ui.ContentTabScreen
-import com.thelazybattley.joserizalquizadmin.presentation.feature.home.HomeTabScreen
+import com.thelazybattley.joserizalquizadmin.presentation.feature.login.LoginDestinations
+import com.thelazybattley.joserizalquizadmin.presentation.feature.login.ui.LoginScreen
+import com.thelazybattley.joserizalquizadmin.presentation.feature.moderate.ModerateDestinations
+import com.thelazybattley.joserizalquizadmin.presentation.feature.moderate.ModerateViewModel
+import com.thelazybattley.joserizalquizadmin.presentation.feature.moderate.ui.ModerateScreen
+import com.thelazybattley.joserizalquizadmin.presentation.feature.release.ReleaseViewModel
+import com.thelazybattley.joserizalquizadmin.presentation.feature.release.ui.ReleaseScreen
 import com.thelazybattley.joserizalquizadmin.presentation.navigation.AppDestinations.Companion.CHAPTER_NUMBER
 import com.thelazybattley.joserizalquizadmin.presentation.navigation.AppDestinations.Companion.QUIZ_ID
 import com.thelazybattley.joserizalquizadmin.presentation.ui.theme.AppTheme
@@ -29,7 +40,7 @@ import com.thelazybattley.joserizalquizadmin.presentation.util.APP_BACKGROUND
 import com.thelazybattley.joserizalquizadmin.presentation.util.APP_PADDING
 
 @Composable
-fun AppNavigation() {
+fun AppNavigation(isSignedIn: Boolean) {
     val navController = rememberNavController()
     val showBottomBar = remember { mutableStateOf(value = true) }
     navController.addOnDestinationChangedListener { _, destination, _ ->
@@ -55,14 +66,47 @@ fun AppNavigation() {
                     .padding(all = APP_PADDING)
                     .fillMaxSize(),
                 navController = navController,
-                startDestination = AppDestinations.BottomNavDestinations.Content.bottomNavRoute
+                startDestination = if (isSignedIn) {
+                    AppDestinations.BottomNavDestinations.Moderate.bottomNavRoute
+                } else {
+                    AppDestinations.Login.route
+                }
             ) {
-                composable(route = AppDestinations.BottomNavDestinations.Home.bottomNavRoute) {
-                    HomeTabScreen(modifier = Modifier.fillMaxSize())
+                composable(route = AppDestinations.Login.route) {
+                    LoginScreen(modifier = Modifier.fillMaxSize()) { destination ->
+                        when (destination) {
+                            LoginDestinations.HOME -> navController.navigate(
+                                route = AppDestinations.BottomNavDestinations.Moderate.bottomNavRoute
+                            ) {
+                                popUpTo(route = AppDestinations.Login.route) { inclusive = true }
+                            }
+                        }
+                    }
                 }
                 composable(route = AppDestinations.BottomNavDestinations.Moderate.bottomNavRoute) {
-                    Box(modifier = Modifier.fillMaxSize()) {
-                        Text(text = "Moderate")
+                    val viewModel = hiltViewModel<ModerateViewModel>()
+                    val state by viewModel.state.collectAsStateWithLifecycle()
+                    ModerateScreen(
+                        state = state,
+                        callbacks = viewModel,
+                        modifier = Modifier.fillMaxSize()
+                    ) { destination ->
+                        when (destination) {
+                            is ModerateDestinations.AddBook -> navController.navigate(
+                                route = AppDestinations.AddBook.createRoute(
+                                    bookTitle = destination.bookTitle,
+                                    author = destination.author
+                                )
+                            )
+
+                            is ModerateDestinations.EditQuestion -> navController.navigate(
+                                route = AppDestinations.EditQuestion.createRoute(
+                                    quizId = destination.quizId,
+                                    chapterNumber = destination.chapterNumber,
+                                    question = destination.question
+                                )
+                            )
+                        }
                     }
                 }
                 composable(route = AppDestinations.BottomNavDestinations.Content.bottomNavRoute) {
@@ -70,11 +114,19 @@ fun AppNavigation() {
                         modifier = Modifier.fillMaxSize(),
                         navigate = { destination ->
                             when (destination) {
-                                ContentDestinations.AddBook -> navController.navigate(
-                                    AppDestinations.AddBook.route
+                                is ContentDestinations.AddBook -> navController.navigate(
+                                    AppDestinations.AddBook.createRoute(category = destination.category)
                                 )
+
                                 is ContentDestinations.AddQuestion -> navController.navigate(
                                     route = AppDestinations.AddQuestion.createRoute(
+                                        quizId = destination.quizId,
+                                        chapterNumber = destination.chapterNumber
+                                    )
+                                )
+
+                                is ContentDestinations.ChapterQuestions -> navController.navigate(
+                                    route = AppDestinations.ChapterQuestions.createRoute(
                                         quizId = destination.quizId,
                                         chapterNumber = destination.chapterNumber
                                     )
@@ -83,18 +135,52 @@ fun AppNavigation() {
                         }
                     )
                 }
-                composable(route = AppDestinations.BottomNavDestinations.More.bottomNavRoute) {
-                    Box(modifier = Modifier.fillMaxSize()) {
-                        Text(text = "More")
-                    }
+                composable(route = AppDestinations.BottomNavDestinations.Release.bottomNavRoute) {
+                    val viewModel = hiltViewModel<ReleaseViewModel>()
+                    val state by viewModel.state.collectAsStateWithLifecycle()
+                    ReleaseScreen(
+                        state = state,
+                        callback = viewModel,
+                        modifier = Modifier.fillMaxSize()
+                    )
                 }
-                composable(route = AppDestinations.AddBook.route) {
+                composable(
+                    route = AppDestinations.AddBook.routeWithArgs!!,
+                    arguments = listOf(
+                        navArgument(name = AppDestinations.BOOK_TITLE) {
+                            type = NavType.StringType
+                            defaultValue = ""
+                        },
+                        navArgument(name = AppDestinations.AUTHOR) {
+                            type = NavType.StringType
+                            defaultValue = ""
+                        },
+                        navArgument(name = AppDestinations.CATEGORY) {
+                            type = NavType.StringType
+                            defaultValue = ""
+                        }
+                    )
+                ) {
                     AddBookScreen(
                         modifier = Modifier.fillMaxSize(),
                         navigate = { destination ->
                             when (destination) {
-                                AddBookDestinations.BACK -> {
-                                    navController.popBackStack()
+                                AddBookDestinations.Back -> navController.popBackStack()
+
+                                // Both replace Add Book, so back from either skips the finished form.
+                                AddBookDestinations.AddAnotherBook -> navController.navigate(
+                                    route = AppDestinations.AddBook.createRoute()
+                                ) {
+                                    popUpTo(route = AppDestinations.AddBook.routeWithArgs!!) { inclusive = true }
+                                }
+
+                                is AddBookDestinations.AddQuestion -> navController.navigate(
+                                    route = AppDestinations.AddQuestion.createRoute(
+                                        quizId = destination.quizId,
+                                        chapterNumber = 1
+                                    )
+                                ) {
+                                    popUpTo(route = AppDestinations.AddBook.routeWithArgs!!) { inclusive = true }
                                 }
                             }
                         }
@@ -114,6 +200,50 @@ fun AppNavigation() {
                     AddQuestionScreen(modifier = Modifier.fillMaxSize()) { destination ->
                         when (destination) {
                             AddQuestionDestinations.Back -> navController.popBackStack()
+                        }
+                    }
+                }
+                composable(
+                    route = AppDestinations.ChapterQuestions.routeWithArgs!!,
+                    arguments = listOf(
+                        navArgument(name = QUIZ_ID) { type = NavType.StringType },
+                        navArgument(name = CHAPTER_NUMBER) { type = NavType.IntType }
+                    )
+                ) { backStackEntry ->
+                    val quizId = backStackEntry.arguments?.getString(QUIZ_ID).orEmpty()
+                    val chapterNumber = backStackEntry.arguments?.getInt(CHAPTER_NUMBER) ?: 0
+                    ChapterQuestionsScreen(modifier = Modifier.fillMaxSize()) { destination ->
+                        when (destination) {
+                            ChapterQuestionsDestinations.Back -> navController.popBackStack()
+
+                            ChapterQuestionsDestinations.AddQuestion -> navController.navigate(
+                                route = AppDestinations.AddQuestion.createRoute(quizId = quizId, chapterNumber = chapterNumber)
+                            )
+
+                            is ChapterQuestionsDestinations.EditQuestion -> navController.navigate(
+                                route = AppDestinations.EditQuestion.createRoute(
+                                    quizId = quizId,
+                                    chapterNumber = chapterNumber,
+                                    question = destination.question
+                                )
+                            )
+                        }
+                    }
+                }
+                composable(
+                    route = AppDestinations.EditQuestion.routeWithArgs!!,
+                    arguments = listOf(
+                        navArgument(name = QUIZ_ID) { type = NavType.StringType },
+                        navArgument(name = CHAPTER_NUMBER) { type = NavType.IntType },
+                        navArgument(name = AppDestinations.QUESTION) {
+                            type = NavType.StringType
+                            defaultValue = ""
+                        }
+                    )
+                ) {
+                    EditQuestionScreen(modifier = Modifier.fillMaxSize()) { destination ->
+                        when (destination) {
+                            EditQuestionDestinations.Back -> navController.popBackStack()
                         }
                     }
                 }

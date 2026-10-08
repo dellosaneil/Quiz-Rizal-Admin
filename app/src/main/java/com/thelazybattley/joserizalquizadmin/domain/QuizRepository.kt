@@ -1,24 +1,48 @@
 package com.thelazybattley.joserizalquizadmin.domain
 
 import com.thelazybattley.joserizalquizadmin.domain.model.quiz.Quiz
+import com.thelazybattley.joserizalquizadmin.domain.model.quiz.QuizEnvironment
+import com.thelazybattley.joserizalquizadmin.domain.model.reportedquestions.ReportedQuestion
+import com.thelazybattley.joserizalquizadmin.domain.model.suggestedbooks.SuggestedBook
 import kotlinx.coroutines.flow.Flow
 
 interface QuizRepository {
 
     suspend fun fetchQuizContent(): List<Quiz>
 
-    fun setQuiz(
+    suspend fun fetchQuizContent(environment: QuizEnvironment): List<Quiz>
+
+    // Suspends until Firestore accepts the write, so callers can show progress and failures.
+    suspend fun setQuiz(
         author: String,
         bookName: String,
         category: String,
         chapters: List<String>
     ): String
 
-    fun setUpdatedQuiz(quiz: Quiz)
+    // Suspends until Firestore accepts the write.
+    suspend fun setUpdatedQuiz(quiz: Quiz)
 
     fun getAllQuiz(): Flow<List<Quiz>>
 
     suspend fun insertQuiz(quiz: List<Quiz>)
 
     fun getQuizById(id: String): Flow<Quiz>
+
+    suspend fun fetchSuggestedBooks(): List<SuggestedBook>
+
+    suspend fun fetchReportedQuestions(): List<ReportedQuestion>
+
+    // Removes every suggestion for this title and returns the removed entries.
+    suspend fun removeSuggestedBook(bookTitle: String): List<SuggestedBook>
+
+    suspend fun restoreSuggestedBooks(suggestedBooks: List<SuggestedBook>)
+
+    // Removes every report of this question and returns them so they can be restored.
+    suspend fun removeReportedQuestion(quizId: String, chapterNumber: Int, question: String): List<ReportedQuestion>
+
+    suspend fun restoreReportedQuestions(reportedQuestions: List<ReportedQuestion>)
+
+    // Makes release match debug: copies every debug book and deletes release books no longer in debug.
+    suspend fun setQuizContentToRelease()
 }

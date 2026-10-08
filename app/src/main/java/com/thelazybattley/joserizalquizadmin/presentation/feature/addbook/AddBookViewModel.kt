@@ -1,115 +1,127 @@
 package com.thelazybattley.joserizalquizadmin.presentation.feature.addbook
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.thelazybattley.joserizalquizadmin.base.BaseViewModel
 import com.thelazybattley.joserizalquizadmin.domain.model.quiz.Chapter
 import com.thelazybattley.joserizalquizadmin.domain.model.quiz.Quiz
 import com.thelazybattley.joserizalquizadmin.domain.usecase.InsertQuizUseCase
 import com.thelazybattley.joserizalquizadmin.domain.usecase.SetQuizUseCase
+import com.thelazybattley.joserizalquizadmin.presentation.navigation.AppDestinations.Companion.AUTHOR
+import com.thelazybattley.joserizalquizadmin.presentation.navigation.AppDestinations.Companion.BOOK_TITLE
+import com.thelazybattley.joserizalquizadmin.presentation.navigation.AppDestinations.Companion.CATEGORY
+import com.thelazybattley.joserizalquizadmin.presentation.util.Category
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
 class AddBookViewModel @Inject constructor(
     private val setQuizUseCase: SetQuizUseCase,
-    private val insertQuizUseCase: InsertQuizUseCase
-) : BaseViewModel<AddBookState, AddBookActions>(initialState = AddBookState()), AddBookCallback {
+    private val insertQuizUseCase: InsertQuizUseCase,
+    savedStateHandle: SavedStateHandle
+) : BaseViewModel<AddBookState, AddBookActions>(
+    initialState = savedStateHandle.let { handle ->
+        val title = handle.get<String>(BOOK_TITLE).orEmpty()
+        val author = handle.get<String>(AUTHOR).orEmpty()
+        val category = handle.get<String>(CATEGORY)?.let { name -> Category.entries.firstOrNull { it.name == name } }
+        AddBookState(
+            title = title,
+            author = author,
+            category = category ?: Category.LIFE_OF_RIZAL,
+            isFromSuggestion = title.isNotBlank() || author.isNotBlank()
+        )
+    }
+), AddBookCallback {
 
     override fun handleAction(action: AddBookActions) {
+        if (action is AddBookActions.NavigateDestination) {
+            updateState(newState = state.value.copy(destination = action.destination))
+            return
+        }
+        // The form is locked while publishing and after the book is published.
+        if (state.value.publishPhase != PublishPhase.EDITING) return
+
         when (action) {
             is AddBookActions.CategoryUpdated -> {
                 updateState(newState = state.value.copy(category = action.category))
             }
 
-            AddBookActions.PublishBook -> {
-                val quizId = setQuizUseCase(
-                    author = state.value.author,
-                    bookName = state.value.title,
-                    category = state.value.category.name,
-                    chapters = state.value.chapters
-                )
-                val quiz = Quiz(
-                    id = quizId,
-                    title = state.value.title,
-                    author = state.value.author,
-                    category = state.value.category,
-                    chapters = state.value.chapters.mapIndexed { index, chapter ->
-                        Chapter(
-                            chapterName = chapter,
-                            questions = emptyList(),
-                            chapterNumber = index.inc()
-                        )
-                    }
-                )
-                viewModelScope.launch(context = Dispatchers.IO) {
-                    insertQuizUseCase(quiz = listOf(quiz))
-                }
-            }
+            AddBookActions.PublishBook -> publish()
 
-            is AddBookActions.TextFieldUpdated -> {
-                when (action.type) {
-                    AddBookTextFieldTypes.TITLE -> {
-                        updateState(
-                            newState = state.value.copy(
-                                title = action.text,
-                                isButtonEnabled = action.text.isNotEmpty() && state.value.author.isNotEmpty()
-                            )
-                        )
-                        setButtonEnabled()
-                    }
-
-                    AddBookTextFieldTypes.AUTHOR -> {
-                        updateState(
-                            newState = state.value.copy(
-                                author = action.text,
-                                isButtonEnabled = action.text.isNotEmpty() && state.value.title.isNotEmpty()
-                            )
-                        )
-                        setButtonEnabled()
-                    }
+            is AddBookActions.TextFieldUpdated -> updateState(
+                newState = when (action.type) {
+                    AddBookTextFieldTypes.TITLE -> state.value.copy(title = action.text)
+                    AddBookTextFieldTypes.AUTHOR -> state.value.copy(author = action.text)
                 }
-            }
+            )
 
             is AddBookActions.Chapter -> {
-                when (action) {
-                    is AddBookActions.Chapter.Add -> updateState(
-                        newState = state.value.copy(
-                            chapters = state.value.chapters + "",
-                            isButtonEnabled = false,
-                        )
-                    )
-
-                    is AddBookActions.Chapter.Delete -> {
-                        val updatedChapters = state.value.chapters.toMutableList()
-                        updatedChapters.removeAt(index = action.index)
-                        updateState(newState = state.value.copy(chapters = updatedChapters))
+                val chapters = state.value.chapters
+                val updatedChapters = when (action) {
+                    AddBookActions.Chapter.Add -> chapters + ""
+                    // A book always keeps at least one chapter.
+                    is AddBookActions.Chapter.Delete -> if (chapters.size > 1) {
+                        chapters.filterIndexed { index, _ -> index != action.index }
+                    } else {
+                        chapters
                     }
 
-                    is AddBookActions.Chapter.Update -> {
-                        val updatedChapters = state.value.chapters.toMutableList()
-                        updatedChapters[action.index] = action.text
-                        updateState(newState = state.value.copy(chapters = updatedChapters))
-                        setButtonEnabled()
+                    is AddBookActions.Chapter.Update -> chapters.mapIndexed { index, chapter ->
+                        if (index == action.index) action.text else chapter
                     }
                 }
+                updateState(newState = state.value.copy(chapters = updatedChapters))
             }
 
-            is AddBookActions.NavigateDestination -> updateState(
-                newState = state.value.copy(
-                    destination = action.destination
-                )
-            )
+            is AddBookActions.NavigateDestination -> Unit
         }
     }
 
-    private fun setButtonEnabled() {
-        updateState(
-            newState = state.value.copy(
-                isButtonEnabled = state.value.author.isNotEmpty() && state.value.title.isNotEmpty() &&
-                        state.value.chapters.isNotEmpty() && !state.value.chapters.any { it.isBlank() }
-            )
-        )
+    private fun publish() {
+        val current = state.value
+        if (current.blocker != null) return
+        val title = current.title.trim()
+        val author = current.author.trim()
+        val chapters = current.chapters.map { it.trim() }
+        updateState(newState = current.copy(publishPhase = PublishPhase.PUBLISHING, publishFailed = false))
+        viewModelScope.launch {
+            runCatching {
+                withContext(context = Dispatchers.IO) {
+                    val quizId = setQuizUseCase(
+                        author = author,
+                        bookName = title,
+                        category = current.category.name,
+                        chapters = chapters
+                    )
+                    insertQuizUseCase(
+                        quiz = listOf(
+                            Quiz(
+                                id = quizId,
+                                title = title,
+                                author = author,
+                                category = current.category,
+                                chapters = chapters.mapIndexed { index, chapter ->
+                                    Chapter(
+                                        chapterName = chapter,
+                                        questions = emptyList(),
+                                        chapterNumber = index.inc()
+                                    )
+                                }
+                            )
+                        )
+                    )
+                    quizId
+                }
+            }
+                .onSuccess { quizId ->
+                    updateState(newState = state.value.copy(publishPhase = PublishPhase.Published(quizId = quizId)))
+                }
+                .onFailure {
+                    updateState(newState = state.value.copy(publishPhase = PublishPhase.EDITING, publishFailed = true))
+                }
+        }
     }
 }

@@ -1,6 +1,8 @@
 package com.thelazybattley.joserizalquizadmin.data.di.modules
 
 import com.google.firebase.Firebase
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.firestore
 import dagger.Module
@@ -16,5 +18,9 @@ object FirebaseModule {
     @Provides
     @Singleton
     fun provideFirebaseFirestore(): FirebaseFirestore = Firebase.firestore
+
+    @Provides
+    @Singleton
+    fun provideFirebaseAuth(): FirebaseAuth = Firebase.auth
 
 }

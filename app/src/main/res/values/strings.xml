@@ -4,63 +4,310 @@
     <string name="home">Home</string>
     <string name="moderate">Moderate</string>
     <string name="content">Content</string>
-    <string name="more">More</string>
+    <string name="release">Release</string>
     <string name="all_time">ALL TIME</string>
     <string name="books_live">%1$d BOOKS LIVE</string>
     <string name="questions">%1$d questions</string>
     <string name="needs_review">needs review</string>
 
-    <string name="most_suggested">MOST SUGGESTED</string>
-    <string name="most_reported">MOST REPORTED</string>
-    <string name="value_x">%1$dx</string>
+    <string name="value_x">%1$d×</string>
     <string name="category">CATEGORY</string>
     <string name="novel">Novel</string>
     <string name="life_of_rizal">Life of Rizal</string>
     <string name="add_a_book">Add a Book</string>
-    <string name="title">TITLE</string>
-    <string name="author">AUTHOR</string>
+    <string name="title">Title</string>
+    <string name="author">Author</string>
     <string name="chapters">CHAPTERS</string>
-    <string name="publish_book">Publish Book</string>
-    <string name="add_chapter">+ Add Chapter</string>
+    <string name="add_chapter">Add chapter</string>
     <string name="library">Library</string>
-    <string name="value_chapters">%1$d chapters</string>
-    <string name="chapter_value">Chapter: %1$d</string>
-    <string name="value_questions">%1$d questions</string>
-    <string name="manage">Manage</string>
-    <string name="adding_to">ADDING TO</string>
     <string name="arrow">→</string>
     <string name="question">QUESTION</string>
-    <string name="choices_tap_to_mark_correct_answer">CHOICES - TAP TO MARK CORRECT ANSWER</string>
-    <string name="save_question">Save Question</string>
-    <string name="add_question">+ Add Question</string>
+    <string name="save_question">Save question</string>
     <string name="add_a_question">Add a Question</string>
-    <string name="plus_add_a_book">+ Add a Book</string>
-    <string name="you_are_adding_a_question_to_this_chapter">You are adding a question to this chapter. To add a question to a different book, open that book\'s chapter directly.</string>
-    <string name="add_another_question_below">Add another question below, or head back to the chapter when you\'re done.</string>
-    <string name="question_saved_to">Question saved to Chapter %1$d</string>
+    <string name="reported_questions">Reported questions</string>
+    <string name="suggested_books">Suggested books</string>
+    <string name="failed_to_load_suggestions">Couldn\'t load suggestions</string>
+    <string name="failed_to_load_reports">Couldn\'t load reports</string>
+    <string name="no_suggested_books">When students suggest a book from the quiz app, it shows up here, ranked by how many asked.</string>
+    <string name="no_reported_questions">When students flag a question from the quiz review screen, it shows up here with what they said was wrong.</string>
+    <string name="quoted_value">“%1$s”</string>
+    <string name="book_chapter">%1$s · Ch. %2$d</string>
+    <string name="unknown_book">Unknown book</string>
+    <string name="remove">Remove</string>
+    <string name="add_book">Add Book</string>
+    <string name="cancel">Cancel</string>
+    <string name="undo">Undo</string>
+    <string name="remove_suggestion_title">Remove “%1$s”?</string>
+    <string name="removed_suggestion">Removed “%1$s”</string>
+    <string name="remove_suggestion_failed">Couldn\'t remove “%1$s”. Try again.</string>
+    <string name="builds">BUILDS</string>
+    <string name="not_yet_live">NOT YET LIVE</string>
+    <string name="debug_build">Debug</string>
+    <string name="release_build">Release</string>
+    <string name="working">WORKING</string>
+    <string name="live">LIVE</string>
+    <string name="change_new">NEW</string>
+    <string name="change_edited">EDITED</string>
+    <string name="change_removed">REMOVED</string>
+    <string name="count_new">new</string>
+    <string name="count_edited">edited</string>
+    <string name="count_removed">removed</string>
+    <string name="chapter_title">Ch. %1$d, %2$s</string>
+    <string name="book_details_changed">Title, author or category changed</string>
+    <string name="book_removed_from_debug">Removed from Debug</string>
+    <string name="chapter_renamed_in">Renamed in %1$s</string>
+    <string name="removed_from">Removed from %1$s</string>
+    <string name="question_choices_changed">%1$s · Ch. %2$d · choices changed</string>
+    <string name="question_answer_changed">%1$s · Ch. %2$d · answer changed</string>
+    <string name="question_choices_and_answer_changed">%1$s · Ch. %2$d · choices and answer changed</string>
+    <string name="push_now">Push now</string>
+    <string name="push_confirm_body">Release will match Debug. Students get the changes the next time the quiz app loads content, and this can\'t be undone from here.</string>
+    <string name="release_up_to_date">Release is up to date</string>
+    <string name="release_matches_debug">Release matches Debug. New books and questions you add will show up here before you push them.</string>
+    <string name="push_failed_title">Push didn\'t finish</string>
+    <string name="push_failed_message">Some books may not have updated. Check your connection and push again.</string>
+    <string name="release_load_failed_title">Couldn\'t load release status</string>
+    <string name="release_load_failed_message">Check your connection and try again.</string>
+    <string name="try_again">Try again</string>
+    <string name="sign_in">Sign In</string>
+    <string name="sign_in_description">Sign in with the admin account to manage quiz content.</string>
+    <string name="email">EMAIL</string>
+    <string name="password">PASSWORD</string>
+    <string name="sign_in_failed">Sign in failed. Please try again.</string>
+    <string name="sign_in_invalid_credentials">Email or password is incorrect. Use the password set for this user in Firebase Authentication, not your Google account password.</string>
+    <string name="sign_in_provider_disabled">Email/Password sign-in is not enabled for this Firebase project.</string>
+    <string name="sign_in_too_many_attempts">Too many attempts. Wait a moment and try again.</string>
+    <string name="sign_in_network">No connection. Check your internet and try again.</string>
 
-    <plurals name="suggestions">
-        <item quantity="one">SUGGESTION</item>
-        <item quantity="other">SUGGESTIONS</item>
+    <plurals name="books_label">
+        <item quantity="one">book</item>
+        <item quantity="other">books</item>
     </plurals>
 
-    <plurals name="open_reports">
-        <item quantity="one">OPEN REPORT</item>
-        <item quantity="other">OPEN REPORTS</item>
+    <plurals name="questions_label">
+        <item quantity="one">question</item>
+        <item quantity="other">questions</item>
     </plurals>
 
-    <plurals name="reports">
-        <item quantity="one">REPORT</item>
-        <item quantity="other">REPORTS</item>
+    <plurals name="change_count">
+        <item quantity="one">%1$d change</item>
+        <item quantity="other">%1$d changes</item>
     </plurals>
 
-    <plurals name="students">
-        <item quantity="one">STUDENT</item>
-        <item quantity="other">STUDENTS</item>
+    <plurals name="push_changes">
+        <item quantity="one">Push %1$d change to Release</item>
+        <item quantity="other">Push %1$d changes to Release</item>
     </plurals>
 
-    <plurals name="your_books">
-        <item quantity="one">YOUR BOOK</item>
-        <item quantity="other">YOUR BOOKS</item>
+    <plurals name="push_changes_question">
+        <item quantity="one">Push %1$d change to Release?</item>
+        <item quantity="other">Push %1$d changes to Release?</item>
+    </plurals>
+
+    <plurals name="pushing_books">
+        <item quantity="one">Pushing %1$d book…</item>
+        <item quantity="other">Pushing %1$d books…</item>
+    </plurals>
+
+    <plurals name="changes_now_live">
+        <item quantity="one">%1$d change is live. Students get it the next time the quiz app loads content.</item>
+        <item quantity="other">All %1$d changes are live. Students get them the next time the quiz app loads content.</item>
+    </plurals>
+
+    <plurals name="new_book_detail">
+        <item quantity="one">New book · %1$d chapter</item>
+        <item quantity="other">New book · %1$d chapters</item>
+    </plurals>
+
+    <plurals name="new_chapter_detail">
+        <item quantity="one">New chapter in %1$s · %2$d question</item>
+        <item quantity="other">New chapter in %1$s · %2$d questions</item>
+    </plurals>
+
+    <string name="back">Back</string>
+    <string name="close">Close</string>
+    <string name="details">DETAILS</string>
+    <string name="novel_hint">Noli, El Fili and other works</string>
+    <string name="life_of_rizal_hint">Biography, places and people</string>
+    <string name="title_placeholder">e.g. Noli Me Tangere</string>
+    <string name="author_placeholder">e.g. José Rizal</string>
+    <string name="chapter_name_placeholder">Chapter name</string>
+    <string name="chapter_name_description">Chapter %1$d name</string>
+    <string name="remove_chapter">Remove chapter %1$d</string>
+    <string name="publish_to_debug">Publish to Debug</string>
+    <string name="publishing">Publishing…</string>
+    <string name="publish_hint_missing_details">Add a title and author to publish</string>
+    <string name="publish_hint_ready">Ready. It goes to Debug first; push from Release to make it live.</string>
+    <string name="publish_hint_publishing">Saving to Debug…</string>
+    <string name="publish_book_failed_title">Couldn\'t publish the book</string>
+    <string name="publish_book_failed_message">Check your connection and try again.</string>
+    <string name="from_suggestion_title">From a student suggestion</string>
+    <string name="from_suggestion_body">Title and author are filled in. Check them, then add chapters.</string>
+    <string name="book_in_debug">%1$s is in Debug</string>
+    <string name="book_in_debug_body">Students won\'t see it yet. Add questions to its chapters, then push it live from the Release tab.</string>
+    <string name="add_questions">Add questions</string>
+    <string name="add_another_book">Add another book</string>
+
+    <plurals name="chapter_count">
+        <item quantity="one">%1$d chapter</item>
+        <item quantity="other">%1$d chapters</item>
+    </plurals>
+
+    <plurals name="chapters_label">
+        <item quantity="one">chapter</item>
+        <item quantity="other">chapters</item>
+    </plurals>
+
+    <plurals name="publish_hint_blank_chapters">
+        <item quantity="one">Name the empty chapter or remove it</item>
+        <item quantity="other">Name the %1$d empty chapters or remove them</item>
+    </plurals>
+
+    <string name="all">All</string>
+    <string name="add_book_short">Add book</string>
+    <string name="library_summary">%1$s · %2$s in Debug</string>
+    <string name="library_empty_summary">No books in Debug yet</string>
+    <string name="dot_separated">%1$s · %2$s</string>
+    <string name="expanded">Expanded</string>
+    <string name="collapsed">Collapsed</string>
+    <string name="no_questions_yet">No questions yet</string>
+    <string name="add_question_button">Question</string>
+    <string name="add_question_to_chapter">Add a question to chapter %1$d, %2$s</string>
+    <string name="start_the_library">Start the library</string>
+    <string name="start_the_library_body">Add a book and its chapters, then write questions for each chapter. Student suggestions on the Moderate tab are a good place to start.</string>
+
+    <plurals name="book_count">
+        <item quantity="one">%1$d book</item>
+        <item quantity="other">%1$d books</item>
+    </plurals>
+
+    <plurals name="question_count">
+        <item quantity="one">%1$d question</item>
+        <item quantity="other">%1$d questions</item>
+    </plurals>
+
+    <plurals name="chapters_without_questions">
+        <item quantity="one">%1$d chapter has no questions</item>
+        <item quantity="other">%1$d chapters have no questions</item>
+    </plurals>
+
+    <string name="no_category_books_yet">No %1$s books yet</string>
+    <string name="no_life_of_rizal_books_body">Biographies, places and people from Rizal\'s life go here once you add one.</string>
+    <string name="no_novel_books_body">Noli, El Fili and Rizal\'s other works go here once you add one.</string>
+    <string name="add_category_book">Add a %1$s book</string>
+    <string name="show_all_books">Show all books</string>
+
+    <string name="chapter_card_detail">%1$s · Ch. %2$d · %3$s</string>
+    <string name="question_placeholder">e.g. Who tells Ibarra what happened to his father?</string>
+    <string name="choices">CHOICES</string>
+    <string name="choices_hint">Tap the circle next to the correct answer.</string>
+    <string name="choice_letter">Choice %1$s</string>
+    <string name="mark_choice_correct">Mark choice %1$s as the correct answer</string>
+    <string name="answer_tag">ANSWER</string>
+    <string name="same_tag">SAME</string>
+    <string name="question_saved_to">Question %1$d saved to Ch. %2$d</string>
+    <string name="quoted">“%1$s”</string>
+    <string name="save_hint_question">Write the question</string>
+    <string name="save_hint_duplicate">Two choices are the same</string>
+    <string name="save_hint_answer">Mark the correct answer</string>
+    <string name="save_hint_ready">Ready to save to Ch. %1$d</string>
+    <string name="saving_question">Saving to Debug…</string>
+    <string name="saving">Saving…</string>
+    <string name="done">Done</string>
+    <string name="save_question_failed_title">Couldn\'t save the question</string>
+    <string name="save_question_failed_message">Check your connection and try again. What you wrote is still here.</string>
+
+    <plurals name="questions_so_far">
+        <item quantity="one">%1$d question so far</item>
+        <item quantity="other">%1$d questions so far</item>
+    </plurals>
+
+    <plurals name="character_count">
+        <item quantity="one">%1$d character</item>
+        <item quantity="other">%1$d characters</item>
+    </plurals>
+
+    <plurals name="save_hint_blank_choices">
+        <item quantity="one">Fill in 1 more choice</item>
+        <item quantity="other">Fill in %1$d more choices</item>
+    </plurals>
+
+    <string name="most_requested_first">Most requested first</string>
+    <string name="most_reported_first">Most reported first</string>
+    <string name="check_connection">Check your connection and try again.</string>
+    <string name="no_suggested_books_title">No suggested books</string>
+    <string name="no_reported_questions_title">No reported questions</string>
+    <string name="already_in_library">Already in your library</string>
+    <string name="clear">Clear</string>
+    <string name="dismiss">Dismiss</string>
+    <string name="chapter_only">Ch. %1$d</string>
+    <string name="report_dismissed">Dismissed report</string>
+    <string name="dismiss_report_failed">Couldn\'t dismiss the report. Try again.</string>
+    <string name="keep_it">Keep it</string>
+    <string name="remove_suggestion_body">Use this for books you won\'t add, or requests that are spam. If students ask again later, it comes back.</string>
+
+    <plurals name="students_label">
+        <item quantity="one">student</item>
+        <item quantity="other">students</item>
+    </plurals>
+
+    <plurals name="report_count_tag">
+        <item quantity="one">%1$d REPORT</item>
+        <item quantity="other">%1$d REPORTS</item>
+    </plurals>
+
+    <plurals name="suggestion_count">
+        <item quantity="one">%1$d suggestion</item>
+        <item quantity="other">%1$d suggestions</item>
+    </plurals>
+
+    <plurals name="reported_question_count">
+        <item quantity="one">%1$d reported question</item>
+        <item quantity="other">%1$d reported questions</item>
+    </plurals>
+
+    <plurals name="remove_suggestion_count">
+        <item quantity="one">student asked for this book. Their request will be cleared.</item>
+        <item quantity="other">students asked for this book. All %1$d requests will be cleared.</item>
+    </plurals>
+
+    <string name="edited_tag">EDITED</string>
+    <string name="edit_question">Edit Question</string>
+    <string name="undo_changes">Undo changes</string>
+    <string name="save_changes">Save changes</string>
+    <string name="save_changes_failed_title">Couldn\'t save your changes</string>
+    <string name="edit_hint_no_changes">No changes yet</string>
+    <string name="edit_hint_ready">Saves to Debug. Push from Release to make it live.</string>
+    <string name="question_position">%1$s · Ch. %2$d · question %3$d of %4$d</string>
+    <string name="answer_changed_from_to">Answer changed from %1$s to %2$s</string>
+    <string name="delete_this_question">Delete this question</string>
+    <string name="delete_question_title">Delete this question?</string>
+    <string name="delete_question_body">It\'s removed from Debug now, and from Release the next time you push.</string>
+    <string name="delete_question_failed">Couldn\'t delete the question. Check your connection and try again.</string>
+    <string name="delete">Delete</string>
+    <string name="question_not_found_title">Question not found</string>
+    <string name="question_not_found_body">It may have been edited or deleted since you opened it.</string>
+    <string name="fix_question">Fix question</string>
+    <string name="no_questions_in_chapter_body">Questions you add to this chapter show up here.</string>
+    <string name="add_a_question_button">Add a question</string>
+
+    <plurals name="students_reported_question">
+        <item quantity="one">%1$d student reported this question</item>
+        <item quantity="other">%1$d students reported this question</item>
+    </plurals>
+
+    <plurals name="also_clear_reports">
+        <item quantity="one">Also clear the report when I save</item>
+        <item quantity="other">Also clear the %1$d reports when I save</item>
+    </plurals>
+
+    <plurals name="questions_left">
+        <item quantity="one">%1$d question left after this</item>
+        <item quantity="other">%1$d questions left after this</item>
+    </plurals>
+
+    <plurals name="delete_question_body_with_reports">
+        <item quantity="one">It\'s removed from Debug now, and from Release the next time you push. Its report is cleared too.</item>
+        <item quantity="other">It\'s removed from Debug now, and from Release the next time you push. Its %1$d reports are cleared too.</item>
     </plurals>
 </resources>

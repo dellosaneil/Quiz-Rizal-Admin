@@ -1,6 +1,8 @@
 package com.thelazybattley.joserizalquizadmin.data.di.modules
 
+import com.thelazybattley.joserizalquizadmin.data.AuthRepositoryImpl
 import com.thelazybattley.joserizalquizadmin.data.QuizRepositoryImpl
+import com.thelazybattley.joserizalquizadmin.domain.AuthRepository
 import com.thelazybattley.joserizalquizadmin.domain.QuizRepository
 import dagger.Binds
 import dagger.Module
@@ -13,5 +15,8 @@ abstract class RepositoryModule {
 
     @Binds
     abstract fun bindQuizRepository(quizRepositoryImpl: QuizRepositoryImpl): QuizRepository
+
+    @Binds
+    abstract fun bindAuthRepository(authRepositoryImpl: AuthRepositoryImpl): AuthRepository
 
 }

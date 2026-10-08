@@ -6,6 +6,6 @@ import javax.inject.Inject
 
 class SetUpdatedQuizUseCase @Inject constructor(private val repository: QuizRepository) {
 
-    operator fun invoke(quiz: Quiz) = repository.setUpdatedQuiz(quiz = quiz)
+    suspend operator fun invoke(quiz: Quiz) = repository.setUpdatedQuiz(quiz = quiz)
 
 }

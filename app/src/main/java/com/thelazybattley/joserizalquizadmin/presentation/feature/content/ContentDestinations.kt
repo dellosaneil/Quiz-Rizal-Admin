@@ -1,6 +1,9 @@
 package com.thelazybattley.joserizalquizadmin.presentation.feature.content
 
+import com.thelazybattley.joserizalquizadmin.presentation.util.Category
+
 sealed class ContentDestinations {
-    object AddBook : ContentDestinations()
+    data class AddBook(val category: Category? = null) : ContentDestinations()
     data class AddQuestion(val chapterNumber: Int, val quizId: String) : ContentDestinations()
+    data class ChapterQuestions(val chapterNumber: Int, val quizId: String) : ContentDestinations()
 }
