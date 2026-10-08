@@ -1,11 +1,14 @@
 package com.thelazybattley.joserizalquizadmin.presentation.feature.addbook
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.thelazybattley.joserizalquizadmin.base.BaseViewModel
 import com.thelazybattley.joserizalquizadmin.domain.model.quiz.Chapter
 import com.thelazybattley.joserizalquizadmin.domain.model.quiz.Quiz
 import com.thelazybattley.joserizalquizadmin.domain.usecase.InsertQuizUseCase
 import com.thelazybattley.joserizalquizadmin.domain.usecase.SetQuizUseCase
+import com.thelazybattley.joserizalquizadmin.presentation.navigation.AppDestinations.Companion.AUTHOR
+import com.thelazybattley.joserizalquizadmin.presentation.navigation.AppDestinations.Companion.BOOK_TITLE
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -14,8 +17,14 @@ import javax.inject.Inject
 @HiltViewModel
 class AddBookViewModel @Inject constructor(
     private val setQuizUseCase: SetQuizUseCase,
-    private val insertQuizUseCase: InsertQuizUseCase
-) : BaseViewModel<AddBookState, AddBookActions>(initialState = AddBookState()), AddBookCallback {
+    private val insertQuizUseCase: InsertQuizUseCase,
+    savedStateHandle: SavedStateHandle
+) : BaseViewModel<AddBookState, AddBookActions>(
+    initialState = AddBookState(
+        title = savedStateHandle.get<String>(BOOK_TITLE).orEmpty(),
+        author = savedStateHandle.get<String>(AUTHOR).orEmpty()
+    )
+), AddBookCallback {
 
     override fun handleAction(action: AddBookActions) {
         when (action) {

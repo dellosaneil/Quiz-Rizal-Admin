@@ -12,7 +12,7 @@
 
     <string name="most_suggested">MOST SUGGESTED</string>
     <string name="most_reported">MOST REPORTED</string>
-    <string name="value_x">%1$dx</string>
+    <string name="value_x">%1$d×</string>
     <string name="category">CATEGORY</string>
     <string name="novel">Novel</string>
     <string name="life_of_rizal">Life of Rizal</string>
@@ -43,6 +43,16 @@
     <string name="sorted_by_how_many_students_requested">Sorted by how many students requested each title — use this to decide what to add next.</string>
     <string name="sorted_by_number_of_reports">Sorted by number of reports. Flagged from the quiz review
 screen.</string>
+    <string name="loading_suggestions">Loading suggestions…</string>
+    <string name="loading_reports">Loading reports…</string>
+    <string name="failed_to_load_suggestions">Couldn\'t load suggestions. Tap Suggested Books to try again.</string>
+    <string name="failed_to_load_reports">Couldn\'t load reports. Tap Reported Questions to try again.</string>
+    <string name="no_suggested_books">No books have been suggested by students yet. Requests will show up here, sorted by how many students asked for each title.</string>
+    <string name="no_reported_questions">No questions have been reported. Flags students raise from the quiz review screen will show up here.</string>
+    <string name="plus_add_book">+ Add Book</string>
+    <string name="quoted_value">“%1$s”</string>
+    <string name="book_chapter">%1$s · Ch. %2$d</string>
+    <string name="unknown_book">Unknown book</string>
     <string name="sign_in">Sign In</string>
     <string name="sign_in_description">Sign in with the admin account to manage quiz content.</string>
     <string name="email">EMAIL</string>

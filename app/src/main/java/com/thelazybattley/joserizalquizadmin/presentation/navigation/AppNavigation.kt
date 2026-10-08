@@ -26,6 +26,7 @@ import com.thelazybattley.joserizalquizadmin.presentation.feature.content.Conten
 import com.thelazybattley.joserizalquizadmin.presentation.feature.content.ui.ContentTabScreen
 import com.thelazybattley.joserizalquizadmin.presentation.feature.login.LoginDestinations
 import com.thelazybattley.joserizalquizadmin.presentation.feature.login.ui.LoginScreen
+import com.thelazybattley.joserizalquizadmin.presentation.feature.moderate.ModerateDestinations
 import com.thelazybattley.joserizalquizadmin.presentation.feature.moderate.ModerateViewModel
 import com.thelazybattley.joserizalquizadmin.presentation.feature.moderate.ui.ModerateScreen
 import com.thelazybattley.joserizalquizadmin.presentation.navigation.AppDestinations.Companion.CHAPTER_NUMBER
@@ -85,7 +86,16 @@ fun AppNavigation(isSignedIn: Boolean) {
                         state = state,
                         callbacks = viewModel,
                         modifier = Modifier.fillMaxSize()
-                    )
+                    ) { destination ->
+                        when (destination) {
+                            is ModerateDestinations.AddBook -> navController.navigate(
+                                route = AppDestinations.AddBook.createRoute(
+                                    bookTitle = destination.bookTitle,
+                                    author = destination.author
+                                )
+                            )
+                        }
+                    }
                 }
                 composable(route = AppDestinations.BottomNavDestinations.Content.bottomNavRoute) {
                     ContentTabScreen(
@@ -93,7 +103,7 @@ fun AppNavigation(isSignedIn: Boolean) {
                         navigate = { destination ->
                             when (destination) {
                                 ContentDestinations.AddBook -> navController.navigate(
-                                    AppDestinations.AddBook.route
+                                    AppDestinations.AddBook.createRoute()
                                 )
 
                                 is ContentDestinations.AddQuestion -> navController.navigate(
@@ -111,7 +121,19 @@ fun AppNavigation(isSignedIn: Boolean) {
                         Text(text = "Release")
                     }
                 }
-                composable(route = AppDestinations.AddBook.route) {
+                composable(
+                    route = AppDestinations.AddBook.routeWithArgs!!,
+                    arguments = listOf(
+                        navArgument(name = AppDestinations.BOOK_TITLE) {
+                            type = NavType.StringType
+                            defaultValue = ""
+                        },
+                        navArgument(name = AppDestinations.AUTHOR) {
+                            type = NavType.StringType
+                            defaultValue = ""
+                        }
+                    )
+                ) {
                     AddBookScreen(
                         modifier = Modifier.fillMaxSize(),
                         navigate = { destination ->

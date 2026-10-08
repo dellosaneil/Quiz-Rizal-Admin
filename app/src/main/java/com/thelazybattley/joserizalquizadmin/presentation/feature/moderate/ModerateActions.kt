@@ -7,4 +7,6 @@ sealed class ModerateActions: BaseActions {
 
     data class SelectFeedbackType(val feedbackType: ModerateContentFeedback): ModerateActions()
 
+    data class NavigateDestination(val destination: ModerateDestinations?) : ModerateActions()
+
 }

@@ -1,16 +1,18 @@
 package com.thelazybattley.joserizalquizadmin.data.network.model.suggestedbooks
 
 import com.thelazybattley.joserizalquizadmin.domain.model.suggestedbooks.SuggestedBook
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
+// Matches BookSuggestionDto written by the quiz app into quiz/{env}/feedback/suggested_book.
+@Serializable
 data class SuggestedBookDto(
-    val id: String,
-    val author: String,
-    val bookTitle: String,
-    val school: String
+    @SerialName("book_title") val bookTitle: String = "",
+    @SerialName("author") val author: String = "",
+    @SerialName("school") val school: String = ""
 )
 
 fun SuggestedBookDto.toDomain() = SuggestedBook(
-    id = id,
     author = author,
     bookTitle = bookTitle,
     school = school
