@@ -24,6 +24,8 @@ import com.thelazybattley.joserizalquizadmin.presentation.feature.addquestion.Ad
 import com.thelazybattley.joserizalquizadmin.presentation.feature.addquestion.ui.AddQuestionScreen
 import com.thelazybattley.joserizalquizadmin.presentation.feature.content.ContentDestinations
 import com.thelazybattley.joserizalquizadmin.presentation.feature.content.ui.ContentTabScreen
+import com.thelazybattley.joserizalquizadmin.presentation.feature.login.LoginDestinations
+import com.thelazybattley.joserizalquizadmin.presentation.feature.login.ui.LoginScreen
 import com.thelazybattley.joserizalquizadmin.presentation.feature.moderate.ModerateViewModel
 import com.thelazybattley.joserizalquizadmin.presentation.feature.moderate.ui.ModerateScreen
 import com.thelazybattley.joserizalquizadmin.presentation.navigation.AppDestinations.Companion.CHAPTER_NUMBER
@@ -33,7 +35,7 @@ import com.thelazybattley.joserizalquizadmin.presentation.util.APP_BACKGROUND
 import com.thelazybattley.joserizalquizadmin.presentation.util.APP_PADDING
 
 @Composable
-fun AppNavigation() {
+fun AppNavigation(isSignedIn: Boolean) {
     val navController = rememberNavController()
     val showBottomBar = remember { mutableStateOf(value = true) }
     navController.addOnDestinationChangedListener { _, destination, _ ->
@@ -59,8 +61,23 @@ fun AppNavigation() {
                     .padding(all = APP_PADDING)
                     .fillMaxSize(),
                 navController = navController,
-                startDestination = AppDestinations.BottomNavDestinations.Moderate.bottomNavRoute
+                startDestination = if (isSignedIn) {
+                    AppDestinations.BottomNavDestinations.Moderate.bottomNavRoute
+                } else {
+                    AppDestinations.Login.route
+                }
             ) {
+                composable(route = AppDestinations.Login.route) {
+                    LoginScreen(modifier = Modifier.fillMaxSize()) { destination ->
+                        when (destination) {
+                            LoginDestinations.HOME -> navController.navigate(
+                                route = AppDestinations.BottomNavDestinations.Moderate.bottomNavRoute
+                            ) {
+                                popUpTo(route = AppDestinations.Login.route) { inclusive = true }
+                            }
+                        }
+                    }
+                }
                 composable(route = AppDestinations.BottomNavDestinations.Moderate.bottomNavRoute) {
                     val viewModel = hiltViewModel<ModerateViewModel>()
                     val state by viewModel.state.collectAsStateWithLifecycle()

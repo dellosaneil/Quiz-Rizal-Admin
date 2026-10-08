@@ -35,6 +35,8 @@ sealed class AppDestinations(val route: String, val routeWithArgs: String? = nul
         }
     }
 
+    object Login : AppDestinations(route = "login")
+
     object AddBook : AppDestinations(route = "add_book")
 
     object AddQuestion :
