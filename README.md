@@ -1,6 +1,20 @@
-# Quiz-Rizal-Admin
+# Ilustrado Admin
 
 The Android admin app for **Ilustrado**, the José Rizal quiz app ([QuizRizal](../QuizRizal)). Admins use it to write quiz content, review what students send in, and publish content to the live app.
+
+## Screenshots
+
+| Moderate | Content | Chapters |
+|:---:|:---:|:---:|
+| <img src="docs/screenshots/moderate.png" width="240" alt="Moderate tab with no suggestions to review"> | <img src="docs/screenshots/content.png" width="240" alt="Content tab showing the library"> | <img src="docs/screenshots/content-chapters.png" width="240" alt="A book opened to its chapters"> |
+
+| Chapter questions | Edit Question | Add a Question |
+|:---:|:---:|:---:|
+| <img src="docs/screenshots/chapter-questions.png" width="240" alt="Questions in a chapter with their answers"> | <img src="docs/screenshots/edit-question.png" width="240" alt="Editing a question and its answer"> | <img src="docs/screenshots/add-question.png" width="240" alt="Empty Add a Question form"> |
+
+| Add a Book | Release |
+|:---:|:---:|
+| <img src="docs/screenshots/add-book.png" width="240" alt="Add a Book form"> | <img src="docs/screenshots/release.png" width="240" alt="Release tab with Debug and Release in sync"> |
 
 ## What it does
 
@@ -18,6 +32,7 @@ The app opens on a login screen, then has three tabs.
 
 **Release**: publishing.
 - Compares Debug with Release and lists every new, edited and removed book, chapter and question.
+- **Revert** a question change to put that question in Debug back to how it is in Release. Release itself isn't touched.
 - **Push** copies Debug to Release, including deletions. Students get the changes the next time the quiz app loads content.
 
 ## Setup
@@ -84,7 +99,8 @@ Books are cached in Room, so the Content tab shows the last loaded library immed
 
 ## Known limitations
 
-- **Questions are matched by their exact text.** This applies to reports and to the Release comparison. Rewording a question clears its reports when you save, if you leave that option ticked. On the Release tab it shows as one removed and one new question.
+- **Questions are matched by their exact text.** This applies to reports and to the Release comparison. Rewording a question clears its reports when you save, if you leave that option ticked. On the Release tab it shows as one removed and one new question, so undoing a reword means reverting both.
+- **Only question changes can be reverted** on the Release tab, not book or chapter changes.
 - **Saving a question rewrites the whole book.** If two admins edit the same book at once, one change can be lost.
 - **Deleted books stay on the phone.** A book deleted in the Firebase console stays in the local cache until the app's data is cleared.
 - **There's no sign-out.**
