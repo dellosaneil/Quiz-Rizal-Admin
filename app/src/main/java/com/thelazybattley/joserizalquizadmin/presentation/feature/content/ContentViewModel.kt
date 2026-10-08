@@ -7,8 +7,8 @@ import com.thelazybattley.joserizalquizadmin.domain.usecase.GetAllQuizUseCase
 import com.thelazybattley.joserizalquizadmin.domain.usecase.InsertQuizUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
@@ -20,15 +20,20 @@ class ContentViewModel @Inject constructor(
     BaseViewModel<ContentState, ContentActions>(initialState = ContentState()), ContentCallback {
 
     init {
-        viewModelScope.launch(context = Dispatchers.IO) {
-            insertQuizUseCase(quiz = fetchQuizContentUseCase())
+        viewModelScope.launch {
+            // The cached library still shows if the refresh fails.
+            runCatching {
+                withContext(context = Dispatchers.IO) { insertQuizUseCase(quiz = fetchQuizContentUseCase()) }
+            }
+            updateState(newState = state.value.copy(isLoading = false))
         }
-        viewModelScope.launch(context = Dispatchers.IO) {
-            getAllQuizUseCase().collectLatest { quiz ->
+        viewModelScope.launch {
+            getAllQuizUseCase().collect { quiz ->
                 updateState(
                     newState = state.value.copy(
                         quiz = quiz,
-                        isLoading = false
+                        // Show cached books right away instead of waiting for the refresh.
+                        isLoading = state.value.isLoading && quiz.isEmpty()
                     )
                 )
             }
@@ -39,6 +44,7 @@ class ContentViewModel @Inject constructor(
         when (action) {
             is ContentActions.ExpandBook -> updateState(newState = state.value.copy(expandedBook = action.id))
             is ContentActions.Navigate -> updateState(newState = state.value.copy(destination = action.destination))
+            is ContentActions.FilterSelected -> updateState(newState = state.value.copy(categoryFilter = action.category))
         }
     }
 }
