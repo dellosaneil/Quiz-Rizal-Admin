@@ -13,6 +13,13 @@ data class ReportedQuestionDto(
     @SerialName("chapter_number") val chapterNumber: Int = 0
 )
 
+fun ReportedQuestion.toDto() = ReportedQuestionDto(
+    quizId = quizId,
+    question = question,
+    reportedIssue = reportedIssue,
+    chapterNumber = chapterNumber
+)
+
 fun ReportedQuestionDto.toDomain() = ReportedQuestion(
     quizId = quizId,
     question = question,

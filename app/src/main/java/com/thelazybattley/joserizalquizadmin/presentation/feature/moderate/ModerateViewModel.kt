@@ -2,11 +2,16 @@ package com.thelazybattley.joserizalquizadmin.presentation.feature.moderate
 
 import androidx.lifecycle.viewModelScope
 import com.thelazybattley.joserizalquizadmin.base.BaseViewModel
+import com.thelazybattley.joserizalquizadmin.domain.model.reportedquestions.RankedReportedQuestion
+import com.thelazybattley.joserizalquizadmin.domain.model.suggestedbooks.RankedSuggestedBook
+import com.thelazybattley.joserizalquizadmin.domain.model.suggestedbooks.toSuggestionKey
+import com.thelazybattley.joserizalquizadmin.domain.usecase.DismissReportedQuestionUseCase
 import com.thelazybattley.joserizalquizadmin.domain.usecase.FetchReportedQuestionsUseCase
 import com.thelazybattley.joserizalquizadmin.domain.usecase.FetchSuggestedBooksUseCase
+import com.thelazybattley.joserizalquizadmin.domain.usecase.GetAllQuizUseCase
 import com.thelazybattley.joserizalquizadmin.domain.usecase.RemoveSuggestedBookUseCase
+import com.thelazybattley.joserizalquizadmin.domain.usecase.RestoreReportedQuestionsUseCase
 import com.thelazybattley.joserizalquizadmin.domain.usecase.RestoreSuggestedBooksUseCase
-import com.thelazybattley.joserizalquizadmin.domain.model.suggestedbooks.RankedSuggestedBook
 import com.thelazybattley.joserizalquizadmin.presentation.feature.moderate.ui.ModerateContentFeedback
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -19,7 +24,10 @@ class ModerateViewModel @Inject constructor(
     private val fetchSuggestedBooksUseCase: FetchSuggestedBooksUseCase,
     private val fetchReportedQuestionsUseCase: FetchReportedQuestionsUseCase,
     private val removeSuggestedBookUseCase: RemoveSuggestedBookUseCase,
-    private val restoreSuggestedBooksUseCase: RestoreSuggestedBooksUseCase
+    private val restoreSuggestedBooksUseCase: RestoreSuggestedBooksUseCase,
+    private val dismissReportedQuestionUseCase: DismissReportedQuestionUseCase,
+    private val restoreReportedQuestionsUseCase: RestoreReportedQuestionsUseCase,
+    private val getAllQuizUseCase: GetAllQuizUseCase
 ) : BaseViewModel<ModerateState, ModerateActions>(
     initialState = ModerateState()
 ), ModerateCallback {
@@ -27,22 +35,26 @@ class ModerateViewModel @Inject constructor(
     init {
         fetchSuggestedBooks()
         fetchReportedQuestions()
+        viewModelScope.launch {
+            getAllQuizUseCase().collect { library ->
+                updateState(
+                    newState = state.value.copy(
+                        libraryTitleKeys = library.map { it.title.toSuggestionKey() }.toSet()
+                    )
+                )
+            }
+        }
     }
 
     override fun handleAction(action: ModerateActions) {
         when(action) {
-            is ModerateActions.SelectFeedbackType -> {
-                updateState(newState = state.value.copy(selectedFeedback = action.feedbackType))
-                // Switching to a tab that failed to load retries it.
-                when (action.feedbackType) {
-                    ModerateContentFeedback.SUGGESTED_BOOKS -> if (state.value.suggestedBooks is FeedbackList.Failed) {
-                        fetchSuggestedBooks()
-                    }
+            is ModerateActions.SelectFeedbackType -> updateState(
+                newState = state.value.copy(selectedFeedback = action.feedbackType)
+            )
 
-                    ModerateContentFeedback.REPORTED_QUESTIONS -> if (state.value.reportedQuestions is FeedbackList.Failed) {
-                        fetchReportedQuestions()
-                    }
-                }
+            is ModerateActions.Retry -> when (action.feedbackType) {
+                ModerateContentFeedback.SUGGESTED_BOOKS -> fetchSuggestedBooks()
+                ModerateContentFeedback.REPORTED_QUESTIONS -> fetchReportedQuestions()
             }
 
             is ModerateActions.NavigateDestination -> updateState(
@@ -59,7 +71,9 @@ class ModerateViewModel @Inject constructor(
 
             ModerateActions.ConfirmRemoveSuggestion -> removeSuggestion()
 
-            ModerateActions.UndoRemoveSuggestion -> undoRemoveSuggestion()
+            is ModerateActions.DismissReport -> dismissReport(reportedQuestion = action.reportedQuestion)
+
+            ModerateActions.Undo -> undo()
 
             ModerateActions.SnackbarDismissed -> updateState(
                 newState = state.value.copy(snackbar = null, lastRemoval = null)
@@ -88,7 +102,7 @@ class ModerateViewModel @Inject constructor(
             }.onSuccess { removedEntries ->
                 updateState(
                     newState = state.value.copy(
-                        lastRemoval = SuggestionRemoval(
+                        lastRemoval = ModerateRemoval.Suggestion(
                             suggestedBook = suggestedBook,
                             index = index,
                             removedEntries = removedEntries
@@ -107,28 +121,92 @@ class ModerateViewModel @Inject constructor(
         }
     }
 
-    private fun undoRemoveSuggestion() {
-        val removal = state.value.lastRemoval ?: return
-        reinsertSuggestion(suggestedBook = removal.suggestedBook, index = removal.index)
-        updateState(newState = state.value.copy(lastRemoval = null, snackbar = null))
+    // No confirmation step: the snackbar's Undo puts the reports back.
+    private fun dismissReport(reportedQuestion: RankedReportedQuestion) {
+        val reportedQuestions = (state.value.reportedQuestions as? FeedbackList.Loaded)?.items ?: return
+        val index = reportedQuestions.indexOf(reportedQuestion)
+        if (index < 0) return
+        updateState(
+            newState = state.value.copy(
+                lastRemoval = null,
+                snackbar = null,
+                reportedQuestions = FeedbackList.Loaded(items = reportedQuestions - reportedQuestion)
+            )
+        )
         viewModelScope.launch {
             runCatching {
                 withContext(context = Dispatchers.IO) {
-                    restoreSuggestedBooksUseCase(suggestedBooks = removal.removedEntries)
+                    dismissReportedQuestionUseCase(reportedQuestion = reportedQuestion)
                 }
+            }.onSuccess { removedEntries ->
+                updateState(
+                    newState = state.value.copy(
+                        lastRemoval = ModerateRemoval.Report(
+                            reportedQuestion = reportedQuestion,
+                            index = index,
+                            removedEntries = removedEntries
+                        ),
+                        snackbar = ModerateSnackbar.ReportDismissed
+                    )
+                )
             }.onFailure {
-                // The list no longer matches Firestore, so reload it.
-                fetchSuggestedBooks()
+                reinsertReport(reportedQuestion = reportedQuestion, index = index)
+                updateState(newState = state.value.copy(snackbar = ModerateSnackbar.DismissFailed))
+            }
+        }
+    }
+
+    private fun undo() {
+        val removal = state.value.lastRemoval ?: return
+        updateState(newState = state.value.copy(lastRemoval = null, snackbar = null))
+        when (removal) {
+            is ModerateRemoval.Suggestion -> {
+                reinsertSuggestion(suggestedBook = removal.suggestedBook, index = removal.index)
+                viewModelScope.launch {
+                    runCatching {
+                        withContext(context = Dispatchers.IO) {
+                            restoreSuggestedBooksUseCase(suggestedBooks = removal.removedEntries)
+                        }
+                    }.onFailure {
+                        // The list no longer matches Firestore, so reload it.
+                        fetchSuggestedBooks()
+                    }
+                }
+            }
+
+            is ModerateRemoval.Report -> {
+                reinsertReport(reportedQuestion = removal.reportedQuestion, index = removal.index)
+                viewModelScope.launch {
+                    runCatching {
+                        withContext(context = Dispatchers.IO) {
+                            restoreReportedQuestionsUseCase(reportedQuestions = removal.removedEntries)
+                        }
+                    }.onFailure {
+                        fetchReportedQuestions()
+                    }
+                }
             }
         }
     }
 
     private fun reinsertSuggestion(suggestedBook: RankedSuggestedBook, index: Int) {
         val suggestedBooks = (state.value.suggestedBooks as? FeedbackList.Loaded)?.items ?: return
-        val updated = suggestedBooks.toMutableList().apply {
-            add(index.coerceIn(minimumValue = 0, maximumValue = size), suggestedBook)
-        }
-        updateState(newState = state.value.copy(suggestedBooks = FeedbackList.Loaded(items = updated)))
+        updateState(
+            newState = state.value.copy(suggestedBooks = FeedbackList.Loaded(items = suggestedBooks.insertAt(index, suggestedBook)))
+        )
+    }
+
+    private fun reinsertReport(reportedQuestion: RankedReportedQuestion, index: Int) {
+        val reportedQuestions = (state.value.reportedQuestions as? FeedbackList.Loaded)?.items ?: return
+        updateState(
+            newState = state.value.copy(
+                reportedQuestions = FeedbackList.Loaded(items = reportedQuestions.insertAt(index, reportedQuestion))
+            )
+        )
+    }
+
+    private fun <T> List<T>.insertAt(index: Int, item: T) = toMutableList().apply {
+        add(index.coerceIn(minimumValue = 0, maximumValue = size), item)
     }
 
     private fun fetchSuggestedBooks() {

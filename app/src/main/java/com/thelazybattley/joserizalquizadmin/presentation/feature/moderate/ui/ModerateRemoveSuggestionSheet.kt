@@ -1,11 +1,14 @@
 package com.thelazybattley.joserizalquizadmin.presentation.feature.moderate.ui
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.BottomSheetDefaults
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -13,10 +16,12 @@ import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.thelazybattley.joserizalquizadmin.R
 import com.thelazybattley.joserizalquizadmin.domain.model.suggestedbooks.RankedSuggestedBook
 import com.thelazybattley.joserizalquizadmin.presentation.feature.moderate.ModerateActions
@@ -47,13 +52,32 @@ fun ModerateRemoveSuggestionSheet(
                 style = typography.bold23,
                 color = colors.espresso
             )
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(color = colors.warmLinen, shape = RoundedCornerShape(size = 12.dp))
+                    .padding(horizontal = 14.dp, vertical = 12.dp),
+                horizontalArrangement = Arrangement.spacedBy(space = 12.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = suggestedBook.requestCount.toString(),
+                    style = typography.bold23.copy(fontSize = 24.sp),
+                    color = colors.espresso
+                )
+                Text(
+                    text = pluralStringResource(
+                        id = R.plurals.remove_suggestion_count,
+                        count = suggestedBook.requestCount,
+                        suggestedBook.requestCount
+                    ),
+                    style = typography.regular13,
+                    color = colors.woodsmokeBrown
+                )
+            }
             Text(
-                text = pluralStringResource(
-                    id = R.plurals.remove_suggestion_body,
-                    count = suggestedBook.requestCount,
-                    suggestedBook.requestCount
-                ),
-                style = typography.regular13,
+                text = stringResource(id = R.string.remove_suggestion_body),
+                style = typography.regular13.copy(fontSize = 14.sp, lineHeight = 21.sp),
                 color = colors.woodsmokeBrown
             )
             Row(
@@ -64,7 +88,7 @@ fun ModerateRemoveSuggestionSheet(
                     modifier = Modifier
                         .weight(weight = 1f)
                         .height(height = 48.dp),
-                    text = stringResource(id = R.string.cancel),
+                    text = stringResource(id = R.string.keep_it),
                     buttonColors = ButtonDefaults.buttonColors(
                         containerColor = colors.ivoryMist,
                         contentColor = colors.espresso

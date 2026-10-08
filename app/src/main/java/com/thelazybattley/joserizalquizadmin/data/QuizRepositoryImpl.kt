@@ -11,6 +11,7 @@ import com.thelazybattley.joserizalquizadmin.data.network.model.quiz.QuizDto
 import com.thelazybattley.joserizalquizadmin.data.network.model.quiz.toDomain
 import com.thelazybattley.joserizalquizadmin.data.network.model.reportedquestions.ReportedQuestionDto
 import com.thelazybattley.joserizalquizadmin.data.network.model.reportedquestions.toDomain
+import com.thelazybattley.joserizalquizadmin.data.network.model.reportedquestions.toDto
 import com.thelazybattley.joserizalquizadmin.data.network.model.suggestedbooks.SuggestedBookDto
 import com.thelazybattley.joserizalquizadmin.data.network.model.suggestedbooks.toDomain
 import com.thelazybattley.joserizalquizadmin.data.network.model.suggestedbooks.toDto
@@ -190,6 +191,29 @@ class QuizRepositoryImpl @Inject constructor(
             serializer = SuggestedBookDto.serializer()
         ) { suggestions ->
             suggestions + suggestedBooks.map { it.toDto() } to Unit
+        }
+    }
+
+    override suspend fun removeReportedQuestion(
+        quizId: String,
+        chapterNumber: Int,
+        question: String
+    ): List<ReportedQuestion> = updateFeedback(
+        document = DISPUTE_ANSWER,
+        serializer = ReportedQuestionDto.serializer()
+    ) { reports ->
+        val (removed, kept) = reports.partition {
+            it.quizId == quizId && it.chapterNumber == chapterNumber && it.question == question
+        }
+        kept to removed.map { it.toDomain() }
+    }
+
+    override suspend fun restoreReportedQuestions(reportedQuestions: List<ReportedQuestion>) {
+        updateFeedback(
+            document = DISPUTE_ANSWER,
+            serializer = ReportedQuestionDto.serializer()
+        ) { reports ->
+            reports + reportedQuestions.map { it.toDto() } to Unit
         }
     }
 

@@ -10,8 +10,6 @@
     <string name="questions">%1$d questions</string>
     <string name="needs_review">needs review</string>
 
-    <string name="most_suggested">MOST SUGGESTED</string>
-    <string name="most_reported">MOST REPORTED</string>
     <string name="value_x">%1$d×</string>
     <string name="category">CATEGORY</string>
     <string name="novel">Novel</string>
@@ -26,24 +24,19 @@
     <string name="question">QUESTION</string>
     <string name="save_question">Save question</string>
     <string name="add_a_question">Add a Question</string>
-    <string name="reported_questions">Reported Questions</string>
-    <string name="suggested_books">Suggested Books</string>
-    <string name="sorted_by_how_many_students_requested">Most requested first. Add the ones worth covering; remove titles that are off-topic or already handled.</string>
-    <string name="sorted_by_number_of_reports">Most reported first. Flagged by students from the quiz review screen.</string>
-    <string name="loading_suggestions">Loading suggestions…</string>
-    <string name="loading_reports">Loading reports…</string>
-    <string name="failed_to_load_suggestions">Couldn\'t load suggestions. Tap Suggested Books to try again.</string>
-    <string name="failed_to_load_reports">Couldn\'t load reports. Tap Reported Questions to try again.</string>
-    <string name="no_suggested_books">No books have been suggested by students yet. Requests will show up here, sorted by how many students asked for each title.</string>
-    <string name="no_reported_questions">No questions have been reported. Flags students raise from the quiz review screen will show up here.</string>
+    <string name="reported_questions">Reported questions</string>
+    <string name="suggested_books">Suggested books</string>
+    <string name="failed_to_load_suggestions">Couldn\'t load suggestions</string>
+    <string name="failed_to_load_reports">Couldn\'t load reports</string>
+    <string name="no_suggested_books">When students suggest a book from the quiz app, it shows up here, ranked by how many asked.</string>
+    <string name="no_reported_questions">When students flag a question from the quiz review screen, it shows up here with what they said was wrong.</string>
     <string name="quoted_value">“%1$s”</string>
     <string name="book_chapter">%1$s · Ch. %2$d</string>
     <string name="unknown_book">Unknown book</string>
-    <string name="rank_value">%1$02d</string>
     <string name="remove">Remove</string>
     <string name="add_book">Add Book</string>
     <string name="cancel">Cancel</string>
-    <string name="undo">UNDO</string>
+    <string name="undo">Undo</string>
     <string name="remove_suggestion_title">Remove “%1$s”?</string>
     <string name="removed_suggestion">Removed “%1$s”</string>
     <string name="remove_suggestion_failed">Couldn\'t remove “%1$s”. Try again.</string>
@@ -85,26 +78,6 @@
     <string name="sign_in_provider_disabled">Email/Password sign-in is not enabled for this Firebase project.</string>
     <string name="sign_in_too_many_attempts">Too many attempts. Wait a moment and try again.</string>
     <string name="sign_in_network">No connection. Check your internet and try again.</string>
-
-    <plurals name="suggestions">
-        <item quantity="one">SUGGESTION</item>
-        <item quantity="other">SUGGESTIONS</item>
-    </plurals>
-
-    <plurals name="open_reports">
-        <item quantity="one">OPEN REPORT</item>
-        <item quantity="other">OPEN REPORTS</item>
-    </plurals>
-
-    <plurals name="reports">
-        <item quantity="one">REPORT</item>
-        <item quantity="other">REPORTS</item>
-    </plurals>
-
-    <plurals name="remove_suggestion_body">
-        <item quantity="one">This clears the %1$d student request for this title from the list. Students aren\'t notified, and new requests will bring it back.</item>
-        <item quantity="other">This clears all %1$d student requests for this title from the list. Students aren\'t notified, and new requests will bring it back.</item>
-    </plurals>
 
     <plurals name="books_label">
         <item quantity="one">book</item>
@@ -149,11 +122,6 @@
     <plurals name="new_chapter_detail">
         <item quantity="one">New chapter in %1$s · %2$d question</item>
         <item quantity="other">New chapter in %1$s · %2$d questions</item>
-    </plurals>
-
-    <plurals name="students">
-        <item quantity="one">STUDENT</item>
-        <item quantity="other">STUDENTS</item>
     </plurals>
 
     <string name="back">Back</string>
@@ -262,5 +230,44 @@
     <plurals name="save_hint_blank_choices">
         <item quantity="one">Fill in 1 more choice</item>
         <item quantity="other">Fill in %1$d more choices</item>
+    </plurals>
+
+    <string name="most_requested_first">Most requested first</string>
+    <string name="most_reported_first">Most reported first</string>
+    <string name="check_connection">Check your connection and try again.</string>
+    <string name="no_suggested_books_title">No suggested books</string>
+    <string name="no_reported_questions_title">No reported questions</string>
+    <string name="already_in_library">Already in your library</string>
+    <string name="clear">Clear</string>
+    <string name="dismiss">Dismiss</string>
+    <string name="chapter_only">Ch. %1$d</string>
+    <string name="report_dismissed">Dismissed report</string>
+    <string name="dismiss_report_failed">Couldn\'t dismiss the report. Try again.</string>
+    <string name="keep_it">Keep it</string>
+    <string name="remove_suggestion_body">Use this for books you won\'t add, or requests that are spam. If students ask again later, it comes back.</string>
+
+    <plurals name="students_label">
+        <item quantity="one">student</item>
+        <item quantity="other">students</item>
+    </plurals>
+
+    <plurals name="report_count_tag">
+        <item quantity="one">%1$d REPORT</item>
+        <item quantity="other">%1$d REPORTS</item>
+    </plurals>
+
+    <plurals name="suggestion_count">
+        <item quantity="one">%1$d suggestion</item>
+        <item quantity="other">%1$d suggestions</item>
+    </plurals>
+
+    <plurals name="reported_question_count">
+        <item quantity="one">%1$d reported question</item>
+        <item quantity="other">%1$d reported questions</item>
+    </plurals>
+
+    <plurals name="remove_suggestion_count">
+        <item quantity="one">student asked for this book. Their request will be cleared.</item>
+        <item quantity="other">students asked for this book. All %1$d requests will be cleared.</item>
     </plurals>
 </resources>
