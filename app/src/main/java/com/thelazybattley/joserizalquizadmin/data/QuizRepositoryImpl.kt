@@ -84,7 +84,7 @@ class QuizRepositoryImpl @Inject constructor(
         }
     }
 
-    override fun setQuiz(
+    override suspend fun setQuiz(
         author: String,
         bookName: String,
         category: String,
@@ -114,7 +114,7 @@ class QuizRepositoryImpl @Inject constructor(
             }
         }.toString()
         bookDetail[CHAPTERS] = chaptersJson
-        docRef.set(bookDetail)
+        docRef.set(bookDetail).await()
         return docRef.id
     }
 

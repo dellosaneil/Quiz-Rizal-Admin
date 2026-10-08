@@ -6,7 +6,7 @@ import javax.inject.Inject
 class SetQuizUseCase @Inject constructor(
     private val repository: QuizRepository
 ) {
-    operator fun invoke(
+    suspend operator fun invoke(
         author: String,
         bookName: String,
         category: String,

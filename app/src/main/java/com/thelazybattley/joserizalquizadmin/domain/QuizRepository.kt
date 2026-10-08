@@ -12,7 +12,8 @@ interface QuizRepository {
 
     suspend fun fetchQuizContent(environment: QuizEnvironment): List<Quiz>
 
-    fun setQuiz(
+    // Suspends until Firestore accepts the write, so callers can show progress and failures.
+    suspend fun setQuiz(
         author: String,
         bookName: String,
         category: String,
