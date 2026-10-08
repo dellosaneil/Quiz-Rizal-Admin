@@ -7,9 +7,14 @@ import com.thelazybattley.joserizalquizadmin.data.local.entity.toDomain
 import com.thelazybattley.joserizalquizadmin.data.network.model.quiz.ChapterDto
 import com.thelazybattley.joserizalquizadmin.data.network.model.quiz.QuizDto
 import com.thelazybattley.joserizalquizadmin.data.network.model.quiz.toDomain
+import com.thelazybattley.joserizalquizadmin.data.network.model.reportedquestions.ReportedQuestionDto
+import com.thelazybattley.joserizalquizadmin.data.network.model.reportedquestions.toDomain
+import com.thelazybattley.joserizalquizadmin.data.network.model.suggestedbooks.SuggestedBookDto
+import com.thelazybattley.joserizalquizadmin.data.network.model.suggestedbooks.toDomain
 import com.thelazybattley.joserizalquizadmin.domain.QuizRepository
 import com.thelazybattley.joserizalquizadmin.domain.model.quiz.Quiz
 import com.thelazybattley.joserizalquizadmin.domain.model.quiz.toEntity
+import com.thelazybattley.joserizalquizadmin.domain.model.reportedquestions.ReportedQuestion
 import com.thelazybattley.joserizalquizadmin.domain.model.suggestedbooks.SuggestedBook
 import com.thelazybattley.joserizalquizadmin.util.Constants
 import com.thelazybattley.joserizalquizadmin.util.Constants.Companion.AUTHOR
@@ -18,12 +23,17 @@ import com.thelazybattley.joserizalquizadmin.util.Constants.Companion.BOOK_NAME
 import com.thelazybattley.joserizalquizadmin.util.Constants.Companion.CATEGORY
 import com.thelazybattley.joserizalquizadmin.util.Constants.Companion.CHAPTERS
 import com.thelazybattley.joserizalquizadmin.util.Constants.Companion.DEBUG
+import com.thelazybattley.joserizalquizadmin.util.Constants.Companion.DISPUTE_ANSWER
+import com.thelazybattley.joserizalquizadmin.util.Constants.Companion.FEEDBACK
 import com.thelazybattley.joserizalquizadmin.util.Constants.Companion.FIRESTORE_BATCH_LIMIT
 import com.thelazybattley.joserizalquizadmin.util.Constants.Companion.ID
 import com.thelazybattley.joserizalquizadmin.util.Constants.Companion.QUIZ
 import com.thelazybattley.joserizalquizadmin.util.Constants.Companion.RELEASE
+import com.thelazybattley.joserizalquizadmin.util.Constants.Companion.SUGGESTED_BOOKS
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.tasks.await
+import kotlinx.serialization.KSerializer
+import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.json.Json
 import org.json.JSONArray
 import org.json.JSONObject
@@ -139,8 +149,30 @@ class QuizRepositoryImpl @Inject constructor(
 
     override fun getQuizById(id: String) = dao.getQuizById(id = id).map { it.toDomain() }
 
-    override suspend fun fetchSuggestedBooks(): List<SuggestedBook> {
-        TODO("Provide the return value")
+    override suspend fun fetchSuggestedBooks(): List<SuggestedBook> = fetchFeedback(
+        document = SUGGESTED_BOOKS,
+        serializer = SuggestedBookDto.serializer()
+    ).map { it.toDomain() }
+
+    override suspend fun fetchReportedQuestions(): List<ReportedQuestion> = fetchFeedback(
+        document = DISPUTE_ANSWER,
+        serializer = ReportedQuestionDto.serializer()
+    ).map { it.toDomain() }
+
+    // The quiz app appends each submission to a JSON array stored in the "feedback" string field.
+    private suspend fun <T> fetchFeedback(document: String, serializer: KSerializer<T>): List<T> {
+        val snapshot = firestore
+            .collection(QUIZ)
+            .document(BuildConfig.BUILD_TYPE)
+            .collection(FEEDBACK)
+            .document(document)
+            .get()
+            .await()
+        val feedbackJson = snapshot.getString(FEEDBACK) ?: return emptyList()
+        val json = Json {
+            ignoreUnknownKeys = true
+        }
+        return json.decodeFromString(ListSerializer(serializer), feedbackJson)
     }
 
     override suspend fun setQuizContentToRelease() {

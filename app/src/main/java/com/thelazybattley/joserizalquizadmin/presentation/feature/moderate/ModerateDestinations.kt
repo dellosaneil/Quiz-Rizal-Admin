@@ -1,4 +1,5 @@
 package com.thelazybattley.joserizalquizadmin.presentation.feature.moderate
 
-enum class ModerateDestinations {
+sealed class ModerateDestinations {
+    data class AddBook(val bookTitle: String, val author: String) : ModerateDestinations()
 }

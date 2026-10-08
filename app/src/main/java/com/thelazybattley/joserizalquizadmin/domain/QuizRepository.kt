@@ -1,6 +1,7 @@
 package com.thelazybattley.joserizalquizadmin.domain
 
 import com.thelazybattley.joserizalquizadmin.domain.model.quiz.Quiz
+import com.thelazybattley.joserizalquizadmin.domain.model.reportedquestions.ReportedQuestion
 import com.thelazybattley.joserizalquizadmin.domain.model.suggestedbooks.SuggestedBook
 import kotlinx.coroutines.flow.Flow
 
@@ -23,7 +24,9 @@ interface QuizRepository {
 
     fun getQuizById(id: String): Flow<Quiz>
 
-    suspend fun fetchSuggestedBooks() : List<SuggestedBook>
+    suspend fun fetchSuggestedBooks(): List<SuggestedBook>
+
+    suspend fun fetchReportedQuestions(): List<ReportedQuestion>
 
     suspend fun setQuizContentToRelease()
 }

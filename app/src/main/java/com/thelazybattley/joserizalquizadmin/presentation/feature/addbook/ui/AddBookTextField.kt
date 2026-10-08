@@ -29,9 +29,10 @@ import kotlin.time.Duration.Companion.milliseconds
 fun AddBookTextField(
     modifier: Modifier = Modifier,
     type: AddBookTextFieldTypes,
+    initialText: String = "",
     callback: AddBookCallback
 ) {
-    val state = rememberTextFieldState(initialText = "")
+    val state = rememberTextFieldState(initialText = initialText)
     LaunchedEffect(key1 = Unit) {
         snapshotFlow { state.text }
             .debounce(timeout = 150.milliseconds)

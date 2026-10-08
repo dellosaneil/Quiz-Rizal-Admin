@@ -1,5 +1,6 @@
 package com.thelazybattley.joserizalquizadmin.presentation.navigation
 
+import android.net.Uri
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import com.thelazybattley.joserizalquizadmin.R
@@ -37,7 +38,16 @@ sealed class AppDestinations(val route: String, val routeWithArgs: String? = nul
 
     object Login : AppDestinations(route = "login")
 
-    object AddBook : AppDestinations(route = "add_book")
+    // Title and author are optional, pre-filled when adding a book from a student suggestion.
+    object AddBook : AppDestinations(
+        route = "add_book",
+        routeWithArgs = "add_book?$BOOK_TITLE={$BOOK_TITLE}&$AUTHOR={$AUTHOR}"
+    ) {
+        fun createRoute(bookTitle: String? = null, author: String? = null): String {
+            if (bookTitle == null && author == null) return route
+            return "add_book?$BOOK_TITLE=${Uri.encode(bookTitle.orEmpty())}&$AUTHOR=${Uri.encode(author.orEmpty())}"
+        }
+    }
 
     object AddQuestion :
         AppDestinations(
@@ -50,5 +60,7 @@ sealed class AppDestinations(val route: String, val routeWithArgs: String? = nul
     companion object {
         const val QUIZ_ID = "quizId"
         const val CHAPTER_NUMBER = "chapterNumber"
+        const val BOOK_TITLE = "bookTitle"
+        const val AUTHOR = "author"
     }
 }

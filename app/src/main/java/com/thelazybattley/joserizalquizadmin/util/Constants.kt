@@ -22,6 +22,7 @@ class Constants {
         const val ANSWER = "answer"
         const val REPORTED_ISSUE = "reported_issue"
         const val DB_VERSION = "db_version"
+        const val FEEDBACK = "feedback"
         const val DEBUG = "debug"
         const val RELEASE = "release"
         const val FIRESTORE_BATCH_LIMIT = 500

@@ -110,6 +110,10 @@ private fun AddBookScreen(
                     AddBookTextFieldTypes.entries.forEach { type ->
                         AddBookTextField(
                             type = type,
+                            initialText = when (type) {
+                                AddBookTextFieldTypes.TITLE -> state.title
+                                AddBookTextFieldTypes.AUTHOR -> state.author
+                            },
                             callback = callback
                         )
                     }
