@@ -118,7 +118,7 @@ class QuizRepositoryImpl @Inject constructor(
         return docRef.id
     }
 
-    override fun setUpdatedQuiz(quiz: Quiz) {
+    override suspend fun setUpdatedQuiz(quiz: Quiz) {
         val variant = BuildConfig.BUILD_TYPE
         val bookDetail = mutableMapOf<String, Any>()
 
@@ -151,7 +151,7 @@ class QuizRepositoryImpl @Inject constructor(
             }
         }.toString()
         bookDetail[CHAPTERS] = chaptersJson
-        docRef.set(bookDetail)
+        docRef.set(bookDetail).await()
     }
 
     override fun getAllQuiz() = dao.getAllQuiz().map { entity ->
