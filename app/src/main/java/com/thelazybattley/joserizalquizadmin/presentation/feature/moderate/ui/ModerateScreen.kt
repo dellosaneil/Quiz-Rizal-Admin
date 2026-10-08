@@ -7,11 +7,17 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
@@ -25,6 +31,7 @@ import com.thelazybattley.joserizalquizadmin.presentation.feature.moderate.Feedb
 import com.thelazybattley.joserizalquizadmin.presentation.feature.moderate.ModerateActions
 import com.thelazybattley.joserizalquizadmin.presentation.feature.moderate.ModerateCallback
 import com.thelazybattley.joserizalquizadmin.presentation.feature.moderate.ModerateDestinations
+import com.thelazybattley.joserizalquizadmin.presentation.feature.moderate.ModerateSnackbar as ModerateSnackbarMessage
 import com.thelazybattley.joserizalquizadmin.presentation.feature.moderate.ModerateState
 import com.thelazybattley.joserizalquizadmin.presentation.ui.theme.AppTheme
 import com.thelazybattley.joserizalquizadmin.presentation.ui.theme.AppTheme.colors
@@ -45,10 +52,42 @@ fun ModerateScreen(
         }
     }
 
+    val snackbarHostState = remember { SnackbarHostState() }
+    val removedMessage = state.snackbar?.let { snackbar ->
+        when (snackbar) {
+            is ModerateSnackbarMessage.Removed -> stringResource(id = R.string.removed_suggestion, snackbar.bookTitle)
+            is ModerateSnackbarMessage.RemoveFailed -> stringResource(id = R.string.remove_suggestion_failed, snackbar.bookTitle)
+        }
+    }
+    val undoLabel = stringResource(id = R.string.undo)
+    LaunchedEffect(key1 = state.snackbar) {
+        val snackbar = state.snackbar ?: return@LaunchedEffect
+        val result = snackbarHostState.showSnackbar(
+            message = removedMessage.orEmpty(),
+            actionLabel = if (snackbar is ModerateSnackbarMessage.Removed) undoLabel else null,
+            duration = SnackbarDuration.Long
+        )
+        callbacks.handleAction(
+            action = when (result) {
+                SnackbarResult.ActionPerformed -> ModerateActions.UndoRemoveSuggestion
+                SnackbarResult.Dismissed -> ModerateActions.SnackbarDismissed
+            }
+        )
+    }
+
+    state.pendingRemoval?.let { suggestedBook ->
+        ModerateRemoveSuggestionSheet(suggestedBook = suggestedBook, callbacks = callbacks)
+    }
+
     Scaffold(
         modifier = modifier,
         containerColor = APP_BACKGROUND,
-        contentWindowInsets = WindowInsets()
+        contentWindowInsets = WindowInsets(),
+        snackbarHost = {
+            SnackbarHost(hostState = snackbarHostState) { snackbarData ->
+                ModerateSnackbar(snackbarData = snackbarData)
+            }
+        }
     ) { innerPadding ->
         LazyColumn(
             contentPadding = innerPadding,
@@ -73,9 +112,10 @@ fun ModerateScreen(
                         skeletonSubtitleWidth = 0.35f
                     ),
                     key = { it.bookTitle.lowercase() }
-                ) { suggestedBook ->
+                ) { index, suggestedBook ->
                     ModerateSuggestedBookCard(
                         modifier = Modifier.fillMaxWidth(),
+                        rank = index + 1,
                         suggestedBook = suggestedBook,
                         callbacks = callbacks
                     )
@@ -93,7 +133,7 @@ fun ModerateScreen(
                         skeletonSubtitleWidth = 0.4f
                     ),
                     key = { "${it.quizId}-${it.chapterNumber}-${it.question}" }
-                ) { reportedQuestion ->
+                ) { _, reportedQuestion ->
                     ModerateReportedQuestionCard(
                         modifier = Modifier.fillMaxWidth(),
                         reportedQuestion = reportedQuestion
@@ -118,7 +158,7 @@ private fun <T> LazyListScope.feedbackItems(
     feedbackList: FeedbackList<T>,
     content: FeedbackContent,
     key: (T) -> Any,
-    itemContent: @Composable (T) -> Unit
+    itemContent: @Composable (index: Int, item: T) -> Unit
 ) {
     when (feedbackList) {
         FeedbackList.Loading -> {
@@ -144,7 +184,9 @@ private fun <T> LazyListScope.feedbackItems(
 
         is FeedbackList.Loaded -> {
             item { SectionNote(textRes = content.noteRes) }
-            items(items = feedbackList.items, key = key) { feedback -> itemContent(feedback) }
+            itemsIndexed(items = feedbackList.items, key = { _, item -> key(item) }) { index, feedback ->
+                itemContent(index, feedback)
+            }
         }
     }
 }

@@ -5,3 +5,6 @@ data class SuggestedBook(
     val bookTitle: String,
     val school: String
 )
+
+// Suggestions for the same title are grouped by this key, ignoring case and surrounding spaces.
+fun String.toSuggestionKey() = trim().lowercase()

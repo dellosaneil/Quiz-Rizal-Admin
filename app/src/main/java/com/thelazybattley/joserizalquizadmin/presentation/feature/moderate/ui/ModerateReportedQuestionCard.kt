@@ -1,6 +1,5 @@
 package com.thelazybattley.joserizalquizadmin.presentation.feature.moderate.ui
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -35,7 +34,7 @@ fun ModerateReportedQuestionCard(
                     text = stringResource(id = R.string.quoted_value, reportedQuestion.question),
                     style = typography.semiBold14,
                     color = colors.espresso,
-                    maxLines = 1,
+                    maxLines = 3,
                     overflow = TextOverflow.Ellipsis
                 )
                 Text(
@@ -45,7 +44,7 @@ fun ModerateReportedQuestionCard(
                         reportedQuestion.bookTitle ?: stringResource(id = R.string.unknown_book),
                         reportedQuestion.chapterNumber
                     ),
-                    style = typography.regular11,
+                    style = typography.regular12,
                     color = colors.woodsmokeBrown
                 )
                 if (reportedQuestion.reasons.isNotEmpty()) {
@@ -60,7 +59,6 @@ fun ModerateReportedQuestionCard(
                                 style = typography.regular11,
                                 color = colors.woodsmokeBrown,
                                 modifier = Modifier
-                                    .background(color = colors.ivoryMist, shape = RoundedCornerShape(size = 20.dp))
                                     .border(width = 1.dp, color = APP_BORDER_COLOR, shape = RoundedCornerShape(size = 20.dp))
                                     .padding(horizontal = 10.dp, vertical = 4.dp)
                             )

@@ -17,3 +17,9 @@ fun SuggestedBookDto.toDomain() = SuggestedBook(
     bookTitle = bookTitle,
     school = school
 )
+
+fun SuggestedBook.toDto() = SuggestedBookDto(
+    bookTitle = bookTitle,
+    author = author,
+    school = school
+)
