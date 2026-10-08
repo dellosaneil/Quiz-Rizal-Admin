@@ -43,6 +43,15 @@
     <string name="sorted_by_how_many_students_requested">Sorted by how many students requested each title — use this to decide what to add next.</string>
     <string name="sorted_by_number_of_reports">Sorted by number of reports. Flagged from the quiz review
 screen.</string>
+    <string name="sign_in">Sign In</string>
+    <string name="sign_in_description">Sign in with the admin account to manage quiz content.</string>
+    <string name="email">EMAIL</string>
+    <string name="password">PASSWORD</string>
+    <string name="sign_in_failed">Sign in failed. Please try again.</string>
+    <string name="sign_in_invalid_credentials">Email or password is incorrect. Use the password set for this user in Firebase Authentication, not your Google account password.</string>
+    <string name="sign_in_provider_disabled">Email/Password sign-in is not enabled for this Firebase project.</string>
+    <string name="sign_in_too_many_attempts">Too many attempts. Wait a moment and try again.</string>
+    <string name="sign_in_network">No connection. Check your internet and try again.</string>
 
     <plurals name="suggestions">
         <item quantity="one">SUGGESTION</item>

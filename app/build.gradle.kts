@@ -51,6 +51,7 @@ dependencies {
     debugImplementation(libs.androidx.compose.ui.tooling)
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.firestore)
+    implementation(libs.firebase.auth)
     implementation(libs.kotlinx.coroutines.play.services)
     implementation(libs.androidx.navigation.compose)
     implementation(libs.hilt.navigation.compose)
