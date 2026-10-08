@@ -19,6 +19,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -30,10 +32,15 @@ import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.layout.onSizeChanged
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
@@ -81,27 +88,55 @@ fun ContentItemCard(
             enter = expandVertically() + fadeIn(),
             exit = shrinkVertically() + fadeOut()
         ) {
+            val density = LocalDensity.current
+            // Height of one chapter row plus its divider, measured from the first row.
+            // Starts from an estimate so the scrolling list is never measured without a height limit.
+            var chapterRowHeight by remember { mutableStateOf(value = ESTIMATED_CHAPTER_ROW_HEIGHT) }
+            val isScrollable = quiz.chapters.size > VISIBLE_CHAPTER_ROWS
             Column(modifier = Modifier.background(color = colors.warmLinen.copy(alpha = 0.6f))) {
                 HorizontalDivider(thickness = 1.dp, color = APP_BORDER_COLOR)
-                quiz.chapters.forEachIndexed { index, chapter ->
-                    if (index > 0) {
-                        HorizontalDivider(thickness = 1.dp, color = APP_BORDER_COLOR.copy(alpha = 0.5f))
+                // Capped at three and a half rows so the cut-off row shows the list scrolls.
+                Column(
+                    modifier = if (isScrollable) {
+                        Modifier
+                            .heightIn(max = chapterRowHeight * VISIBLE_CHAPTER_ROWS)
+                            .verticalScroll(state = rememberScrollState())
+                    } else {
+                        Modifier
                     }
-                    ChapterRow(chapter = chapter) {
-                        callback.handleAction(
-                            action = ContentActions.Navigate(
-                                destination = ContentDestinations.AddQuestion(
-                                    chapterNumber = chapter.chapterNumber,
-                                    quizId = quiz.id
+                ) {
+                    quiz.chapters.forEachIndexed { index, chapter ->
+                        if (index > 0) {
+                            HorizontalDivider(thickness = 1.dp, color = APP_BORDER_COLOR.copy(alpha = 0.5f))
+                        }
+                        ChapterRow(
+                            modifier = if (index == 0) {
+                                Modifier.onSizeChanged { size ->
+                                    chapterRowHeight = with(density) { size.height.toDp() } + 1.dp
+                                }
+                            } else {
+                                Modifier
+                            },
+                            chapter = chapter
+                        ) {
+                            callback.handleAction(
+                                action = ContentActions.Navigate(
+                                    destination = ContentDestinations.AddQuestion(
+                                        chapterNumber = chapter.chapterNumber,
+                                        quizId = quiz.id
+                                    )
                                 )
                             )
-                        )
+                        }
                     }
                 }
             }
         }
     }
 }
+
+private const val VISIBLE_CHAPTER_ROWS = 3.5f
+private val ESTIMATED_CHAPTER_ROW_HEIGHT = 69.dp
 
 @Composable
 private fun BookSummary(
@@ -205,12 +240,13 @@ private fun BookSummary(
 
 @Composable
 private fun ChapterRow(
+    modifier: Modifier = Modifier,
     chapter: Chapter,
     onAddQuestion: () -> Unit
 ) {
     val addDescription = stringResource(id = R.string.add_question_to_chapter, chapter.chapterNumber, chapter.chapterName)
     Row(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .padding(horizontal = 14.dp, vertical = 10.dp),
         verticalAlignment = Alignment.CenterVertically,
@@ -303,6 +339,8 @@ private fun ContentItemCardPreview(
                     Chapter.dummy(chapterNumber = 1),
                     Chapter.dummy(chapterNumber = 2),
                     Chapter.dummy(chapterNumber = 3).copy(questions = emptyList()),
+                    Chapter.dummy(chapterNumber = 4),
+                    Chapter.dummy(chapterNumber = 5),
                 )
             ),
             isExpanded = isExpanded,

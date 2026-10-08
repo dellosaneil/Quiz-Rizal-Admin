@@ -9,6 +9,8 @@ import com.thelazybattley.joserizalquizadmin.domain.usecase.InsertQuizUseCase
 import com.thelazybattley.joserizalquizadmin.domain.usecase.SetQuizUseCase
 import com.thelazybattley.joserizalquizadmin.presentation.navigation.AppDestinations.Companion.AUTHOR
 import com.thelazybattley.joserizalquizadmin.presentation.navigation.AppDestinations.Companion.BOOK_TITLE
+import com.thelazybattley.joserizalquizadmin.presentation.navigation.AppDestinations.Companion.CATEGORY
+import com.thelazybattley.joserizalquizadmin.presentation.util.Category
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -24,9 +26,11 @@ class AddBookViewModel @Inject constructor(
     initialState = savedStateHandle.let { handle ->
         val title = handle.get<String>(BOOK_TITLE).orEmpty()
         val author = handle.get<String>(AUTHOR).orEmpty()
+        val category = handle.get<String>(CATEGORY)?.let { name -> Category.entries.firstOrNull { it.name == name } }
         AddBookState(
             title = title,
             author = author,
+            category = category ?: Category.LIFE_OF_RIZAL,
             isFromSuggestion = title.isNotBlank() || author.isNotBlank()
         )
     }

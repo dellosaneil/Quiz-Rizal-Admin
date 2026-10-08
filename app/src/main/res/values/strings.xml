@@ -228,4 +228,12 @@
         <item quantity="one">%1$d chapter has no questions</item>
         <item quantity="other">%1$d chapters have no questions</item>
     </plurals>
+
+    <string name="no_category_books_yet">No %1$s books yet</string>
+    <string name="no_life_of_rizal_books_body">Biographies, places and people from Rizal\'s life go here once you add one.</string>
+    <string name="no_novel_books_body">Noli, El Fili and Rizal\'s other works go here once you add one.</string>
+    <string name="add_category_book">Add a %1$s book</string>
+    <string name="show_all_books">Show all books</string>
+
+
 </resources>

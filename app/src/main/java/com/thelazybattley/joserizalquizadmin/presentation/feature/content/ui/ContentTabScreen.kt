@@ -58,7 +58,7 @@ private fun ContentTabScreen(
     callback: ContentCallback
 ) {
     val addBook = {
-        callback.handleAction(action = ContentActions.Navigate(destination = ContentDestinations.AddBook))
+        callback.handleAction(action = ContentActions.Navigate(destination = ContentDestinations.AddBook()))
     }
     Scaffold(
         modifier = modifier,
@@ -109,6 +109,27 @@ private fun ContentTabScreen(
                             callback = callback
                         )
                     }
+                    val emptyCategory = state.categoryFilter?.takeIf { state.visibleQuiz.isEmpty() }
+                    if (emptyCategory != null) {
+                        item {
+                            ContentFilterEmptyState(
+                                modifier = Modifier
+                                    .padding(top = 6.dp)
+                                    .fillMaxWidth(),
+                                category = emptyCategory,
+                                onAddBook = {
+                                    callback.handleAction(
+                                        action = ContentActions.Navigate(
+                                            destination = ContentDestinations.AddBook(category = emptyCategory)
+                                        )
+                                    )
+                                },
+                                onShowAll = {
+                                    callback.handleAction(action = ContentActions.FilterSelected(category = null))
+                                }
+                            )
+                        }
+                    }
                     items(items = state.visibleQuiz, key = { it.id }) { quiz ->
                         ContentItemCard(
                             modifier = Modifier
@@ -144,6 +165,11 @@ private class ContentStateProvider : PreviewParameterProvider<ContentState> {
             isLoading = false,
             quiz = listOf(Quiz.dummy(), Quiz.dummy(id = "1").copy(category = Category.NOVEL)),
             expandedBook = "1"
+        ),
+        ContentState(
+            isLoading = false,
+            quiz = listOf(Quiz.dummy(id = "1").copy(category = Category.NOVEL)),
+            categoryFilter = Category.LIFE_OF_RIZAL
         ),
         ContentState(),
         ContentState(isLoading = false)

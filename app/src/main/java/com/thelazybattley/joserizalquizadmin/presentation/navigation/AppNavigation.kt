@@ -102,8 +102,8 @@ fun AppNavigation(isSignedIn: Boolean) {
                         modifier = Modifier.fillMaxSize(),
                         navigate = { destination ->
                             when (destination) {
-                                ContentDestinations.AddBook -> navController.navigate(
-                                    AppDestinations.AddBook.createRoute()
+                                is ContentDestinations.AddBook -> navController.navigate(
+                                    AppDestinations.AddBook.createRoute(category = destination.category)
                                 )
 
                                 is ContentDestinations.AddQuestion -> navController.navigate(
@@ -133,6 +133,10 @@ fun AppNavigation(isSignedIn: Boolean) {
                             defaultValue = ""
                         },
                         navArgument(name = AppDestinations.AUTHOR) {
+                            type = NavType.StringType
+                            defaultValue = ""
+                        },
+                        navArgument(name = AppDestinations.CATEGORY) {
                             type = NavType.StringType
                             defaultValue = ""
                         }

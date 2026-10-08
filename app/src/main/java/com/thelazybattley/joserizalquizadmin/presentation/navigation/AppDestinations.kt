@@ -4,6 +4,7 @@ import android.net.Uri
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import com.thelazybattley.joserizalquizadmin.R
+import com.thelazybattley.joserizalquizadmin.presentation.util.Category
 
 sealed class AppDestinations(val route: String, val routeWithArgs: String? = null) {
 
@@ -38,14 +39,16 @@ sealed class AppDestinations(val route: String, val routeWithArgs: String? = nul
 
     object Login : AppDestinations(route = "login")
 
-    // Title and author are optional, pre-filled when adding a book from a student suggestion.
+    // Title and author are pre-filled from a student suggestion; category is pre-selected from a Content filter.
     object AddBook : AppDestinations(
         route = "add_book",
-        routeWithArgs = "add_book?$BOOK_TITLE={$BOOK_TITLE}&$AUTHOR={$AUTHOR}"
+        routeWithArgs = "add_book?$BOOK_TITLE={$BOOK_TITLE}&$AUTHOR={$AUTHOR}&$CATEGORY={$CATEGORY}"
     ) {
-        fun createRoute(bookTitle: String? = null, author: String? = null): String {
-            if (bookTitle == null && author == null) return route
-            return "add_book?$BOOK_TITLE=${Uri.encode(bookTitle.orEmpty())}&$AUTHOR=${Uri.encode(author.orEmpty())}"
+        fun createRoute(bookTitle: String? = null, author: String? = null, category: Category? = null): String {
+            if (bookTitle == null && author == null && category == null) return route
+            return "add_book?$BOOK_TITLE=${Uri.encode(bookTitle.orEmpty())}" +
+                    "&$AUTHOR=${Uri.encode(author.orEmpty())}" +
+                    "&$CATEGORY=${category?.name.orEmpty()}"
         }
     }
 
@@ -62,5 +65,6 @@ sealed class AppDestinations(val route: String, val routeWithArgs: String? = nul
         const val CHAPTER_NUMBER = "chapterNumber"
         const val BOOK_TITLE = "bookTitle"
         const val AUTHOR = "author"
+        const val CATEGORY = "category"
     }
 }
