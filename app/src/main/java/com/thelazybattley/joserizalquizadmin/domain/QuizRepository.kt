@@ -38,6 +38,11 @@ interface QuizRepository {
 
     suspend fun restoreSuggestedBooks(suggestedBooks: List<SuggestedBook>)
 
+    // Removes every report of this question and returns them so they can be restored.
+    suspend fun removeReportedQuestion(quizId: String, chapterNumber: Int, question: String): List<ReportedQuestion>
+
+    suspend fun restoreReportedQuestions(reportedQuestions: List<ReportedQuestion>)
+
     // Makes release match debug: copies every debug book and deletes release books no longer in debug.
     suspend fun setQuizContentToRelease()
 }
