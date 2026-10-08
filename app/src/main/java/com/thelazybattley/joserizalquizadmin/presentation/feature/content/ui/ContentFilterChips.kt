@@ -75,8 +75,12 @@ private fun FilterChip(
         modifier = Modifier
             .height(height = 36.dp)
             .clip(shape = shape)
-            .background(color = if (isSelected) colors.espresso else colors.ivoryMist, shape = shape)
-            .border(width = 1.dp, color = if (isSelected) colors.espresso else APP_BORDER_COLOR, shape = shape)
+            .background(color = if (isSelected) colors.antiqueCream else colors.ivoryMist, shape = shape)
+            .border(
+                width = if (isSelected) 1.5.dp else 1.dp,
+                color = if (isSelected) colors.antiqueGold else APP_BORDER_COLOR,
+                shape = shape
+            )
             .selectable(selected = isSelected, role = Role.RadioButton, onClick = onClick)
             .padding(start = 14.dp, end = 12.dp),
         verticalAlignment = Alignment.CenterVertically,
@@ -85,12 +89,12 @@ private fun FilterChip(
         Text(
             text = label,
             style = typography.semiBold13,
-            color = if (isSelected) colors.ivoryMist else colors.espresso
+            color = colors.espresso
         )
         Text(
             text = count.toString(),
             style = typography.regular11.copy(fontFamily = FontFamily.Monospace),
-            color = if (isSelected) colors.parchment else colors.woodsmokeBrown
+            color = if (isSelected) colors.antiqueGold else colors.woodsmokeBrown
         )
     }
 }
