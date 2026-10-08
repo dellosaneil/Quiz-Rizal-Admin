@@ -49,8 +49,6 @@ import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.thelazybattley.joserizalquizadmin.R
-import com.thelazybattley.joserizalquizadmin.presentation.feature.addquestion.AddQuestionAction
-import com.thelazybattley.joserizalquizadmin.presentation.feature.addquestion.AddQuestionCallback
 import com.thelazybattley.joserizalquizadmin.presentation.feature.addquestion.AddQuestionState
 import com.thelazybattley.joserizalquizadmin.presentation.feature.release.ui.ReleaseTag
 import com.thelazybattley.joserizalquizadmin.presentation.ui.theme.AppTheme
@@ -58,15 +56,19 @@ import com.thelazybattley.joserizalquizadmin.presentation.ui.theme.AppTheme.colo
 import com.thelazybattley.joserizalquizadmin.presentation.ui.theme.AppTheme.typography
 import com.thelazybattley.joserizalquizadmin.presentation.util.APP_BORDER_COLOR
 
-private val CHOICE_LETTERS = listOf("A", "B", "C", "D")
+val CHOICE_LETTERS = listOf("A", "B", "C", "D", "E", "F")
 
+// Shared by Add Question and Edit Question. Wrap in key() to reset the fields to initialChoices.
 @Composable
-fun AddQuestionChoices(
+fun QuestionChoices(
     modifier: Modifier = Modifier,
+    initialChoices: List<String> = List(size = AddQuestionState.CHOICE_COUNT) { "" },
     correctAnswerIndex: Int,
     duplicateIndices: Set<Int>,
+    editedIndices: Set<Int> = emptySet(),
     enabled: Boolean = true,
-    callback: AddQuestionCallback
+    onChoiceChange: (index: Int, text: String) -> Unit,
+    onSelect: (index: Int) -> Unit
 ) {
     Column(
         modifier = modifier,
@@ -88,15 +90,18 @@ fun AddQuestionChoices(
             modifier = Modifier.selectableGroup(),
             verticalArrangement = Arrangement.spacedBy(space = 8.dp)
         ) {
-            repeat(times = AddQuestionState.CHOICE_COUNT) { index ->
+            repeat(times = initialChoices.size) { index ->
                 ChoiceRow(
                     modifier = Modifier.fillMaxWidth(),
                     index = index,
+                    initialText = initialChoices.getOrElse(index) { "" },
                     isCorrect = correctAnswerIndex == index,
                     isDuplicate = index in duplicateIndices,
-                    isLast = index == AddQuestionState.CHOICE_COUNT.dec(),
+                    isEdited = index in editedIndices,
+                    isLast = index == initialChoices.lastIndex,
                     enabled = enabled,
-                    callback = callback
+                    onTextChange = { text -> onChoiceChange(index, text) },
+                    onSelect = { onSelect(index) }
                 )
             }
         }
@@ -107,20 +112,23 @@ fun AddQuestionChoices(
 private fun ChoiceRow(
     modifier: Modifier = Modifier,
     index: Int,
+    initialText: String,
     isCorrect: Boolean,
     isDuplicate: Boolean,
+    isEdited: Boolean,
     isLast: Boolean,
     enabled: Boolean,
-    callback: AddQuestionCallback
+    onTextChange: (String) -> Unit,
+    onSelect: () -> Unit
 ) {
-    val state = rememberTextFieldState()
+    val state = rememberTextFieldState(initialText = initialText)
     val focusManager = LocalFocusManager.current
     LaunchedEffect(key1 = Unit) {
         snapshotFlow { state.text }.collect { text ->
-            callback.handleAction(action = AddQuestionAction.Choice.UpdateValue(index = index, choice = text.toString()))
+            onTextChange(text.toString())
         }
     }
-    val letter = CHOICE_LETTERS[index]
+    val letter = CHOICE_LETTERS.getOrElse(index) { (index + 1).toString() }
     val shape = RoundedCornerShape(size = 14.dp)
     val (containerColor, borderColor, borderWidth) = when {
         isCorrect -> Triple(colors.softSage, colors.deepMoss, 2.dp)
@@ -150,7 +158,7 @@ private fun ChoiceRow(
                     selected = isCorrect,
                     enabled = enabled,
                     role = Role.RadioButton,
-                    onClick = { callback.handleAction(action = AddQuestionAction.Choice.Selected(index = index)) }
+                    onClick = onSelect
                 )
                 .semantics { contentDescription = markDescription },
             contentAlignment = Alignment.Center
@@ -233,6 +241,8 @@ private fun ChoiceRow(
                 containerColor = colors.softBlush,
                 contentColor = colors.brickRed
             )
+
+            isEdited -> EditedTag(modifier = Modifier.padding(end = 10.dp))
         }
     }
 }
@@ -251,13 +261,15 @@ private fun ChoiceTag(text: String, containerColor: Color, contentColor: Color) 
 @Composable
 private fun Preview() {
     AppTheme {
-        AddQuestionChoices(
+        QuestionChoices(
             modifier = Modifier
                 .background(color = colors.warmLinen)
                 .fillMaxWidth(),
             correctAnswerIndex = 0,
             duplicateIndices = setOf(2, 3),
-            callback = AddQuestionCallback.default()
+            editedIndices = setOf(1),
+            onChoiceChange = { _, _ -> },
+            onSelect = {}
         )
     }
 }

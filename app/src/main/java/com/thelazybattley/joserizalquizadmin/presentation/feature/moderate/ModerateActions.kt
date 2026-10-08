@@ -25,4 +25,7 @@ sealed class ModerateActions: BaseActions {
 
     object SnackbarDismissed : ModerateActions()
 
+    // Sent when the tab comes back into view, e.g. after fixing a question from a report.
+    object Resumed : ModerateActions()
+
 }

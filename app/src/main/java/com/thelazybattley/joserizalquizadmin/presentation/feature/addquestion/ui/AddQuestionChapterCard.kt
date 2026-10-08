@@ -33,7 +33,9 @@ import com.thelazybattley.joserizalquizadmin.presentation.util.APP_BORDER_COLOR
 fun AddQuestionChapterCard(
     modifier: Modifier = Modifier,
     bookTitle: String,
-    chapter: Chapter
+    chapter: Chapter,
+    // Replaces the default "N questions so far" line.
+    detail: String? = null
 ) {
     val shape = RoundedCornerShape(size = 14.dp)
     Row(
@@ -68,7 +70,7 @@ fun AddQuestionChapterCard(
                 overflow = TextOverflow.Ellipsis
             )
             Text(
-                text = stringResource(
+                text = detail ?: stringResource(
                     id = R.string.chapter_card_detail,
                     bookTitle,
                     chapter.chapterNumber,

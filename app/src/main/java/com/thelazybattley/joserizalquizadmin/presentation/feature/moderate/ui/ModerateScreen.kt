@@ -37,6 +37,7 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.compose.LifecycleResumeEffect
 import com.thelazybattley.joserizalquizadmin.R
 import com.thelazybattley.joserizalquizadmin.domain.model.reportedquestions.RankedReportedQuestion
 import com.thelazybattley.joserizalquizadmin.domain.model.suggestedbooks.RankedSuggestedBook
@@ -66,6 +67,12 @@ fun ModerateScreen(
             navigate(destination)
             callbacks.handleAction(action = ModerateActions.NavigateDestination(destination = null))
         }
+    }
+
+    // The ViewModel ignores the first resume, while the initial load is still running.
+    LifecycleResumeEffect(key1 = Unit) {
+        callbacks.handleAction(action = ModerateActions.Resumed)
+        onPauseOrDispose { }
     }
 
     val snackbarHostState = remember { SnackbarHostState() }

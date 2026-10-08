@@ -60,7 +60,24 @@ sealed class AppDestinations(val route: String, val routeWithArgs: String? = nul
         fun createRoute(quizId: String, chapterNumber: Int) = "add_question/$quizId/$chapterNumber"
     }
 
+    object ChapterQuestions : AppDestinations(
+        route = "chapter_questions",
+        routeWithArgs = "chapter_questions/{$QUIZ_ID}/{$CHAPTER_NUMBER}"
+    ) {
+        fun createRoute(quizId: String, chapterNumber: Int) = "chapter_questions/$quizId/$chapterNumber"
+    }
+
+    // The question is passed by its text, which identifies it within the chapter.
+    object EditQuestion : AppDestinations(
+        route = "edit_question",
+        routeWithArgs = "edit_question/{$QUIZ_ID}/{$CHAPTER_NUMBER}?$QUESTION={$QUESTION}"
+    ) {
+        fun createRoute(quizId: String, chapterNumber: Int, question: String) =
+            "edit_question/$quizId/$chapterNumber?$QUESTION=${Uri.encode(question)}"
+    }
+
     companion object {
+        const val QUESTION = "question"
         const val QUIZ_ID = "quizId"
         const val CHAPTER_NUMBER = "chapterNumber"
         const val BOOK_TITLE = "bookTitle"
