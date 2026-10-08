@@ -59,6 +59,35 @@
     <string name="remove_suggestion_title">Remove “%1$s”?</string>
     <string name="removed_suggestion">Removed “%1$s”</string>
     <string name="remove_suggestion_failed">Couldn\'t remove “%1$s”. Try again.</string>
+    <string name="builds">BUILDS</string>
+    <string name="not_yet_live">NOT YET LIVE</string>
+    <string name="debug_build">Debug</string>
+    <string name="release_build">Release</string>
+    <string name="working">WORKING</string>
+    <string name="live">LIVE</string>
+    <string name="change_new">NEW</string>
+    <string name="change_edited">EDITED</string>
+    <string name="change_removed">REMOVED</string>
+    <string name="count_new">new</string>
+    <string name="count_edited">edited</string>
+    <string name="count_removed">removed</string>
+    <string name="chapter_title">Ch. %1$d, %2$s</string>
+    <string name="book_details_changed">Title, author or category changed</string>
+    <string name="book_removed_from_debug">Removed from Debug</string>
+    <string name="chapter_renamed_in">Renamed in %1$s</string>
+    <string name="removed_from">Removed from %1$s</string>
+    <string name="question_choices_changed">%1$s · Ch. %2$d · choices changed</string>
+    <string name="question_answer_changed">%1$s · Ch. %2$d · answer changed</string>
+    <string name="question_choices_and_answer_changed">%1$s · Ch. %2$d · choices and answer changed</string>
+    <string name="push_now">Push now</string>
+    <string name="push_confirm_body">Release will match Debug. Students get the changes the next time the quiz app loads content, and this can\'t be undone from here.</string>
+    <string name="release_up_to_date">Release is up to date</string>
+    <string name="release_matches_debug">Release matches Debug. New books and questions you add will show up here before you push them.</string>
+    <string name="push_failed_title">Push didn\'t finish</string>
+    <string name="push_failed_message">Some books may not have updated. Check your connection and push again.</string>
+    <string name="release_load_failed_title">Couldn\'t load release status</string>
+    <string name="release_load_failed_message">Check your connection and try again.</string>
+    <string name="try_again">Try again</string>
     <string name="sign_in">Sign In</string>
     <string name="sign_in_description">Sign in with the admin account to manage quiz content.</string>
     <string name="email">EMAIL</string>
@@ -87,6 +116,51 @@
     <plurals name="remove_suggestion_body">
         <item quantity="one">This clears the %1$d student request for this title from the list. Students aren\'t notified, and new requests will bring it back.</item>
         <item quantity="other">This clears all %1$d student requests for this title from the list. Students aren\'t notified, and new requests will bring it back.</item>
+    </plurals>
+
+    <plurals name="books_label">
+        <item quantity="one">book</item>
+        <item quantity="other">books</item>
+    </plurals>
+
+    <plurals name="questions_label">
+        <item quantity="one">question</item>
+        <item quantity="other">questions</item>
+    </plurals>
+
+    <plurals name="change_count">
+        <item quantity="one">%1$d change</item>
+        <item quantity="other">%1$d changes</item>
+    </plurals>
+
+    <plurals name="push_changes">
+        <item quantity="one">Push %1$d change to Release</item>
+        <item quantity="other">Push %1$d changes to Release</item>
+    </plurals>
+
+    <plurals name="push_changes_question">
+        <item quantity="one">Push %1$d change to Release?</item>
+        <item quantity="other">Push %1$d changes to Release?</item>
+    </plurals>
+
+    <plurals name="pushing_books">
+        <item quantity="one">Pushing %1$d book…</item>
+        <item quantity="other">Pushing %1$d books…</item>
+    </plurals>
+
+    <plurals name="changes_now_live">
+        <item quantity="one">%1$d change is live. Students get it the next time the quiz app loads content.</item>
+        <item quantity="other">All %1$d changes are live. Students get them the next time the quiz app loads content.</item>
+    </plurals>
+
+    <plurals name="new_book_detail">
+        <item quantity="one">New book · %1$d chapter</item>
+        <item quantity="other">New book · %1$d chapters</item>
+    </plurals>
+
+    <plurals name="new_chapter_detail">
+        <item quantity="one">New chapter in %1$s · %2$d question</item>
+        <item quantity="other">New chapter in %1$s · %2$d questions</item>
     </plurals>
 
     <plurals name="students">

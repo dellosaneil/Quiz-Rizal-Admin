@@ -2,6 +2,7 @@ package com.thelazybattley.joserizalquizadmin.data
 
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
+import com.google.firebase.firestore.WriteBatch
 import com.thelazybattley.joserizalquizadmin.BuildConfig
 import com.thelazybattley.joserizalquizadmin.data.local.dao.QuizDao
 import com.thelazybattley.joserizalquizadmin.data.local.entity.toDomain
@@ -15,6 +16,7 @@ import com.thelazybattley.joserizalquizadmin.data.network.model.suggestedbooks.t
 import com.thelazybattley.joserizalquizadmin.data.network.model.suggestedbooks.toDto
 import com.thelazybattley.joserizalquizadmin.domain.QuizRepository
 import com.thelazybattley.joserizalquizadmin.domain.model.quiz.Quiz
+import com.thelazybattley.joserizalquizadmin.domain.model.quiz.QuizEnvironment
 import com.thelazybattley.joserizalquizadmin.domain.model.quiz.toEntity
 import com.thelazybattley.joserizalquizadmin.domain.model.reportedquestions.ReportedQuestion
 import com.thelazybattley.joserizalquizadmin.domain.model.suggestedbooks.SuggestedBook
@@ -46,10 +48,19 @@ class QuizRepositoryImpl @Inject constructor(
     private val firestore: FirebaseFirestore,
     private val dao: QuizDao
 ) : QuizRepository {
-    override suspend fun fetchQuizContent(): List<Quiz> {
+    override suspend fun fetchQuizContent(): List<Quiz> = fetchBooks(environmentPath = BuildConfig.BUILD_TYPE)
+
+    override suspend fun fetchQuizContent(environment: QuizEnvironment): List<Quiz> = fetchBooks(
+        environmentPath = when (environment) {
+            QuizEnvironment.DEBUG -> DEBUG
+            QuizEnvironment.RELEASE -> RELEASE
+        }
+    )
+
+    private suspend fun fetchBooks(environmentPath: String): List<Quiz> {
         val books = firestore
             .collection(QUIZ)
-            .document(BuildConfig.BUILD_TYPE)
+            .document(environmentPath)
             .collection(BOOKS)
             .get()
             .await()
@@ -236,12 +247,19 @@ class QuizRepositoryImpl @Inject constructor(
             .document(RELEASE)
             .collection(BOOKS)
 
-        debugBooks.documents.chunked(FIRESTORE_BATCH_LIMIT).forEach { documents ->
+        val debugIds = debugBooks.documents.map { it.id }.toSet()
+        val removedIds = releaseBooks.get().await().documents
+            .map { it.id }
+            .filterNot { it in debugIds }
+
+        // One write per book: copy each debug book, then delete release books removed from debug.
+        val writes = debugBooks.documents.mapNotNull { document ->
+            document.data?.let { data -> { batch: WriteBatch -> batch.set(releaseBooks.document(document.id), data) } }
+        } + removedIds.map { id -> { batch: WriteBatch -> batch.delete(releaseBooks.document(id)) } }
+
+        writes.chunked(FIRESTORE_BATCH_LIMIT).forEach { chunk ->
             val batch = firestore.batch()
-            documents.forEach { document ->
-                val data = document.data ?: return@forEach
-                batch.set(releaseBooks.document(document.id), data)
-            }
+            chunk.forEach { write -> write(batch) }
             batch.commit().await()
         }
     }

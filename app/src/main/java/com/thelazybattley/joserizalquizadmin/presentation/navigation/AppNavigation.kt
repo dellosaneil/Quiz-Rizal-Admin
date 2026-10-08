@@ -1,11 +1,9 @@
 package com.thelazybattley.joserizalquizadmin.presentation.navigation
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -29,6 +27,8 @@ import com.thelazybattley.joserizalquizadmin.presentation.feature.login.ui.Login
 import com.thelazybattley.joserizalquizadmin.presentation.feature.moderate.ModerateDestinations
 import com.thelazybattley.joserizalquizadmin.presentation.feature.moderate.ModerateViewModel
 import com.thelazybattley.joserizalquizadmin.presentation.feature.moderate.ui.ModerateScreen
+import com.thelazybattley.joserizalquizadmin.presentation.feature.release.ReleaseViewModel
+import com.thelazybattley.joserizalquizadmin.presentation.feature.release.ui.ReleaseScreen
 import com.thelazybattley.joserizalquizadmin.presentation.navigation.AppDestinations.Companion.CHAPTER_NUMBER
 import com.thelazybattley.joserizalquizadmin.presentation.navigation.AppDestinations.Companion.QUIZ_ID
 import com.thelazybattley.joserizalquizadmin.presentation.ui.theme.AppTheme
@@ -117,9 +117,13 @@ fun AppNavigation(isSignedIn: Boolean) {
                     )
                 }
                 composable(route = AppDestinations.BottomNavDestinations.Release.bottomNavRoute) {
-                    Box(modifier = Modifier.fillMaxSize()) {
-                        Text(text = "Release")
-                    }
+                    val viewModel = hiltViewModel<ReleaseViewModel>()
+                    val state by viewModel.state.collectAsStateWithLifecycle()
+                    ReleaseScreen(
+                        state = state,
+                        callback = viewModel,
+                        modifier = Modifier.fillMaxSize()
+                    )
                 }
                 composable(
                     route = AppDestinations.AddBook.routeWithArgs!!,
