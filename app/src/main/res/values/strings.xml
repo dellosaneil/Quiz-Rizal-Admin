@@ -40,19 +40,25 @@
     <string name="question_saved_to">Question saved to Chapter %1$d</string>
     <string name="reported_questions">Reported Questions</string>
     <string name="suggested_books">Suggested Books</string>
-    <string name="sorted_by_how_many_students_requested">Sorted by how many students requested each title — use this to decide what to add next.</string>
-    <string name="sorted_by_number_of_reports">Sorted by number of reports. Flagged from the quiz review
-screen.</string>
+    <string name="sorted_by_how_many_students_requested">Most requested first. Add the ones worth covering; remove titles that are off-topic or already handled.</string>
+    <string name="sorted_by_number_of_reports">Most reported first. Flagged by students from the quiz review screen.</string>
     <string name="loading_suggestions">Loading suggestions…</string>
     <string name="loading_reports">Loading reports…</string>
     <string name="failed_to_load_suggestions">Couldn\'t load suggestions. Tap Suggested Books to try again.</string>
     <string name="failed_to_load_reports">Couldn\'t load reports. Tap Reported Questions to try again.</string>
     <string name="no_suggested_books">No books have been suggested by students yet. Requests will show up here, sorted by how many students asked for each title.</string>
     <string name="no_reported_questions">No questions have been reported. Flags students raise from the quiz review screen will show up here.</string>
-    <string name="plus_add_book">+ Add Book</string>
     <string name="quoted_value">“%1$s”</string>
     <string name="book_chapter">%1$s · Ch. %2$d</string>
     <string name="unknown_book">Unknown book</string>
+    <string name="rank_value">%1$02d</string>
+    <string name="remove">Remove</string>
+    <string name="add_book">Add Book</string>
+    <string name="cancel">Cancel</string>
+    <string name="undo">UNDO</string>
+    <string name="remove_suggestion_title">Remove “%1$s”?</string>
+    <string name="removed_suggestion">Removed “%1$s”</string>
+    <string name="remove_suggestion_failed">Couldn\'t remove “%1$s”. Try again.</string>
     <string name="sign_in">Sign In</string>
     <string name="sign_in_description">Sign in with the admin account to manage quiz content.</string>
     <string name="email">EMAIL</string>
@@ -76,6 +82,11 @@ screen.</string>
     <plurals name="reports">
         <item quantity="one">REPORT</item>
         <item quantity="other">REPORTS</item>
+    </plurals>
+
+    <plurals name="remove_suggestion_body">
+        <item quantity="one">This clears the %1$d student request for this title from the list. Students aren\'t notified, and new requests will bring it back.</item>
+        <item quantity="other">This clears all %1$d student requests for this title from the list. Students aren\'t notified, and new requests will bring it back.</item>
     </plurals>
 
     <plurals name="students">

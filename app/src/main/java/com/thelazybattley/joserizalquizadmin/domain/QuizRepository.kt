@@ -28,5 +28,10 @@ interface QuizRepository {
 
     suspend fun fetchReportedQuestions(): List<ReportedQuestion>
 
+    // Removes every suggestion for this title and returns the removed entries.
+    suspend fun removeSuggestedBook(bookTitle: String): List<SuggestedBook>
+
+    suspend fun restoreSuggestedBooks(suggestedBooks: List<SuggestedBook>)
+
     suspend fun setQuizContentToRelease()
 }

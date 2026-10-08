@@ -1,6 +1,7 @@
 package com.thelazybattley.joserizalquizadmin.data
 
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.SetOptions
 import com.thelazybattley.joserizalquizadmin.BuildConfig
 import com.thelazybattley.joserizalquizadmin.data.local.dao.QuizDao
 import com.thelazybattley.joserizalquizadmin.data.local.entity.toDomain
@@ -11,11 +12,13 @@ import com.thelazybattley.joserizalquizadmin.data.network.model.reportedquestion
 import com.thelazybattley.joserizalquizadmin.data.network.model.reportedquestions.toDomain
 import com.thelazybattley.joserizalquizadmin.data.network.model.suggestedbooks.SuggestedBookDto
 import com.thelazybattley.joserizalquizadmin.data.network.model.suggestedbooks.toDomain
+import com.thelazybattley.joserizalquizadmin.data.network.model.suggestedbooks.toDto
 import com.thelazybattley.joserizalquizadmin.domain.QuizRepository
 import com.thelazybattley.joserizalquizadmin.domain.model.quiz.Quiz
 import com.thelazybattley.joserizalquizadmin.domain.model.quiz.toEntity
 import com.thelazybattley.joserizalquizadmin.domain.model.reportedquestions.ReportedQuestion
 import com.thelazybattley.joserizalquizadmin.domain.model.suggestedbooks.SuggestedBook
+import com.thelazybattley.joserizalquizadmin.domain.model.suggestedbooks.toSuggestionKey
 import com.thelazybattley.joserizalquizadmin.util.Constants
 import com.thelazybattley.joserizalquizadmin.util.Constants.Companion.AUTHOR
 import com.thelazybattley.joserizalquizadmin.util.Constants.Companion.BOOKS
@@ -159,20 +162,65 @@ class QuizRepositoryImpl @Inject constructor(
         serializer = ReportedQuestionDto.serializer()
     ).map { it.toDomain() }
 
+    override suspend fun removeSuggestedBook(bookTitle: String): List<SuggestedBook> {
+        val key = bookTitle.toSuggestionKey()
+        return updateFeedback(
+            document = SUGGESTED_BOOKS,
+            serializer = SuggestedBookDto.serializer()
+        ) { suggestions ->
+            val (removed, kept) = suggestions.partition { it.bookTitle.toSuggestionKey() == key }
+            kept to removed.map { it.toDomain() }
+        }
+    }
+
+    override suspend fun restoreSuggestedBooks(suggestedBooks: List<SuggestedBook>) {
+        updateFeedback(
+            document = SUGGESTED_BOOKS,
+            serializer = SuggestedBookDto.serializer()
+        ) { suggestions ->
+            suggestions + suggestedBooks.map { it.toDto() } to Unit
+        }
+    }
+
+    private val feedbackJson = Json {
+        ignoreUnknownKeys = true
+        // Match the quiz app, which writes every key on every entry.
+        encodeDefaults = true
+    }
+
+    private fun feedbackDocument(document: String) = firestore
+        .collection(QUIZ)
+        .document(BuildConfig.BUILD_TYPE)
+        .collection(FEEDBACK)
+        .document(document)
+
     // The quiz app appends each submission to a JSON array stored in the "feedback" string field.
     private suspend fun <T> fetchFeedback(document: String, serializer: KSerializer<T>): List<T> {
-        val snapshot = firestore
-            .collection(QUIZ)
-            .document(BuildConfig.BUILD_TYPE)
-            .collection(FEEDBACK)
-            .document(document)
-            .get()
-            .await()
-        val feedbackJson = snapshot.getString(FEEDBACK) ?: return emptyList()
-        val json = Json {
-            ignoreUnknownKeys = true
-        }
-        return json.decodeFromString(ListSerializer(serializer), feedbackJson)
+        val snapshot = feedbackDocument(document = document).get().await()
+        val json = snapshot.getString(FEEDBACK) ?: return emptyList()
+        return feedbackJson.decodeFromString(ListSerializer(serializer), json)
+    }
+
+    // Rewrites the feedback array in a transaction so submissions made meanwhile aren't lost.
+    private suspend fun <T, R> updateFeedback(
+        document: String,
+        serializer: KSerializer<T>,
+        transform: (List<T>) -> Pair<List<T>, R>
+    ): R {
+        val documentRef = feedbackDocument(document = document)
+        val listSerializer = ListSerializer(serializer)
+        return firestore.runTransaction { transaction ->
+            val existing = transaction.get(documentRef).getString(FEEDBACK)
+                ?.let { feedbackJson.decodeFromString(listSerializer, it) }
+                .orEmpty()
+            val (updated, result) = transform(existing)
+            transaction.set(
+                documentRef,
+                mapOf(FEEDBACK to feedbackJson.encodeToString(listSerializer, updated)),
+                SetOptions.merge()
+            )
+            result
+        }.await()
     }
 
     override suspend fun setQuizContentToRelease() {

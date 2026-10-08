@@ -20,9 +20,9 @@ fun ModerateListRow(
 ) {
     Column(
         modifier = modifier
-            .background(color = colors.ivoryMist, shape = RoundedCornerShape(size = 14.dp))
-            .border(width = 1.dp, color = APP_BORDER_COLOR, shape = RoundedCornerShape(size = 14.dp))
-            .padding(horizontal = 14.dp, vertical = 13.dp),
+            .background(color = colors.ivoryMist, shape = RoundedCornerShape(size = 16.dp))
+            .border(width = 1.dp, color = APP_BORDER_COLOR, shape = RoundedCornerShape(size = 16.dp))
+            .padding(all = 14.dp),
         content = content
     )
 }

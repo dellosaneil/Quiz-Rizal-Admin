@@ -2,6 +2,7 @@ package com.thelazybattley.joserizalquizadmin.domain.usecase
 
 import com.thelazybattley.joserizalquizadmin.domain.QuizRepository
 import com.thelazybattley.joserizalquizadmin.domain.model.suggestedbooks.RankedSuggestedBook
+import com.thelazybattley.joserizalquizadmin.domain.model.suggestedbooks.toSuggestionKey
 import javax.inject.Inject
 
 class FetchSuggestedBooksUseCase @Inject constructor(private val repository: QuizRepository) {
@@ -9,7 +10,7 @@ class FetchSuggestedBooksUseCase @Inject constructor(private val repository: Qui
     // Groups suggestions for the same title (ignoring case and spacing), most requested first.
     suspend operator fun invoke(): List<RankedSuggestedBook> = repository.fetchSuggestedBooks()
         .filter { it.bookTitle.isNotBlank() }
-        .groupBy { it.bookTitle.trim().lowercase() }
+        .groupBy { it.bookTitle.toSuggestionKey() }
         .values
         .map { suggestions ->
             RankedSuggestedBook(
