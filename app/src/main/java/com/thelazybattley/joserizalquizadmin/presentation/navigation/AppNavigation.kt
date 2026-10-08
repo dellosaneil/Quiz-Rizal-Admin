@@ -142,8 +142,22 @@ fun AppNavigation(isSignedIn: Boolean) {
                         modifier = Modifier.fillMaxSize(),
                         navigate = { destination ->
                             when (destination) {
-                                AddBookDestinations.BACK -> {
-                                    navController.popBackStack()
+                                AddBookDestinations.Back -> navController.popBackStack()
+
+                                // Both replace Add Book, so back from either skips the finished form.
+                                AddBookDestinations.AddAnotherBook -> navController.navigate(
+                                    route = AppDestinations.AddBook.createRoute()
+                                ) {
+                                    popUpTo(route = AppDestinations.AddBook.routeWithArgs!!) { inclusive = true }
+                                }
+
+                                is AddBookDestinations.AddQuestion -> navController.navigate(
+                                    route = AppDestinations.AddQuestion.createRoute(
+                                        quizId = destination.quizId,
+                                        chapterNumber = 1
+                                    )
+                                ) {
+                                    popUpTo(route = AppDestinations.AddBook.routeWithArgs!!) { inclusive = true }
                                 }
                             }
                         }
