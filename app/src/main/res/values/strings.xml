@@ -270,4 +270,44 @@
         <item quantity="one">student asked for this book. Their request will be cleared.</item>
         <item quantity="other">students asked for this book. All %1$d requests will be cleared.</item>
     </plurals>
+
+    <string name="edited_tag">EDITED</string>
+    <string name="edit_question">Edit Question</string>
+    <string name="undo_changes">Undo changes</string>
+    <string name="save_changes">Save changes</string>
+    <string name="save_changes_failed_title">Couldn\'t save your changes</string>
+    <string name="edit_hint_no_changes">No changes yet</string>
+    <string name="edit_hint_ready">Saves to Debug. Push from Release to make it live.</string>
+    <string name="question_position">%1$s · Ch. %2$d · question %3$d of %4$d</string>
+    <string name="answer_changed_from_to">Answer changed from %1$s to %2$s</string>
+    <string name="delete_this_question">Delete this question</string>
+    <string name="delete_question_title">Delete this question?</string>
+    <string name="delete_question_body">It\'s removed from Debug now, and from Release the next time you push.</string>
+    <string name="delete_question_failed">Couldn\'t delete the question. Check your connection and try again.</string>
+    <string name="delete">Delete</string>
+    <string name="question_not_found_title">Question not found</string>
+    <string name="question_not_found_body">It may have been edited or deleted since you opened it.</string>
+    <string name="fix_question">Fix question</string>
+    <string name="no_questions_in_chapter_body">Questions you add to this chapter show up here.</string>
+    <string name="add_a_question_button">Add a question</string>
+
+    <plurals name="students_reported_question">
+        <item quantity="one">%1$d student reported this question</item>
+        <item quantity="other">%1$d students reported this question</item>
+    </plurals>
+
+    <plurals name="also_clear_reports">
+        <item quantity="one">Also clear the report when I save</item>
+        <item quantity="other">Also clear the %1$d reports when I save</item>
+    </plurals>
+
+    <plurals name="questions_left">
+        <item quantity="one">%1$d question left after this</item>
+        <item quantity="other">%1$d questions left after this</item>
+    </plurals>
+
+    <plurals name="delete_question_body_with_reports">
+        <item quantity="one">It\'s removed from Debug now, and from Release the next time you push. Its report is cleared too.</item>
+        <item quantity="other">It\'s removed from Debug now, and from Release the next time you push. Its %1$d reports are cleared too.</item>
+    </plurals>
 </resources>

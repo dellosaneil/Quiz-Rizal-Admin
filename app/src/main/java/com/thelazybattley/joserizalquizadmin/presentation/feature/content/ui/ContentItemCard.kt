@@ -117,7 +117,17 @@ fun ContentItemCard(
                             } else {
                                 Modifier
                             },
-                            chapter = chapter
+                            chapter = chapter,
+                            onOpen = {
+                                callback.handleAction(
+                                    action = ContentActions.Navigate(
+                                        destination = ContentDestinations.ChapterQuestions(
+                                            chapterNumber = chapter.chapterNumber,
+                                            quizId = quiz.id
+                                        )
+                                    )
+                                )
+                            }
                         ) {
                             callback.handleAction(
                                 action = ContentActions.Navigate(
@@ -242,12 +252,15 @@ private fun BookSummary(
 private fun ChapterRow(
     modifier: Modifier = Modifier,
     chapter: Chapter,
+    onOpen: () -> Unit,
     onAddQuestion: () -> Unit
 ) {
     val addDescription = stringResource(id = R.string.add_question_to_chapter, chapter.chapterNumber, chapter.chapterName)
     Row(
         modifier = modifier
             .fillMaxWidth()
+            // Tapping the row opens the chapter's questions; + Question stays a shortcut.
+            .clickable(role = Role.Button, onClick = onOpen)
             .padding(horizontal = 14.dp, vertical = 10.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(space = 12.dp)

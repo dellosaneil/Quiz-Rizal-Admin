@@ -43,26 +43,28 @@ import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.thelazybattley.joserizalquizadmin.R
-import com.thelazybattley.joserizalquizadmin.presentation.feature.addquestion.AddQuestionAction
-import com.thelazybattley.joserizalquizadmin.presentation.feature.addquestion.AddQuestionCallback
+import com.thelazybattley.joserizalquizadmin.presentation.feature.release.ui.ReleaseTag
 import com.thelazybattley.joserizalquizadmin.presentation.ui.theme.AppTheme
 import com.thelazybattley.joserizalquizadmin.presentation.ui.theme.AppTheme.colors
 import com.thelazybattley.joserizalquizadmin.presentation.ui.theme.AppTheme.typography
 import com.thelazybattley.joserizalquizadmin.presentation.util.APP_BORDER_COLOR
 
+// Shared by Add Question and Edit Question. Wrap in key() to reset it to initialText.
 @Composable
-fun AddQuestionTextField(
+fun QuestionTextField(
     modifier: Modifier = Modifier,
+    initialText: String = "",
     enabled: Boolean = true,
-    callback: AddQuestionCallback
+    isEdited: Boolean = false,
+    onTextChange: (String) -> Unit
 ) {
-    val state = rememberTextFieldState()
+    val state = rememberTextFieldState(initialText = initialText)
     val focusManager = LocalFocusManager.current
     val interactionSource = remember { MutableInteractionSource() }
     val isFocused by interactionSource.collectIsFocusedAsState()
     LaunchedEffect(key1 = Unit) {
         snapshotFlow { state.text }.collect { text ->
-            callback.handleAction(action = AddQuestionAction.UpdateQuestion(question = text.toString()))
+            onTextChange(text.toString())
         }
     }
     val shape = RoundedCornerShape(size = 12.dp)
@@ -81,7 +83,9 @@ fun AddQuestionTextField(
                 style = typography.semiBold11.copy(fontFamily = FontFamily.Monospace),
                 color = colors.taupe
             )
-            if (state.text.isNotEmpty()) {
+            if (isEdited) {
+                EditedTag()
+            } else if (state.text.isNotEmpty()) {
                 Text(
                     text = pluralStringResource(id = R.plurals.character_count, count = state.text.length, state.text.length),
                     style = typography.regular11,
@@ -131,13 +135,26 @@ fun AddQuestionTextField(
     }
 }
 
+// Marks a field whose text differs from the saved question.
+@Composable
+fun EditedTag(modifier: Modifier = Modifier) {
+    ReleaseTag(
+        modifier = modifier,
+        text = stringResource(id = R.string.edited_tag),
+        containerColor = colors.parchment,
+        contentColor = colors.woodsmokeBrown
+    )
+}
+
 @PreviewLightDark
 @Composable
 private fun Preview() {
     AppTheme {
-        AddQuestionTextField(
+        QuestionTextField(
             modifier = Modifier.fillMaxWidth(),
-            callback = AddQuestionCallback.default()
+            initialText = "Who tells Ibarra what happened to his father?",
+            isEdited = true,
+            onTextChange = {}
         )
     }
 }

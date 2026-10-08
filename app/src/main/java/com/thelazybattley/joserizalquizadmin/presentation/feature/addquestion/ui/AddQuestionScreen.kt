@@ -156,17 +156,24 @@ private fun Screen(
                         modifier = Modifier.alpha(alpha = if (state.isSaving) 0.6f else 1f),
                         verticalArrangement = Arrangement.spacedBy(space = 20.dp)
                     ) {
-                        AddQuestionTextField(
+                        QuestionTextField(
                             modifier = Modifier.fillMaxWidth(),
                             enabled = !state.isSaving,
-                            callback = callback
+                            onTextChange = { text ->
+                                callback.handleAction(action = AddQuestionAction.UpdateQuestion(question = text))
+                            }
                         )
-                        AddQuestionChoices(
+                        QuestionChoices(
                             modifier = Modifier.fillMaxWidth(),
                             correctAnswerIndex = state.correctAnswerIndex,
                             duplicateIndices = state.duplicateChoiceIndices,
                             enabled = !state.isSaving,
-                            callback = callback
+                            onChoiceChange = { index, text ->
+                                callback.handleAction(action = AddQuestionAction.Choice.UpdateValue(index = index, choice = text))
+                            },
+                            onSelect = { index ->
+                                callback.handleAction(action = AddQuestionAction.Choice.Selected(index = index))
+                            }
                         )
                     }
                 }

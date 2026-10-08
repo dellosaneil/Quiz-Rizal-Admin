@@ -20,7 +20,11 @@ import com.thelazybattley.joserizalquizadmin.presentation.feature.addbook.AddBoo
 import com.thelazybattley.joserizalquizadmin.presentation.feature.addbook.ui.AddBookScreen
 import com.thelazybattley.joserizalquizadmin.presentation.feature.addquestion.AddQuestionDestinations
 import com.thelazybattley.joserizalquizadmin.presentation.feature.addquestion.ui.AddQuestionScreen
+import com.thelazybattley.joserizalquizadmin.presentation.feature.chapterquestions.ChapterQuestionsDestinations
+import com.thelazybattley.joserizalquizadmin.presentation.feature.chapterquestions.ui.ChapterQuestionsScreen
 import com.thelazybattley.joserizalquizadmin.presentation.feature.content.ContentDestinations
+import com.thelazybattley.joserizalquizadmin.presentation.feature.editquestion.EditQuestionDestinations
+import com.thelazybattley.joserizalquizadmin.presentation.feature.editquestion.ui.EditQuestionScreen
 import com.thelazybattley.joserizalquizadmin.presentation.feature.content.ui.ContentTabScreen
 import com.thelazybattley.joserizalquizadmin.presentation.feature.login.LoginDestinations
 import com.thelazybattley.joserizalquizadmin.presentation.feature.login.ui.LoginScreen
@@ -94,6 +98,14 @@ fun AppNavigation(isSignedIn: Boolean) {
                                     author = destination.author
                                 )
                             )
+
+                            is ModerateDestinations.EditQuestion -> navController.navigate(
+                                route = AppDestinations.EditQuestion.createRoute(
+                                    quizId = destination.quizId,
+                                    chapterNumber = destination.chapterNumber,
+                                    question = destination.question
+                                )
+                            )
                         }
                     }
                 }
@@ -108,6 +120,13 @@ fun AppNavigation(isSignedIn: Boolean) {
 
                                 is ContentDestinations.AddQuestion -> navController.navigate(
                                     route = AppDestinations.AddQuestion.createRoute(
+                                        quizId = destination.quizId,
+                                        chapterNumber = destination.chapterNumber
+                                    )
+                                )
+
+                                is ContentDestinations.ChapterQuestions -> navController.navigate(
+                                    route = AppDestinations.ChapterQuestions.createRoute(
                                         quizId = destination.quizId,
                                         chapterNumber = destination.chapterNumber
                                     )
@@ -181,6 +200,50 @@ fun AppNavigation(isSignedIn: Boolean) {
                     AddQuestionScreen(modifier = Modifier.fillMaxSize()) { destination ->
                         when (destination) {
                             AddQuestionDestinations.Back -> navController.popBackStack()
+                        }
+                    }
+                }
+                composable(
+                    route = AppDestinations.ChapterQuestions.routeWithArgs!!,
+                    arguments = listOf(
+                        navArgument(name = QUIZ_ID) { type = NavType.StringType },
+                        navArgument(name = CHAPTER_NUMBER) { type = NavType.IntType }
+                    )
+                ) { backStackEntry ->
+                    val quizId = backStackEntry.arguments?.getString(QUIZ_ID).orEmpty()
+                    val chapterNumber = backStackEntry.arguments?.getInt(CHAPTER_NUMBER) ?: 0
+                    ChapterQuestionsScreen(modifier = Modifier.fillMaxSize()) { destination ->
+                        when (destination) {
+                            ChapterQuestionsDestinations.Back -> navController.popBackStack()
+
+                            ChapterQuestionsDestinations.AddQuestion -> navController.navigate(
+                                route = AppDestinations.AddQuestion.createRoute(quizId = quizId, chapterNumber = chapterNumber)
+                            )
+
+                            is ChapterQuestionsDestinations.EditQuestion -> navController.navigate(
+                                route = AppDestinations.EditQuestion.createRoute(
+                                    quizId = quizId,
+                                    chapterNumber = chapterNumber,
+                                    question = destination.question
+                                )
+                            )
+                        }
+                    }
+                }
+                composable(
+                    route = AppDestinations.EditQuestion.routeWithArgs!!,
+                    arguments = listOf(
+                        navArgument(name = QUIZ_ID) { type = NavType.StringType },
+                        navArgument(name = CHAPTER_NUMBER) { type = NavType.IntType },
+                        navArgument(name = AppDestinations.QUESTION) {
+                            type = NavType.StringType
+                            defaultValue = ""
+                        }
+                    )
+                ) {
+                    EditQuestionScreen(modifier = Modifier.fillMaxSize()) { destination ->
+                        when (destination) {
+                            EditQuestionDestinations.Back -> navController.popBackStack()
                         }
                     }
                 }

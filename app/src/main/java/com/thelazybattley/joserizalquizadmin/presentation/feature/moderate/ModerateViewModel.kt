@@ -78,6 +78,21 @@ class ModerateViewModel @Inject constructor(
             ModerateActions.SnackbarDismissed -> updateState(
                 newState = state.value.copy(snackbar = null, lastRemoval = null)
             )
+
+            ModerateActions.Resumed -> refreshReportedQuestions()
+        }
+    }
+
+    // Reloads reports without the loading skeleton; skipped while an undo is still possible.
+    private fun refreshReportedQuestions() {
+        if (state.value.reportedQuestions !is FeedbackList.Loaded || state.value.lastRemoval != null) return
+        viewModelScope.launch {
+            runCatching { withContext(context = Dispatchers.IO) { fetchReportedQuestionsUseCase() } }
+                .onSuccess { reports ->
+                    if (state.value.lastRemoval == null) {
+                        updateState(newState = state.value.copy(reportedQuestions = FeedbackList.Loaded(items = reports)))
+                    }
+                }
         }
     }
 
