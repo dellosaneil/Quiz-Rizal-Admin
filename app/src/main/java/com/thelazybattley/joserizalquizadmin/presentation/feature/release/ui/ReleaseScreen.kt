@@ -26,6 +26,7 @@ import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import com.thelazybattley.joserizalquizadmin.R
 import com.thelazybattley.joserizalquizadmin.domain.model.release.ReleaseOverview
+import com.thelazybattley.joserizalquizadmin.domain.model.release.isRevertible
 import com.thelazybattley.joserizalquizadmin.presentation.feature.moderate.ui.ModerateEmptyState
 import com.thelazybattley.joserizalquizadmin.presentation.feature.moderate.ui.ModerateSkeletonRow
 import com.thelazybattley.joserizalquizadmin.presentation.feature.release.PushPhase
@@ -48,6 +49,15 @@ fun ReleaseScreen(
 
     if (state.pushPhase == PushPhase.CONFIRMING && overview != null) {
         ReleaseConfirmSheet(changes = overview.changes, callback = callback)
+    }
+
+    state.pendingRevert?.let { change ->
+        ReleaseRevertSheet(
+            change = change,
+            isReverting = state.isReverting,
+            revertFailed = state.revertFailed,
+            callback = callback
+        )
     }
 
     Scaffold(
@@ -86,7 +96,11 @@ fun ReleaseScreen(
                         }
                     }
 
-                    is ReleaseOverviewState.Loaded -> overviewItems(overview = overviewState.overview)
+                    is ReleaseOverviewState.Loaded -> overviewItems(
+                        overview = overviewState.overview,
+                        canRevert = state.pushPhase == PushPhase.IDLE && !state.isReverting,
+                        callback = callback
+                    )
                 }
             }
             if (overview != null && (overview.changes.isNotEmpty() || state.pushPhase == PushPhase.PUSHING)) {
@@ -103,6 +117,16 @@ fun ReleaseScreen(
 }
 
 private fun LazyListScope.statusBanners(state: ReleaseState) {
+    if (state.revertSucceeded) {
+        item {
+            ReleaseStatusBanner(
+                modifier = Modifier.fillMaxWidth(),
+                type = ReleaseBannerType.SUCCESS,
+                title = stringResource(id = R.string.reverted_title),
+                message = stringResource(id = R.string.reverted_message)
+            )
+        }
+    }
     state.pushedChangeCount?.let { count ->
         item {
             ReleaseStatusBanner(
@@ -148,7 +172,11 @@ private fun LazyListScope.loadingItems() {
     }
 }
 
-private fun LazyListScope.overviewItems(overview: ReleaseOverview) {
+private fun LazyListScope.overviewItems(
+    overview: ReleaseOverview,
+    canRevert: Boolean,
+    callback: ReleaseCallback
+) {
     item { SectionLabel(text = R.string.builds) }
     item {
         Row(horizontalArrangement = Arrangement.spacedBy(space = 10.dp)) {
@@ -199,7 +227,15 @@ private fun LazyListScope.overviewItems(overview: ReleaseOverview) {
         }
     }
     items(items = overview.changes) { change ->
-        ReleaseChangeCard(modifier = Modifier.fillMaxWidth(), change = change)
+        ReleaseChangeCard(
+            modifier = Modifier.fillMaxWidth(),
+            change = change,
+            onRevert = if (canRevert && change.isRevertible) {
+                { callback.handleAction(action = ReleaseActions.RequestRevert(change = change)) }
+            } else {
+                null
+            }
+        )
     }
 }
 

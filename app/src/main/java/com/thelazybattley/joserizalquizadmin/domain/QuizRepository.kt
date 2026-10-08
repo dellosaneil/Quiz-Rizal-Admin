@@ -23,6 +23,9 @@ interface QuizRepository {
     // Suspends until Firestore accepts the write.
     suspend fun setUpdatedQuiz(quiz: Quiz)
 
+    // Writes the book to the given environment, and to the local copy when it mirrors that environment.
+    suspend fun saveQuiz(quiz: Quiz, environment: QuizEnvironment)
+
     fun getAllQuiz(): Flow<List<Quiz>>
 
     suspend fun insertQuiz(quiz: List<Quiz>)

@@ -46,6 +46,7 @@ class FetchReleaseOverviewUseCase @Inject constructor(private val repository: Qu
             listOfNotNull(
                 ReleaseChange.BookDetailsEdited(bookTitle = debugBook.title).takeIf { detailsEdited }
             ) + diffChapters(
+                bookId = debugBook.id,
                 bookTitle = debugBook.title,
                 debugChapters = debugBook.chapters,
                 releaseChapters = releaseBook.chapters
@@ -59,6 +60,7 @@ class FetchReleaseOverviewUseCase @Inject constructor(private val repository: Qu
     }
 
     private fun diffChapters(
+        bookId: String,
         bookTitle: String,
         debugChapters: List<Chapter>,
         releaseChapters: List<Chapter>
@@ -82,7 +84,12 @@ class FetchReleaseOverviewUseCase @Inject constructor(private val repository: Qu
                     chapterNumber = debugChapter.chapterNumber,
                     chapterName = debugChapter.chapterName
                 ).takeIf { renamed }
-            ) + diffQuestions(bookTitle = bookTitle, debugChapter = debugChapter, releaseChapter = releaseChapter)
+            ) + diffQuestions(
+                bookId = bookId,
+                bookTitle = bookTitle,
+                debugChapter = debugChapter,
+                releaseChapter = releaseChapter
+            )
         }
         val removedChapters = releaseChapters
             .filterNot { it.chapterNumber in debugNumbers }
@@ -98,6 +105,7 @@ class FetchReleaseOverviewUseCase @Inject constructor(private val repository: Qu
     }
 
     private fun diffQuestions(
+        bookId: String,
         bookTitle: String,
         debugChapter: Chapter,
         releaseChapter: Chapter
@@ -108,6 +116,7 @@ class FetchReleaseOverviewUseCase @Inject constructor(private val repository: Qu
         val questionChanges = debugChapter.questions.mapNotNull { debugQuestion ->
             val releaseQuestion = releaseByText[debugQuestion.question]
                 ?: return@mapNotNull ReleaseChange.QuestionAdded(
+                    bookId = bookId,
                     bookTitle = bookTitle,
                     chapterNumber = chapterNumber,
                     question = debugQuestion.question
@@ -115,6 +124,7 @@ class FetchReleaseOverviewUseCase @Inject constructor(private val repository: Qu
             val choicesChanged = debugQuestion.choices != releaseQuestion.choices
             val answerChanged = debugQuestion.answer != releaseQuestion.answer
             ReleaseChange.QuestionEdited(
+                bookId = bookId,
                 bookTitle = bookTitle,
                 chapterNumber = chapterNumber,
                 question = debugQuestion.question,
@@ -126,6 +136,7 @@ class FetchReleaseOverviewUseCase @Inject constructor(private val repository: Qu
             .filterNot { it.question in debugTexts }
             .map {
                 ReleaseChange.QuestionRemoved(
+                    bookId = bookId,
                     bookTitle = bookTitle,
                     chapterNumber = chapterNumber,
                     question = it.question

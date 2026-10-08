@@ -52,10 +52,7 @@ class QuizRepositoryImpl @Inject constructor(
     override suspend fun fetchQuizContent(): List<Quiz> = fetchBooks(environmentPath = BuildConfig.BUILD_TYPE)
 
     override suspend fun fetchQuizContent(environment: QuizEnvironment): List<Quiz> = fetchBooks(
-        environmentPath = when (environment) {
-            QuizEnvironment.DEBUG -> DEBUG
-            QuizEnvironment.RELEASE -> RELEASE
-        }
+        environmentPath = environment.path()
     )
 
     private suspend fun fetchBooks(environmentPath: String): List<Quiz> {
@@ -119,13 +116,28 @@ class QuizRepositoryImpl @Inject constructor(
         return docRef.id
     }
 
-    override suspend fun setUpdatedQuiz(quiz: Quiz) {
-        val variant = BuildConfig.BUILD_TYPE
+    override suspend fun setUpdatedQuiz(quiz: Quiz) = writeBook(quiz = quiz, environmentPath = BuildConfig.BUILD_TYPE)
+
+    override suspend fun saveQuiz(quiz: Quiz, environment: QuizEnvironment) {
+        val environmentPath = environment.path()
+        writeBook(quiz = quiz, environmentPath = environmentPath)
+        // The local copy mirrors this build's environment only.
+        if (environmentPath == BuildConfig.BUILD_TYPE) {
+            dao.insertAllQuiz(quiz = listOf(quiz).toEntity())
+        }
+    }
+
+    private fun QuizEnvironment.path() = when (this) {
+        QuizEnvironment.DEBUG -> DEBUG
+        QuizEnvironment.RELEASE -> RELEASE
+    }
+
+    private suspend fun writeBook(quiz: Quiz, environmentPath: String) {
         val bookDetail = mutableMapOf<String, Any>()
 
         val docRef = firestore
             .collection(QUIZ)
-            .document(variant)
+            .document(environmentPath)
             .collection(BOOKS)
             .document(quiz.id)
 

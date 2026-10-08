@@ -2,10 +2,16 @@ package com.thelazybattley.joserizalquizadmin.presentation.feature.release.ui
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.rounded.Undo
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.pluralStringResource
@@ -13,6 +19,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.thelazybattley.joserizalquizadmin.R
 import com.thelazybattley.joserizalquizadmin.domain.model.release.ReleaseChange
 import com.thelazybattley.joserizalquizadmin.domain.model.release.ReleaseChangeKind
@@ -24,7 +31,9 @@ import com.thelazybattley.joserizalquizadmin.presentation.ui.theme.AppTheme.typo
 @Composable
 fun ReleaseChangeCard(
     modifier: Modifier = Modifier,
-    change: ReleaseChange
+    change: ReleaseChange,
+    // Null hides the Revert button, for changes that can't be reverted or while a push runs.
+    onRevert: (() -> Unit)? = null
 ) {
     ModerateListRow(modifier = modifier) {
         Row(horizontalArrangement = Arrangement.spacedBy(space = 12.dp)) {
@@ -44,6 +53,26 @@ fun ReleaseChangeCard(
                 )
             }
             ReleaseChangeKindTag(kind = change.kind)
+        }
+        if (onRevert != null) {
+            TextButton(
+                modifier = Modifier.padding(top = 4.dp),
+                onClick = onRevert,
+                contentPadding = PaddingValues(horizontal = 0.dp)
+            ) {
+                Icon(
+                    imageVector = Icons.AutoMirrored.Rounded.Undo,
+                    contentDescription = null,
+                    tint = colors.maroon,
+                    modifier = Modifier.size(size = 16.dp)
+                )
+                Text(
+                    modifier = Modifier.padding(start = 6.dp),
+                    text = stringResource(id = R.string.revert),
+                    style = typography.bold12.copy(fontSize = 13.sp),
+                    color = colors.maroon
+                )
+            }
         }
     }
 }

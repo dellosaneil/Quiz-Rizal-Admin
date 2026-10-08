@@ -17,6 +17,7 @@ data class ReleaseOverview(
             changes = listOf(
                 ReleaseChange.BookAdded(bookTitle = "El Filibusterismo", chapterCount = 1),
                 ReleaseChange.QuestionEdited(
+                    bookId = "noli",
                     bookTitle = "Noli Me Tangere",
                     chapterNumber = 1,
                     question = "What does Ibarra vow to do after learning of his father's fate?",
@@ -24,6 +25,7 @@ data class ReleaseOverview(
                     answerChanged = false
                 ),
                 ReleaseChange.QuestionRemoved(
+                    bookId = "noli",
                     bookTitle = "Noli Me Tangere",
                     chapterNumber = 1,
                     question = "Who hosts the reunion party that opens the novel?"

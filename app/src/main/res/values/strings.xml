@@ -310,4 +310,13 @@
         <item quantity="one">It\'s removed from Debug now, and from Release the next time you push. Its report is cleared too.</item>
         <item quantity="other">It\'s removed from Debug now, and from Release the next time you push. Its %1$d reports are cleared too.</item>
     </plurals>
+
+    <string name="revert">Revert</string>
+    <string name="revert_change_title">Revert this change?</string>
+    <string name="revert_new_body">The question is removed from Debug. Release doesn\'t change.</string>
+    <string name="revert_edited_body">Debug goes back to the live version of this question. Release doesn\'t change.</string>
+    <string name="revert_removed_body">The question is added back to Debug, as it is in Release. Release doesn\'t change.</string>
+    <string name="revert_failed">Couldn\'t revert. Check your connection and try again.</string>
+    <string name="reverted_title">Change reverted</string>
+    <string name="reverted_message">Debug matches Release for that question again.</string>
 </resources>

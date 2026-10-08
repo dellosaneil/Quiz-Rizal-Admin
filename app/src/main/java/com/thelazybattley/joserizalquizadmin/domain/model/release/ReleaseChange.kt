@@ -48,6 +48,7 @@ sealed interface ReleaseChange {
     }
 
     data class QuestionAdded(
+        val bookId: String,
         val bookTitle: String,
         val chapterNumber: Int,
         val question: String
@@ -56,6 +57,7 @@ sealed interface ReleaseChange {
     }
 
     data class QuestionEdited(
+        val bookId: String,
         val bookTitle: String,
         val chapterNumber: Int,
         val question: String,
@@ -66,6 +68,7 @@ sealed interface ReleaseChange {
     }
 
     data class QuestionRemoved(
+        val bookId: String,
         val bookTitle: String,
         val chapterNumber: Int,
         val question: String
@@ -73,3 +76,9 @@ sealed interface ReleaseChange {
         override val kind = ReleaseChangeKind.REMOVED
     }
 }
+
+// Question-level changes can be reverted from the Release tab, putting Debug back to match Release.
+val ReleaseChange.isRevertible: Boolean
+    get() = this is ReleaseChange.QuestionAdded ||
+            this is ReleaseChange.QuestionEdited ||
+            this is ReleaseChange.QuestionRemoved
