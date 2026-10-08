@@ -1,6 +1,13 @@
 package com.thelazybattley.joserizalquizadmin.presentation.feature.content.ui
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.padding
+import androidx.compose.ui.tooling.preview.PreviewParameter
+import androidx.compose.ui.tooling.preview.PreviewParameterProvider
+import com.thelazybattley.joserizalquizadmin.domain.model.quiz.getTotalQuestions
+import com.thelazybattley.joserizalquizadmin.presentation.feature.moderate.ui.ModerateSkeletonRow
+import com.thelazybattley.joserizalquizadmin.presentation.util.Category
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -50,30 +57,69 @@ private fun ContentTabScreen(
     state: ContentState,
     callback: ContentCallback
 ) {
+    val addBook = {
+        callback.handleAction(action = ContentActions.Navigate(destination = ContentDestinations.AddBook))
+    }
     Scaffold(
         modifier = modifier,
         containerColor = APP_BACKGROUND,
         contentWindowInsets = WindowInsets()
     ) { innerPadding ->
         LazyColumn(
-            contentPadding = innerPadding,
-            verticalArrangement = Arrangement.spacedBy(space = 8.dp)
+            contentPadding = PaddingValues(
+                top = innerPadding.calculateTopPadding(),
+                bottom = innerPadding.calculateBottomPadding() + 16.dp
+            ),
+            verticalArrangement = Arrangement.spacedBy(space = 10.dp)
         ) {
-            stickyHeader {
-                ContentStickyHeader(
-                    callback = callback,
-                    count = state.quiz.size
+            item {
+                ContentHeader(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(bottom = 4.dp),
+                    bookCount = if (state.isLoading) null else state.quiz.size,
+                    questionCount = state.quiz.sumOf { it.chapters.getTotalQuestions() },
+                    onAddBook = addBook
                 )
             }
-            items(
-                items = state.quiz, key = { it.id }
-            ) { quiz ->
-                ContentItemCard(
-                    quiz = quiz,
-                    modifier = Modifier.fillMaxWidth(),
-                    isExpanded = quiz.id == state.expandedBook,
-                    callback = callback
-                )
+            when {
+                state.isLoading -> items(items = listOf(0.62f, 0.74f, 0.5f, 0.68f)) { titleWidth ->
+                    ModerateSkeletonRow(
+                        modifier = Modifier.fillMaxWidth(),
+                        titleWidthFraction = titleWidth,
+                        subtitleWidthFraction = 0.34f
+                    )
+                }
+
+                state.quiz.isEmpty() -> item {
+                    ContentEmptyState(
+                        modifier = Modifier
+                            .padding(top = 10.dp)
+                            .fillMaxWidth(),
+                        onAddBook = addBook
+                    )
+                }
+
+                else -> {
+                    item {
+                        ContentFilterChips(
+                            modifier = Modifier.fillMaxWidth(),
+                            quiz = state.quiz,
+                            selected = state.categoryFilter,
+                            callback = callback
+                        )
+                    }
+                    items(items = state.visibleQuiz, key = { it.id }) { quiz ->
+                        ContentItemCard(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .animateItem(),
+                            quiz = quiz,
+                            isExpanded = quiz.id == state.expandedBook,
+                            callback = callback
+                        )
+                    }
+                }
             }
         }
     }
@@ -82,17 +128,24 @@ private fun ContentTabScreen(
 
 @PreviewLightDark
 @Composable
-private fun Preview() {
+private fun Preview(@PreviewParameter(ContentStateProvider::class) state: ContentState) {
     AppTheme {
         ContentTabScreen(
             modifier = Modifier.fillMaxSize(),
-            state = ContentState(
-                quiz = listOf(
-                    Quiz.dummy(),
-                    Quiz.dummy(id = "1"),
-                )
-            ),
+            state = state,
             callback = ContentCallback.default()
         )
     }
+}
+
+private class ContentStateProvider : PreviewParameterProvider<ContentState> {
+    override val values = sequenceOf(
+        ContentState(
+            isLoading = false,
+            quiz = listOf(Quiz.dummy(), Quiz.dummy(id = "1").copy(category = Category.NOVEL)),
+            expandedBook = "1"
+        ),
+        ContentState(),
+        ContentState(isLoading = false)
+    )
 }

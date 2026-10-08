@@ -22,18 +22,13 @@
     <string name="chapters">CHAPTERS</string>
     <string name="add_chapter">Add chapter</string>
     <string name="library">Library</string>
-    <string name="value_chapters">%1$d chapters</string>
     <string name="chapter_value">Chapter: %1$d</string>
-    <string name="value_questions">%1$d questions</string>
-    <string name="manage">Manage</string>
     <string name="adding_to">ADDING TO</string>
     <string name="arrow">→</string>
     <string name="question">QUESTION</string>
     <string name="choices_tap_to_mark_correct_answer">CHOICES - TAP TO MARK CORRECT ANSWER</string>
     <string name="save_question">Save Question</string>
-    <string name="add_question">+ Add Question</string>
     <string name="add_a_question">Add a Question</string>
-    <string name="plus_add_a_book">+ Add a Book</string>
     <string name="you_are_adding_a_question_to_this_chapter">You are adding a question to this chapter. To add a question to a different book, open that book\'s chapter directly.</string>
     <string name="add_another_question_below">Add another question below, or head back to the chapter when you\'re done.</string>
     <string name="question_saved_to">Question saved to Chapter %1$d</string>
@@ -167,11 +162,6 @@
         <item quantity="other">STUDENTS</item>
     </plurals>
 
-    <plurals name="your_books">
-        <item quantity="one">YOUR BOOK</item>
-        <item quantity="other">YOUR BOOKS</item>
-    </plurals>
-
     <string name="back">Back</string>
     <string name="close">Close</string>
     <string name="details">DETAILS</string>
@@ -209,5 +199,33 @@
     <plurals name="publish_hint_blank_chapters">
         <item quantity="one">Name the empty chapter or remove it</item>
         <item quantity="other">Name the %1$d empty chapters or remove them</item>
+    </plurals>
+
+    <string name="all">All</string>
+    <string name="add_book_short">Add book</string>
+    <string name="library_summary">%1$s · %2$s in Debug</string>
+    <string name="library_empty_summary">No books in Debug yet</string>
+    <string name="dot_separated">%1$s · %2$s</string>
+    <string name="expanded">Expanded</string>
+    <string name="collapsed">Collapsed</string>
+    <string name="no_questions_yet">No questions yet</string>
+    <string name="add_question_button">Question</string>
+    <string name="add_question_to_chapter">Add a question to chapter %1$d, %2$s</string>
+    <string name="start_the_library">Start the library</string>
+    <string name="start_the_library_body">Add a book and its chapters, then write questions for each chapter. Student suggestions on the Moderate tab are a good place to start.</string>
+
+    <plurals name="book_count">
+        <item quantity="one">%1$d book</item>
+        <item quantity="other">%1$d books</item>
+    </plurals>
+
+    <plurals name="question_count">
+        <item quantity="one">%1$d question</item>
+        <item quantity="other">%1$d questions</item>
+    </plurals>
+
+    <plurals name="chapters_without_questions">
+        <item quantity="one">%1$d chapter has no questions</item>
+        <item quantity="other">%1$d chapters have no questions</item>
     </plurals>
 </resources>
