@@ -20,7 +20,8 @@ interface QuizRepository {
         chapters: List<String>
     ): String
 
-    fun setUpdatedQuiz(quiz: Quiz)
+    // Suspends until Firestore accepts the write.
+    suspend fun setUpdatedQuiz(quiz: Quiz)
 
     fun getAllQuiz(): Flow<List<Quiz>>
 

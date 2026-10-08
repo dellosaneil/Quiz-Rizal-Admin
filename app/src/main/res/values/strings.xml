@@ -22,16 +22,10 @@
     <string name="chapters">CHAPTERS</string>
     <string name="add_chapter">Add chapter</string>
     <string name="library">Library</string>
-    <string name="chapter_value">Chapter: %1$d</string>
-    <string name="adding_to">ADDING TO</string>
     <string name="arrow">→</string>
     <string name="question">QUESTION</string>
-    <string name="choices_tap_to_mark_correct_answer">CHOICES - TAP TO MARK CORRECT ANSWER</string>
-    <string name="save_question">Save Question</string>
+    <string name="save_question">Save question</string>
     <string name="add_a_question">Add a Question</string>
-    <string name="you_are_adding_a_question_to_this_chapter">You are adding a question to this chapter. To add a question to a different book, open that book\'s chapter directly.</string>
-    <string name="add_another_question_below">Add another question below, or head back to the chapter when you\'re done.</string>
-    <string name="question_saved_to">Question saved to Chapter %1$d</string>
     <string name="reported_questions">Reported Questions</string>
     <string name="suggested_books">Suggested Books</string>
     <string name="sorted_by_how_many_students_requested">Most requested first. Add the ones worth covering; remove titles that are off-topic or already handled.</string>
@@ -235,5 +229,38 @@
     <string name="add_category_book">Add a %1$s book</string>
     <string name="show_all_books">Show all books</string>
 
+    <string name="chapter_card_detail">%1$s · Ch. %2$d · %3$s</string>
+    <string name="question_placeholder">e.g. Who tells Ibarra what happened to his father?</string>
+    <string name="choices">CHOICES</string>
+    <string name="choices_hint">Tap the circle next to the correct answer.</string>
+    <string name="choice_letter">Choice %1$s</string>
+    <string name="mark_choice_correct">Mark choice %1$s as the correct answer</string>
+    <string name="answer_tag">ANSWER</string>
+    <string name="same_tag">SAME</string>
+    <string name="question_saved_to">Question %1$d saved to Ch. %2$d</string>
+    <string name="quoted">“%1$s”</string>
+    <string name="save_hint_question">Write the question</string>
+    <string name="save_hint_duplicate">Two choices are the same</string>
+    <string name="save_hint_answer">Mark the correct answer</string>
+    <string name="save_hint_ready">Ready to save to Ch. %1$d</string>
+    <string name="saving_question">Saving to Debug…</string>
+    <string name="saving">Saving…</string>
+    <string name="done">Done</string>
+    <string name="save_question_failed_title">Couldn\'t save the question</string>
+    <string name="save_question_failed_message">Check your connection and try again. What you wrote is still here.</string>
 
+    <plurals name="questions_so_far">
+        <item quantity="one">%1$d question so far</item>
+        <item quantity="other">%1$d questions so far</item>
+    </plurals>
+
+    <plurals name="character_count">
+        <item quantity="one">%1$d character</item>
+        <item quantity="other">%1$d characters</item>
+    </plurals>
+
+    <plurals name="save_hint_blank_choices">
+        <item quantity="one">Fill in 1 more choice</item>
+        <item quantity="other">Fill in %1$d more choices</item>
+    </plurals>
 </resources>
